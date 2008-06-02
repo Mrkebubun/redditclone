@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedditClone", "RedditClone\RedditClone.csproj", "{D55421D6-0998-4929-B794-8896A2585589}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedditCloneTests", "RedditCloneTests\RedditCloneTests.csproj", "{C1B22F30-3A08-4B9A-8D7A-7DE4FCAEC070}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D55421D6-0998-4929-B794-8896A2585589}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D55421D6-0998-4929-B794-8896A2585589}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D55421D6-0998-4929-B794-8896A2585589}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D55421D6-0998-4929-B794-8896A2585589}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C1B22F30-3A08-4B9A-8D7A-7DE4FCAEC070}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1B22F30-3A08-4B9A-8D7A-7DE4FCAEC070}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1B22F30-3A08-4B9A-8D7A-7DE4FCAEC070}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1B22F30-3A08-4B9A-8D7A-7DE4FCAEC070}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
