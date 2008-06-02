@@ -83,6 +83,20 @@ namespace RedditCloneTests.Controllers
 
         }
 
+        [TestMethod]
+        public void NonsenseTest()
+        {
+            System.Collections.ArrayList arr1 = new System.Collections.ArrayList();
+            System.Collections.ArrayList arr2 = new System.Collections.ArrayList();
+            arr1.Add(1);
+            arr1.Add(2);
+
+            arr2.Add(1);
+            arr2.Add(2.0);
+            Assert.AreEqual(arr1[0], arr2[0]);
+            Assert.AreNotEqual(arr1[1], arr2[1]);
+        }
+
 
     }
 
