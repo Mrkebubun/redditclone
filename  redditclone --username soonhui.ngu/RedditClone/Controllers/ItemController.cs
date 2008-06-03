@@ -19,7 +19,28 @@ namespace RedditClone.Controllers
         {
             ItemFactory factory = new ItemFactory();
 
-            RenderView("Main", factory.GetArticle());
+            RenderView("Main", factory.GetHotArticles());
         }
+
+        public void WhatNew()
+        {
+            ItemFactory factory = new ItemFactory();
+            RenderView("WhatNew", factory.GetNewestArticles());
+        }
+
+        public void SubmitView()
+        {
+            RenderView("Submit", ViewData);
+        }
+
+        public void SubmitNew()
+        {
+            ItemFactory factory = new ItemFactory();
+            factory.SubmitArticle(Request.Form["URL"],
+                Request.Form["Title"], Request.Form["Diggers"]);
+            RedirectToAction("Main","Item");
+        }
+
+        
     }
 }

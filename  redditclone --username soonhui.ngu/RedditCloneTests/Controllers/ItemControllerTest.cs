@@ -9,6 +9,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RedditClone.Controllers;
 using RedditClone.Models;
 using Rhino.Mocks;
+using System.Collections.Specialized;
 
 namespace RedditCloneTests.Controllers
 {
@@ -76,33 +77,75 @@ namespace RedditCloneTests.Controllers
         [TestMethod]
         public void DisplayItemTest()
         {
-            ItemControllerTester controller = new ItemControllerTester();
+            SubItemController controller = new SubItemController();
             controller.Main();
             Assert.AreEqual("Main", controller.SelectedViewName);
-             Assert.IsInstanceOfType(controller.SelectedViewData, typeof(List<Article>));
+            Assert.IsInstanceOfType(controller.SelectedViewData, typeof(List<Article>));
 
         }
 
         [TestMethod]
-        public void NonsenseTest()
+        public void WhatNewTest()
         {
-            System.Collections.ArrayList arr1 = new System.Collections.ArrayList();
-            System.Collections.ArrayList arr2 = new System.Collections.ArrayList();
-            arr1.Add(1);
-            arr1.Add(2);
-
-            arr2.Add(1);
-            arr2.Add(2.0);
-            Assert.AreEqual(arr1[0], arr2[0]);
-            Assert.AreNotEqual(arr1[1], arr2[1]);
+            SubItemController controller = new SubItemController();
+            controller.WhatNew();
+            Assert.IsInstanceOfType(controller.SelectedViewData, typeof(List<Article>));
+            List<Article> viewData = (List<Article>)controller.SelectedViewData;
+            Assert.IsTrue(viewData.Count>=2);
+            for (int i = 0; i < viewData.Count-1; i++)
+            {
+                Assert.IsTrue(viewData[i].submittedDate>viewData[i+1].submittedDate);
+            }
         }
+
+        [TestMethod]
+        public void SubmitTest()
+        {
+            SubItemController controller = new SubItemController();
+            string owner = "Soon Hui";
+            string url = "http://www.google.com";
+            string title = "Google";
+            NameValueCollection nvm = new NameValueCollection();
+            nvm.Add("Title", title);
+            nvm.Add("URL", url);
+            nvm.Add("Diggers", owner);
+
+            HttpContextBase httpContext;
+            HttpRequestBase httpRequest;
+            using (mocks.Record())
+            {
+                httpContext = mocks.DynamicMock<HttpContextBase>();
+                httpRequest = mocks.DynamicMock<HttpRequestBase>();
+                HttpResponseBase httpResponse = mocks.DynamicMock<HttpResponseBase>();
+
+                SetupResult.For(httpRequest.Form).Return(nvm);
+                SetupResult.For(httpContext.Request).Return(httpRequest);
+                SetupResult.For(httpContext.Response).Return(httpResponse);
+
+            }
+            ControllerContext c = new ControllerContext(httpContext, new RouteData(), controller);
+            controller.ControllerContext = c;
+            controller.SubmitNew();
+            Assert.AreEqual(controller.RedirecedAction["Controller"], "Item");
+            Assert.AreEqual(controller.RedirecedAction["Action"], "Main");
+
+            List<Article> articles= new ItemFactory().SearchURL(url);
+            Assert.AreEqual(1, articles.Count);
+            Assert.AreEqual(1, articles[0].UpVotes);
+            Assert.AreEqual(0, articles[0].DownVotes);
+            Assert.AreEqual(owner, articles[0].Diggers);
+            Assert.AreEqual(title, articles[0].Title);
+            //throw new NotImplementedException();
+        }
+
 
 
     }
 
-    public class ItemControllerTester : ItemController
+    public class SubItemController : ItemController
     {
         public string SelectedViewName { get; private set; }
+        public RouteValueDictionary RedirecedAction { get; private set; }
 
         /// <summary>
         /// following the ugly examples of phill haack
@@ -115,6 +158,11 @@ namespace RedditCloneTests.Controllers
             this.SelectedViewName = viewName;
             SelectedViewData = viewData;
      //       base.RenderView(viewName, masterName, viewData);
+        }
+
+        protected override void RedirectToAction(RouteValueDictionary values)
+        {
+            RedirecedAction = values;
         }
     }
 }

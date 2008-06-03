@@ -30,12 +30,12 @@ namespace RedditClone.Models
 		
     #region Extensibility Method Definitions
     partial void OnCreated();
-    partial void InsertArticle(Article instance);
-    partial void UpdateArticle(Article instance);
-    partial void DeleteArticle(Article instance);
     partial void InsertUserInfo(UserInfo instance);
     partial void UpdateUserInfo(UserInfo instance);
     partial void DeleteUserInfo(UserInfo instance);
+    partial void InsertArticle(Article instance);
+    partial void UpdateArticle(Article instance);
+    partial void DeleteArticle(Article instance);
     #endregion
 		
 		public RedditCloneDataContext() : 
@@ -68,6 +68,14 @@ namespace RedditClone.Models
 			OnCreated();
 		}
 		
+		public System.Data.Linq.Table<UserInfo> UserInfos
+		{
+			get
+			{
+				return this.GetTable<UserInfo>();
+			}
+		}
+		
 		public System.Data.Linq.Table<Article> Articles
 		{
 			get
@@ -75,13 +83,119 @@ namespace RedditClone.Models
 				return this.GetTable<Article>();
 			}
 		}
+	}
+	
+	[Table(Name="dbo.UserInfo")]
+	public partial class UserInfo : INotifyPropertyChanging, INotifyPropertyChanged
+	{
 		
-		public System.Data.Linq.Table<UserInfo> UserInfos
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private string _Diggers;
+		
+		private string _password;
+		
+		private EntitySet<Article> _Articles;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnDiggersChanging(string value);
+    partial void OnDiggersChanged();
+    partial void OnpasswordChanging(string value);
+    partial void OnpasswordChanged();
+    #endregion
+		
+		public UserInfo()
+		{
+			this._Articles = new EntitySet<Article>(new Action<Article>(this.attach_Articles), new Action<Article>(this.detach_Articles));
+			OnCreated();
+		}
+		
+		[Column(Storage="_Diggers", DbType="NVarChar(50) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
+		public string Diggers
 		{
 			get
 			{
-				return this.GetTable<UserInfo>();
+				return this._Diggers;
 			}
+			set
+			{
+				if ((this._Diggers != value))
+				{
+					this.OnDiggersChanging(value);
+					this.SendPropertyChanging();
+					this._Diggers = value;
+					this.SendPropertyChanged("Diggers");
+					this.OnDiggersChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_password", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string password
+		{
+			get
+			{
+				return this._password;
+			}
+			set
+			{
+				if ((this._password != value))
+				{
+					this.OnpasswordChanging(value);
+					this.SendPropertyChanging();
+					this._password = value;
+					this.SendPropertyChanged("password");
+					this.OnpasswordChanged();
+				}
+			}
+		}
+		
+		[Association(Name="UserInfo_Article", Storage="_Articles", OtherKey="Diggers")]
+		public EntitySet<Article> Articles
+		{
+			get
+			{
+				return this._Articles;
+			}
+			set
+			{
+				this._Articles.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_Articles(Article entity)
+		{
+			this.SendPropertyChanging();
+			entity.UserInfo = this;
+		}
+		
+		private void detach_Articles(Article entity)
+		{
+			this.SendPropertyChanging();
+			entity.UserInfo = null;
 		}
 	}
 	
@@ -103,6 +217,10 @@ namespace RedditClone.Models
 		
 		private string _Diggers;
 		
+		private System.DateTime _submittedDate;
+		
+		private System.Nullable<System.DateTime> _publishedDate;
+		
 		private EntityRef<UserInfo> _UserInfo;
 		
     #region Extensibility Method Definitions
@@ -121,6 +239,10 @@ namespace RedditClone.Models
     partial void OnDownVotesChanged();
     partial void OnDiggersChanging(string value);
     partial void OnDiggersChanged();
+    partial void OnsubmittedDateChanging(System.DateTime value);
+    partial void OnsubmittedDateChanged();
+    partial void OnpublishedDateChanging(System.Nullable<System.DateTime> value);
+    partial void OnpublishedDateChanged();
     #endregion
 		
 		public Article()
@@ -253,6 +375,46 @@ namespace RedditClone.Models
 			}
 		}
 		
+		[Column(Storage="_submittedDate", DbType="DateTime NOT NULL")]
+		public System.DateTime submittedDate
+		{
+			get
+			{
+				return this._submittedDate;
+			}
+			set
+			{
+				if ((this._submittedDate != value))
+				{
+					this.OnsubmittedDateChanging(value);
+					this.SendPropertyChanging();
+					this._submittedDate = value;
+					this.SendPropertyChanged("submittedDate");
+					this.OnsubmittedDateChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_publishedDate", DbType="DateTime")]
+		public System.Nullable<System.DateTime> publishedDate
+		{
+			get
+			{
+				return this._publishedDate;
+			}
+			set
+			{
+				if ((this._publishedDate != value))
+				{
+					this.OnpublishedDateChanging(value);
+					this.SendPropertyChanging();
+					this._publishedDate = value;
+					this.SendPropertyChanged("publishedDate");
+					this.OnpublishedDateChanged();
+				}
+			}
+		}
+		
 		[Association(Name="UserInfo_Article", Storage="_UserInfo", ThisKey="Diggers", IsForeignKey=true)]
 		public UserInfo UserInfo
 		{
@@ -305,120 +467,6 @@ namespace RedditClone.Models
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
-		}
-	}
-	
-	[Table(Name="dbo.UserInfo")]
-	public partial class UserInfo : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private string _Diggers;
-		
-		private string _password;
-		
-		private EntitySet<Article> _Articles;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnDiggersChanging(string value);
-    partial void OnDiggersChanged();
-    partial void OnpasswordChanging(string value);
-    partial void OnpasswordChanged();
-    #endregion
-		
-		public UserInfo()
-		{
-			this._Articles = new EntitySet<Article>(new Action<Article>(this.attach_Articles), new Action<Article>(this.detach_Articles));
-			OnCreated();
-		}
-		
-		[Column(Storage="_Diggers", DbType="NVarChar(50) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
-		public string Diggers
-		{
-			get
-			{
-				return this._Diggers;
-			}
-			set
-			{
-				if ((this._Diggers != value))
-				{
-					this.OnDiggersChanging(value);
-					this.SendPropertyChanging();
-					this._Diggers = value;
-					this.SendPropertyChanged("Diggers");
-					this.OnDiggersChanged();
-				}
-			}
-		}
-		
-		[Column(Storage="_password", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		public string password
-		{
-			get
-			{
-				return this._password;
-			}
-			set
-			{
-				if ((this._password != value))
-				{
-					this.OnpasswordChanging(value);
-					this.SendPropertyChanging();
-					this._password = value;
-					this.SendPropertyChanged("password");
-					this.OnpasswordChanged();
-				}
-			}
-		}
-		
-		[Association(Name="UserInfo_Article", Storage="_Articles", OtherKey="Diggers")]
-		public EntitySet<Article> Articles
-		{
-			get
-			{
-				return this._Articles;
-			}
-			set
-			{
-				this._Articles.Assign(value);
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_Articles(Article entity)
-		{
-			this.SendPropertyChanging();
-			entity.UserInfo = this;
-		}
-		
-		private void detach_Articles(Article entity)
-		{
-			this.SendPropertyChanging();
-			entity.UserInfo = null;
 		}
 	}
 }
