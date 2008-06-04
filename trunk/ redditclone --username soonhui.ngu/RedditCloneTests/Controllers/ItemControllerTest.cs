@@ -98,18 +98,29 @@ namespace RedditCloneTests.Controllers
             }
         }
 
-        [Test, RollBack]
-        public void SubmitTest()
+        [RowTest, RollBack]
+        [Row("http://www.dotnetkicks.com/", 5, 10)]
+        public void DeleteTest(string url, int upVotes, int downVotes)
+        {
+
+            NameValueCollection nvm = new NameValueCollection();
+            nvm.Add("URL", url);
+            nvm.Add("UpVotes", upVotes.ToString());
+            nvm.Add("DownVotes", downVotes.ToString());
+
+            List<Article> articles1 = new ItemFactory().SearchURL(url);
+            Assert.AreEqual(1, articles1.Count, "THere should be only 1 article");
+            SubItemController controller = CreateSubItemController(nvm);
+            controller.Delete();
+
+            List<Article> articles = new ItemFactory().SearchURL(url);
+            Assert.AreEqual(0, articles.Count, "The article should have been deleted");
+
+        }
+
+        private SubItemController CreateSubItemController(NameValueCollection nvm)
         {
             SubItemController controller = new SubItemController();
-            string owner = "Soon Hui";
-            string url = "http://www.google.com";
-            string title = "Google";
-            NameValueCollection nvm = new NameValueCollection();
-            nvm.Add("Title", title);
-            nvm.Add("URL", url);
-            nvm.Add("Diggers", owner);
-
             HttpContextBase httpContext;
             HttpRequestBase httpRequest;
             using (mocks.Record())
@@ -125,6 +136,37 @@ namespace RedditCloneTests.Controllers
             }
             ControllerContext c = new ControllerContext(httpContext, new RouteData(), controller);
             controller.ControllerContext = c;
+            return controller;
+        }
+
+        [RowTest, RollBack]
+        [Row("Soon Hui", "http://www.google.com", "Google")]
+        [Row("Soon Hui", "http://www.yahoo.com", "yahoo")]
+        [Row("Soon Hui", "http://www.live.com", "live")]
+        public void SubmitTest(string owner, string url, string title)
+        {
+ //           SubItemController controller = new SubItemController();
+            NameValueCollection nvm = new NameValueCollection();
+            nvm.Add("Title", title);
+            nvm.Add("URL", url);
+            nvm.Add("Diggers", owner);
+
+            //HttpContextBase httpContext;
+            //HttpRequestBase httpRequest;
+            //using (mocks.Record())
+            //{
+            //    httpContext = mocks.DynamicMock<HttpContextBase>();
+            //    httpRequest = mocks.DynamicMock<HttpRequestBase>();
+            //    HttpResponseBase httpResponse = mocks.DynamicMock<HttpResponseBase>();
+
+            //    SetupResult.For(httpRequest.Form).Return(nvm);
+            //    SetupResult.For(httpContext.Request).Return(httpRequest);
+            //    SetupResult.For(httpContext.Response).Return(httpResponse);
+
+            //}
+            //ControllerContext c = new ControllerContext(httpContext, new RouteData(), controller);
+            //controller.ControllerContext = c;
+            SubItemController controller =CreateSubItemController(nvm);
             controller.SubmitNew();
             Assert.AreEqual(controller.RedirecedAction["Controller"], "Item");
             Assert.AreEqual(controller.RedirecedAction["Action"], "Main");
@@ -135,7 +177,7 @@ namespace RedditCloneTests.Controllers
             Assert.AreEqual(0, articles[0].DownVotes);
             Assert.AreEqual(owner, articles[0].Diggers);
             Assert.AreEqual(title, articles[0].Title);
-            //throw new NotImplementedException();
+
         }
 
 
