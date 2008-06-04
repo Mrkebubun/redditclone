@@ -6,19 +6,29 @@
       <Column Name="Diggers" Type="System.String" DbType="NVarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="password" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Association Name="UserInfo_Article" Member="Articles" OtherKey="Diggers" Type="Article" />
+      <Association Name="UserInfo_VoteHistory" Member="VoteHistories" OtherKey="diggers" Type="VoteHistory" />
     </Type>
   </Table>
   <Table Name="dbo.Article" Member="Articles">
     <Type Name="Article">
       <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="Title" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Title" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
       <Column Name="URL" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
-      <Column Name="UpVotes" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="DownVotes" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Diggers" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="submittedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="publishedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="Article_VoteHistory" Member="VoteHistories" OtherKey="articleID" Type="VoteHistory" />
       <Association Name="UserInfo_Article" Member="UserInfo" ThisKey="Diggers" Type="UserInfo" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.VoteHistory" Member="VoteHistories">
+    <Type Name="VoteHistory">
+      <Column Name="voteID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="diggers" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="articleID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="voteChoice" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Article_VoteHistory" Member="Article" ThisKey="articleID" Type="Article" IsForeignKey="true" />
+      <Association Name="UserInfo_VoteHistory" Member="UserInfo" ThisKey="diggers" Type="UserInfo" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>

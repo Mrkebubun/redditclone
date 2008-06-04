@@ -8,9 +8,10 @@
 <ol>
     <% foreach (var item in ViewData)  {  %>
     <li>
-    <a href="<%= item.URL %>"><%= item.Title %></a>
-   
+        <%= Html.RenderUserControl("~/Views/UserControls/ArticleUserControl.ascx", item) %>  
      </li>
     <% } %>
 </ol>
+
+
 </asp:Content>

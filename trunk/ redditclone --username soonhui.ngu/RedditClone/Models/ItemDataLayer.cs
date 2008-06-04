@@ -32,8 +32,6 @@ namespace RedditClone.Models
                 URL = url,
                 Title = title,
                 Diggers = owner,
-                DownVotes = 0,
-                UpVotes = 1,
                 submittedDate = DateTime.Now
             };
 
@@ -43,18 +41,31 @@ namespace RedditClone.Models
             
         }
 
-        public void DeleteArticle(string url, int upVotes, int downVotes)
+        public void DeleteArticle(int id)
         {
             RedditCloneDataContext dc = new RedditCloneDataContext();
             var arr = from p in dc.Articles
-                      where p.URL == url &&
-                      p.UpVotes == upVotes &&
-                      p.DownVotes == downVotes
+                      where p.id == id 
                       select p;
 
             dc.Articles.DeleteAllOnSubmit(arr);
             dc.SubmitChanges();
 
+        }
+
+        //public void CastUpVote(int id)
+        //{
+        //    RedditCloneDataContext dc = new RedditCloneDataContext();
+        //    Article article = dc.Articles.Single<Article>(a => a.id == id);
+        //    article.UpVotes++;
+        //    dc.SubmitChanges();
+        //}
+
+
+        public Article GetArticleID(int id)
+        {
+            RedditCloneDataContext dc = new RedditCloneDataContext();
+            return dc.Articles.Single<Article>(a => a.id == id);
         }
         public List<Article> SearchURL(string url)
         {
@@ -65,6 +76,29 @@ namespace RedditClone.Models
                            select p;
 
             return articles.ToList<Article>();
+        }
+
+        public VoteHistory GetLatestVoteHistory(string url, string voter)
+        {
+            RedditCloneDataContext dc = new RedditCloneDataContext();
+
+            var articleIDs = from vH in dc.Articles
+                            where vH.URL==url 
+                            orderby vH.submittedDate descending
+                            select vH;
+
+            List<Article> articleIDList = articleIDs.ToList<Article>();
+
+            var vHistory = from vH in dc.VoteHistories
+                           where vH.articleID == articleIDList[0].id &&
+                           vH.diggers == voter
+                           select vH;
+
+            return vHistory.ToList<VoteHistory>()[0];
+
+       //     var hHistory = from vH in dc.
+
+       //     var vHistory = from vH in dc.
         }
     }
 }

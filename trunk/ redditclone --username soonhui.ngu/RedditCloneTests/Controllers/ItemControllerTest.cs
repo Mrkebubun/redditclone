@@ -97,16 +97,35 @@ namespace RedditCloneTests.Controllers
                 Assert.IsTrue(viewData[i].submittedDate>viewData[i+1].submittedDate);
             }
         }
+        [RowTest, RollBack]
+        [Row(1)]
+        public void CastUpVoteTest(int id)
+        {
+   //         Assert.AreEqual(1, new ItemController().GetArticleID(id).UpVotes);
+
+            NameValueCollection nvm = new NameValueCollection();
+            nvm.Add("id", id.ToString());
+            SubItemController controller = CreateSubItemController(nvm);
+            throw new NotImplementedException();
+            //controller.CastUpVote();
+
+            //Assert.AreEqual(2, controller.GetArticleID(id).UpVotes);
+        }
 
         [RowTest, RollBack]
-        [Row("http://www.dotnetkicks.com/", 5, 10)]
-        public void DeleteTest(string url, int upVotes, int downVotes)
+        [Row(1)]
+        public void GetLatestVoteHistory(string url,  string voters)
+        {
+
+        }
+        [RowTest, RollBack]
+        [Row("http://www.dotnetkicks.com/", 30)]
+        public void DeleteTest(string url, int articleID)
         {
 
             NameValueCollection nvm = new NameValueCollection();
-            nvm.Add("URL", url);
-            nvm.Add("UpVotes", upVotes.ToString());
-            nvm.Add("DownVotes", downVotes.ToString());
+            nvm.Add("id", articleID.ToString());
+
 
             List<Article> articles1 = new ItemFactory().SearchURL(url);
             Assert.AreEqual(1, articles1.Count, "THere should be only 1 article");
@@ -151,21 +170,6 @@ namespace RedditCloneTests.Controllers
             nvm.Add("URL", url);
             nvm.Add("Diggers", owner);
 
-            //HttpContextBase httpContext;
-            //HttpRequestBase httpRequest;
-            //using (mocks.Record())
-            //{
-            //    httpContext = mocks.DynamicMock<HttpContextBase>();
-            //    httpRequest = mocks.DynamicMock<HttpRequestBase>();
-            //    HttpResponseBase httpResponse = mocks.DynamicMock<HttpResponseBase>();
-
-            //    SetupResult.For(httpRequest.Form).Return(nvm);
-            //    SetupResult.For(httpContext.Request).Return(httpRequest);
-            //    SetupResult.For(httpContext.Response).Return(httpResponse);
-
-            //}
-            //ControllerContext c = new ControllerContext(httpContext, new RouteData(), controller);
-            //controller.ControllerContext = c;
             SubItemController controller =CreateSubItemController(nvm);
             controller.SubmitNew();
             Assert.AreEqual(controller.RedirecedAction["Controller"], "Item");
@@ -173,8 +177,6 @@ namespace RedditCloneTests.Controllers
 
             List<Article> articles= new ItemFactory().SearchURL(url);
             Assert.AreEqual(1, articles.Count);
-            Assert.AreEqual(1, articles[0].UpVotes);
-            Assert.AreEqual(0, articles[0].DownVotes);
             Assert.AreEqual(owner, articles[0].Diggers);
             Assert.AreEqual(title, articles[0].Title);
 
