@@ -5,15 +5,23 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 
+
+
 namespace RedditClone
 {
     public class GlobalApplication : System.Web.HttpApplication
     {
         public static void RegisterRoutes(RouteCollection routes)
         {
+            
+            
             // Note: Change the URL to "{controller}.mvc/{action}/{id}" to enable
             //       automatic support on IIS6 and IIS7 classic mode
 
+            routes.Add(new Route("Main", new MvcRouteHandler())
+            {
+                Defaults = new RouteValueDictionary(new { controller = "Item", action = "Main" }),
+            });
             routes.Add(new Route("{controller}/{action}/{id}", new MvcRouteHandler())
             {
                 Defaults = new RouteValueDictionary(new { action = "Index", id = "" }),
