@@ -36,6 +36,9 @@ namespace RedditClone.Models
     partial void InsertArticle(Article instance);
     partial void UpdateArticle(Article instance);
     partial void DeleteArticle(Article instance);
+    partial void InsertVoteHistory(VoteHistory instance);
+    partial void UpdateVoteHistory(VoteHistory instance);
+    partial void DeleteVoteHistory(VoteHistory instance);
     #endregion
 		
 		public RedditCloneDataContext() : 
@@ -83,6 +86,14 @@ namespace RedditClone.Models
 				return this.GetTable<Article>();
 			}
 		}
+		
+		public System.Data.Linq.Table<VoteHistory> VoteHistories
+		{
+			get
+			{
+				return this.GetTable<VoteHistory>();
+			}
+		}
 	}
 	
 	[Table(Name="dbo.UserInfo")]
@@ -97,6 +108,8 @@ namespace RedditClone.Models
 		
 		private EntitySet<Article> _Articles;
 		
+		private EntitySet<VoteHistory> _VoteHistories;
+		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -110,6 +123,7 @@ namespace RedditClone.Models
 		public UserInfo()
 		{
 			this._Articles = new EntitySet<Article>(new Action<Article>(this.attach_Articles), new Action<Article>(this.detach_Articles));
+			this._VoteHistories = new EntitySet<VoteHistory>(new Action<VoteHistory>(this.attach_VoteHistories), new Action<VoteHistory>(this.detach_VoteHistories));
 			OnCreated();
 		}
 		
@@ -166,6 +180,19 @@ namespace RedditClone.Models
 			}
 		}
 		
+		[Association(Name="UserInfo_VoteHistory", Storage="_VoteHistories", OtherKey="diggers")]
+		public EntitySet<VoteHistory> VoteHistories
+		{
+			get
+			{
+				return this._VoteHistories;
+			}
+			set
+			{
+				this._VoteHistories.Assign(value);
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -197,6 +224,18 @@ namespace RedditClone.Models
 			this.SendPropertyChanging();
 			entity.UserInfo = null;
 		}
+		
+		private void attach_VoteHistories(VoteHistory entity)
+		{
+			this.SendPropertyChanging();
+			entity.UserInfo = this;
+		}
+		
+		private void detach_VoteHistories(VoteHistory entity)
+		{
+			this.SendPropertyChanging();
+			entity.UserInfo = null;
+		}
 	}
 	
 	[Table(Name="dbo.Article")]
@@ -211,15 +250,13 @@ namespace RedditClone.Models
 		
 		private string _URL;
 		
-		private int _UpVotes;
-		
-		private int _DownVotes;
-		
 		private string _Diggers;
 		
 		private System.DateTime _submittedDate;
 		
 		private System.Nullable<System.DateTime> _publishedDate;
+		
+		private EntitySet<VoteHistory> _VoteHistories;
 		
 		private EntityRef<UserInfo> _UserInfo;
 		
@@ -233,10 +270,6 @@ namespace RedditClone.Models
     partial void OnTitleChanged();
     partial void OnURLChanging(string value);
     partial void OnURLChanged();
-    partial void OnUpVotesChanging(int value);
-    partial void OnUpVotesChanged();
-    partial void OnDownVotesChanging(int value);
-    partial void OnDownVotesChanged();
     partial void OnDiggersChanging(string value);
     partial void OnDiggersChanged();
     partial void OnsubmittedDateChanging(System.DateTime value);
@@ -247,6 +280,7 @@ namespace RedditClone.Models
 		
 		public Article()
 		{
+			this._VoteHistories = new EntitySet<VoteHistory>(new Action<VoteHistory>(this.attach_VoteHistories), new Action<VoteHistory>(this.detach_VoteHistories));
 			this._UserInfo = default(EntityRef<UserInfo>);
 			OnCreated();
 		}
@@ -271,7 +305,7 @@ namespace RedditClone.Models
 			}
 		}
 		
-		[Column(Storage="_Title", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		[Column(Storage="_Title", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
 		public string Title
 		{
 			get
@@ -307,46 +341,6 @@ namespace RedditClone.Models
 					this._URL = value;
 					this.SendPropertyChanged("URL");
 					this.OnURLChanged();
-				}
-			}
-		}
-		
-		[Column(Storage="_UpVotes", DbType="Int NOT NULL")]
-		public int UpVotes
-		{
-			get
-			{
-				return this._UpVotes;
-			}
-			set
-			{
-				if ((this._UpVotes != value))
-				{
-					this.OnUpVotesChanging(value);
-					this.SendPropertyChanging();
-					this._UpVotes = value;
-					this.SendPropertyChanged("UpVotes");
-					this.OnUpVotesChanged();
-				}
-			}
-		}
-		
-		[Column(Storage="_DownVotes", DbType="Int NOT NULL")]
-		public int DownVotes
-		{
-			get
-			{
-				return this._DownVotes;
-			}
-			set
-			{
-				if ((this._DownVotes != value))
-				{
-					this.OnDownVotesChanging(value);
-					this.SendPropertyChanging();
-					this._DownVotes = value;
-					this.SendPropertyChanged("DownVotes");
-					this.OnDownVotesChanged();
 				}
 			}
 		}
@@ -415,6 +409,19 @@ namespace RedditClone.Models
 			}
 		}
 		
+		[Association(Name="Article_VoteHistory", Storage="_VoteHistories", OtherKey="articleID")]
+		public EntitySet<VoteHistory> VoteHistories
+		{
+			get
+			{
+				return this._VoteHistories;
+			}
+			set
+			{
+				this._VoteHistories.Assign(value);
+			}
+		}
+		
 		[Association(Name="UserInfo_Article", Storage="_UserInfo", ThisKey="Diggers", IsForeignKey=true)]
 		public UserInfo UserInfo
 		{
@@ -443,6 +450,234 @@ namespace RedditClone.Models
 					else
 					{
 						this._Diggers = default(string);
+					}
+					this.SendPropertyChanged("UserInfo");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_VoteHistories(VoteHistory entity)
+		{
+			this.SendPropertyChanging();
+			entity.Article = this;
+		}
+		
+		private void detach_VoteHistories(VoteHistory entity)
+		{
+			this.SendPropertyChanging();
+			entity.Article = null;
+		}
+	}
+	
+	[Table(Name="dbo.VoteHistory")]
+	public partial class VoteHistory : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _voteID;
+		
+		private string _diggers;
+		
+		private int _articleID;
+		
+		private int _voteChoice;
+		
+		private EntityRef<Article> _Article;
+		
+		private EntityRef<UserInfo> _UserInfo;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnvoteIDChanging(int value);
+    partial void OnvoteIDChanged();
+    partial void OndiggersChanging(string value);
+    partial void OndiggersChanged();
+    partial void OnarticleIDChanging(int value);
+    partial void OnarticleIDChanged();
+    partial void OnvoteChoiceChanging(int value);
+    partial void OnvoteChoiceChanged();
+    #endregion
+		
+		public VoteHistory()
+		{
+			this._Article = default(EntityRef<Article>);
+			this._UserInfo = default(EntityRef<UserInfo>);
+			OnCreated();
+		}
+		
+		[Column(Storage="_voteID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int voteID
+		{
+			get
+			{
+				return this._voteID;
+			}
+			set
+			{
+				if ((this._voteID != value))
+				{
+					this.OnvoteIDChanging(value);
+					this.SendPropertyChanging();
+					this._voteID = value;
+					this.SendPropertyChanged("voteID");
+					this.OnvoteIDChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_diggers", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string diggers
+		{
+			get
+			{
+				return this._diggers;
+			}
+			set
+			{
+				if ((this._diggers != value))
+				{
+					if (this._UserInfo.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OndiggersChanging(value);
+					this.SendPropertyChanging();
+					this._diggers = value;
+					this.SendPropertyChanged("diggers");
+					this.OndiggersChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_articleID", DbType="Int NOT NULL")]
+		public int articleID
+		{
+			get
+			{
+				return this._articleID;
+			}
+			set
+			{
+				if ((this._articleID != value))
+				{
+					if (this._Article.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnarticleIDChanging(value);
+					this.SendPropertyChanging();
+					this._articleID = value;
+					this.SendPropertyChanged("articleID");
+					this.OnarticleIDChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_voteChoice", DbType="Int NOT NULL")]
+		public int voteChoice
+		{
+			get
+			{
+				return this._voteChoice;
+			}
+			set
+			{
+				if ((this._voteChoice != value))
+				{
+					this.OnvoteChoiceChanging(value);
+					this.SendPropertyChanging();
+					this._voteChoice = value;
+					this.SendPropertyChanged("voteChoice");
+					this.OnvoteChoiceChanged();
+				}
+			}
+		}
+		
+		[Association(Name="Article_VoteHistory", Storage="_Article", ThisKey="articleID", IsForeignKey=true)]
+		public Article Article
+		{
+			get
+			{
+				return this._Article.Entity;
+			}
+			set
+			{
+				Article previousValue = this._Article.Entity;
+				if (((previousValue != value) 
+							|| (this._Article.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Article.Entity = null;
+						previousValue.VoteHistories.Remove(this);
+					}
+					this._Article.Entity = value;
+					if ((value != null))
+					{
+						value.VoteHistories.Add(this);
+						this._articleID = value.id;
+					}
+					else
+					{
+						this._articleID = default(int);
+					}
+					this.SendPropertyChanged("Article");
+				}
+			}
+		}
+		
+		[Association(Name="UserInfo_VoteHistory", Storage="_UserInfo", ThisKey="diggers", IsForeignKey=true)]
+		public UserInfo UserInfo
+		{
+			get
+			{
+				return this._UserInfo.Entity;
+			}
+			set
+			{
+				UserInfo previousValue = this._UserInfo.Entity;
+				if (((previousValue != value) 
+							|| (this._UserInfo.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._UserInfo.Entity = null;
+						previousValue.VoteHistories.Remove(this);
+					}
+					this._UserInfo.Entity = value;
+					if ((value != null))
+					{
+						value.VoteHistories.Add(this);
+						this._diggers = value.Diggers;
+					}
+					else
+					{
+						this._diggers = default(string);
 					}
 					this.SendPropertyChanged("UserInfo");
 				}

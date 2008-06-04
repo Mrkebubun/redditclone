@@ -44,11 +44,20 @@ namespace RedditClone.Controllers
         public void Delete()
         {
             ItemFactory factory = new ItemFactory();
-            factory.DeleteArticle(Request.Form["URL"],
-                int.Parse(Request.Form["UpVotes"]), 
-                int.Parse(Request.Form["DownVotes"]));
+            factory.DeleteArticle(int.Parse(Request.Form["id"]));
             RedirectToAction("Main", "Item");
         }
+
+
+        [NonAction]
+        public Article GetArticleID(int id)
+        {
+            return new ItemFactory().GetArticleID(id);
+        }
+        //public void CastUpVote()
+        //{
+        //    new ItemFactory().CastUpVote(int.Parse(Request.Form["id"]));
+        //}
 
         
     }

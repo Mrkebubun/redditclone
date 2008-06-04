@@ -2,23 +2,43 @@
 <ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="DiggClone">
   <DataContextMoniker Name="/RedditCloneDataContext" />
   <nestedChildShapes>
-    <classShape Id="710ccea2-320e-48ed-8129-bd8a2824342e" absoluteBounds="0.5, 3.125, 2, 1.0961531575520833">
+    <classShape Id="710ccea2-320e-48ed-8129-bd8a2824342e" absoluteBounds="0.5, 3, 2, 1.0961531575520833">
       <DataClassMoniker Name="/RedditCloneDataContext/UserInfo" />
       <nestedChildShapes>
-        <elementListCompartment Id="a241218e-5aaf-4c11-bf6a-640287ca01a3" absoluteBounds="0.51500000000000012, 3.585, 1.9700000000000002, 0.53615315755208326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="a241218e-5aaf-4c11-bf6a-640287ca01a3" absoluteBounds="0.51500000000000012, 3.46, 1.9700000000000002, 0.53615315755208326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="4a183fa0-21c8-4912-ae2b-415b16c186ce" absoluteBounds="1, 0.625, 2, 2.0822371419270831">
+    <classShape Id="fb6f098c-a6ac-4933-8a59-ade47c9b4df3" absoluteBounds="0.625, 0.5, 2, 1.75354248046875">
       <DataClassMoniker Name="/RedditCloneDataContext/Article" />
       <nestedChildShapes>
-        <elementListCompartment Id="872b9c04-a524-4fdd-9b9c-7ee8ab93b7ac" absoluteBounds="1.0150000000000001, 1.085, 1.9700000000000002, 1.5222371419270833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="39f1051c-3912-400b-b047-91973fe38949" absoluteBounds="0.64000000000000012, 0.96, 1.9700000000000002, 1.19354248046875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(1.75 : 3.125); (1.75 : 2.70723714192708)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(1.5625 : 3); (1.5625 : 2.25354248046875)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/RedditCloneDataContext/UserInfo/UserInfo_Article" />
       <nodes>
         <classShapeMoniker Id="710ccea2-320e-48ed-8129-bd8a2824342e" />
-        <classShapeMoniker Id="4a183fa0-21c8-4912-ae2b-415b16c186ce" />
+        <classShapeMoniker Id="fb6f098c-a6ac-4933-8a59-ade47c9b4df3" />
+      </nodes>
+    </associationConnector>
+    <classShape Id="b157cbda-9a5a-4a54-bdd3-fc5c576b9cea" absoluteBounds="0.5, 4.75, 2, 1.4248478190104168">
+      <DataClassMoniker Name="/RedditCloneDataContext/VoteHistory" />
+      <nestedChildShapes>
+        <elementListCompartment Id="0e1e25cd-0894-4717-864b-33b5761060ee" absoluteBounds="0.51499999999999968, 5.21, 1.9700000000000002, 0.86484781901041674" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(2.625 : 2.25354248046875); (3 : 2.62854248046875); (3 : 4.375); (2.875 : 4.375); (2.5 : 4.75)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/RedditCloneDataContext/Article/Article_VoteHistory" />
+      <nodes>
+        <classShapeMoniker Id="fb6f098c-a6ac-4933-8a59-ade47c9b4df3" />
+        <classShapeMoniker Id="b157cbda-9a5a-4a54-bdd3-fc5c576b9cea" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(1.4687475 : 4.09615315755208); (1.4687475 : 4.75)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/RedditCloneDataContext/UserInfo/UserInfo_VoteHistory" />
+      <nodes>
+        <classShapeMoniker Id="710ccea2-320e-48ed-8129-bd8a2824342e" />
+        <classShapeMoniker Id="b157cbda-9a5a-4a54-bdd3-fc5c576b9cea" />
       </nodes>
     </associationConnector>
   </nestedChildShapes>

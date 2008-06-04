@@ -12,4 +12,15 @@ namespace RedditClone.Models
         //    Articles.ToList
         //}
     }
+
+    public partial class Article
+    {
+        //public int UpVotes
+        //{
+        //    get
+        //    {
+
+        //    }
+        //}
+    }
 }
