@@ -5,18 +5,18 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RedditClone.Controllers;
 using RedditClone.Models;
 using Rhino.Mocks;
 using System.Collections.Specialized;
+using MbUnit.Framework;
 
 namespace RedditCloneTests.Controllers
 {
     /// <summary>
     /// Summary description for ItemControllerTest
     /// </summary>
-    [TestClass]
+    [TestFixture]
     public class ItemControllerTest
     {
         public ItemControllerTest()
@@ -26,23 +26,23 @@ namespace RedditCloneTests.Controllers
             //
         }
         private MockRepository mocks;
-        private TestContext testContextInstance;
+        //private TestContext testContextInstance;
 
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+        ///// <summary>
+        /////Gets or sets the test context which provides
+        /////information about and functionality for the current test run.
+        /////</summary>
+        //public TestContext TestContext
+        //{
+        //    get
+        //    {
+        //        return testContextInstance;
+        //    }
+        //    set
+        //    {
+        //        testContextInstance = value;
+        //    }
+        //}
 
         #region Additional test attributes
         //
@@ -66,7 +66,7 @@ namespace RedditCloneTests.Controllers
         //
         #endregion
 
-        [TestInitialize]
+        [SetUp]
         public void Init()
         {
 
@@ -74,22 +74,22 @@ namespace RedditCloneTests.Controllers
 
         }
 
-        [TestMethod]
+        [Test]
         public void DisplayItemTest()
         {
             SubItemController controller = new SubItemController();
             controller.Main();
             Assert.AreEqual("Main", controller.SelectedViewName);
-            Assert.IsInstanceOfType(controller.SelectedViewData, typeof(List<Article>));
+            Assert.IsInstanceOfType(typeof(List<Article>), controller.SelectedViewData);
 
         }
 
-        [TestMethod]
+        [Test]
         public void WhatNewTest()
         {
             SubItemController controller = new SubItemController();
             controller.WhatNew();
-            Assert.IsInstanceOfType(controller.SelectedViewData, typeof(List<Article>));
+            Assert.IsInstanceOfType(typeof(List<Article>),controller.SelectedViewData);
             List<Article> viewData = (List<Article>)controller.SelectedViewData;
             Assert.IsTrue(viewData.Count>=2);
             for (int i = 0; i < viewData.Count-1; i++)
@@ -98,7 +98,7 @@ namespace RedditCloneTests.Controllers
             }
         }
 
-        [TestMethod]
+        [Test, RollBack]
         public void SubmitTest()
         {
             SubItemController controller = new SubItemController();

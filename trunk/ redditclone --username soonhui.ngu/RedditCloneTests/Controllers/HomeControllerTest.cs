@@ -2,17 +2,17 @@
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MbUnit.Framework;
 
 namespace RedditCloneTests.Controllers
 {
     /// <summary>
     /// Summary description for HomeControllerTest
     /// </summary>
-    [TestClass]
+    [TestFixture]
     public class HomeControllerTest
     {
-        [TestMethod]
+        [Test]
         public void About()
         {
             //
@@ -20,7 +20,7 @@ namespace RedditCloneTests.Controllers
             //
         }
 
-        [TestMethod]
+        [Test]
         public void Index()
         {
             //
