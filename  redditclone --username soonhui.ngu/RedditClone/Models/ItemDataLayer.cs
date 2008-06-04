@@ -42,6 +42,20 @@ namespace RedditClone.Models
             dc.SubmitChanges();
             
         }
+
+        public void DeleteArticle(string url, int upVotes, int downVotes)
+        {
+            RedditCloneDataContext dc = new RedditCloneDataContext();
+            var arr = from p in dc.Articles
+                      where p.URL == url &&
+                      p.UpVotes == upVotes &&
+                      p.DownVotes == downVotes
+                      select p;
+
+            dc.Articles.DeleteAllOnSubmit(arr);
+            dc.SubmitChanges();
+
+        }
         public List<Article> SearchURL(string url)
         {
             RedditCloneDataContext dc = new RedditCloneDataContext();
