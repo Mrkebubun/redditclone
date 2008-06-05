@@ -49,6 +49,13 @@ namespace RedditClone.Models
                       select p;
 
             dc.Articles.DeleteAllOnSubmit(arr);
+
+            var vHis = from vH in dc.VoteHistories
+                       where vH.articleID == id
+                       select vH;
+
+            dc.VoteHistories.DeleteAllOnSubmit(vHis);
+            
             dc.SubmitChanges();
 
         }
@@ -78,6 +85,15 @@ namespace RedditClone.Models
             return articles.ToList<Article>();
         }
 
+        public List<VoteHistory> GetVoteHistory(int articleID)
+        {
+            RedditCloneDataContext dc = new RedditCloneDataContext();
+            var vHistory = from vHis in dc.VoteHistories
+                           where vHis.articleID == articleID
+                           select vHis;
+
+            return vHistory.ToList<VoteHistory>();
+        }
         public VoteHistory GetLatestVoteHistory(string url, string voter)
         {
             RedditCloneDataContext dc = new RedditCloneDataContext();
@@ -96,9 +112,7 @@ namespace RedditClone.Models
 
             return vHistory.ToList<VoteHistory>()[0];
 
-       //     var hHistory = from vH in dc.
 
-       //     var vHistory = from vH in dc.
         }
     }
 }
