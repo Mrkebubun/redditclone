@@ -15,12 +15,28 @@ namespace RedditClone.Models
 
     public partial class Article
     {
-        //public int UpVotes
-        //{
-        //    get
-        //    {
+        public int UpVotes
+        {
+            get
+            {
+                var upVotes = from up in VoteHistories
+                              where up.articleID== id &&
+                                up.voteChoice == (int)VoteChoiceEnum.UpVote
+                              select up;
+                return upVotes.ToList<VoteHistory>().Count;
+            }
+        }
 
-        //    }
-        //}
+        public int DownVotes
+        {
+            get
+            {
+                var upVotes = from up in VoteHistories
+                              where up.articleID == id &&
+                                up.voteChoice == (int)VoteChoiceEnum.DownVote
+                              select up;
+                return upVotes.ToList<VoteHistory>().Count;
+            }
+        }
     }
 }

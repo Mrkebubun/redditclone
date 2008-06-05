@@ -106,6 +106,8 @@ namespace RedditCloneTests.Controllers
             NameValueCollection nvm = new NameValueCollection();
             nvm.Add("id", id.ToString());
             SubItemController controller = CreateSubItemController(nvm);
+       //     Article arr = controller.
+
             throw new NotImplementedException();
             //controller.CastUpVote();
 
@@ -113,9 +115,15 @@ namespace RedditCloneTests.Controllers
         }
 
         [RowTest, RollBack]
-        [Row(1)]
+        [Row("http://itscommonsensestupid.blogspot.com/2008/05/zephyr-test-management-tool.html", "Soon Hui")]
         public void GetLatestVoteHistory(string url,  string voters)
         {
+            ItemFactory factory = new ItemFactory();
+            VoteHistory vH = factory.GetLatestVoteHistory(url, voters);
+            Assert.AreEqual(voters, vH.diggers);
+            Assert.AreEqual(1, vH.voteChoice);
+            
+
 
         }
         [RowTest, RollBack]
@@ -134,6 +142,9 @@ namespace RedditCloneTests.Controllers
 
             List<Article> articles = new ItemFactory().SearchURL(url);
             Assert.AreEqual(0, articles.Count, "The article should have been deleted");
+
+            List<VoteHistory> vHis = new ItemFactory().GetVoteHistory(articleID);
+            Assert.AreEqual(0, vHis.Count);
 
         }
 
@@ -180,6 +191,29 @@ namespace RedditCloneTests.Controllers
             Assert.AreEqual(owner, articles[0].Diggers);
             Assert.AreEqual(title, articles[0].Title);
 
+        }
+
+        [RowTest, RollBack]
+        [Row(1)]
+        public void UpVoteCalculation(int articleID)
+        {
+            Article arr = new ItemFactory().GetArticleID(articleID);
+            Assert.AreEqual(2, arr.UpVotes);
+        }
+
+        [RowTest, RollBack]
+        [Row(30)]
+        public void DownVoteCalculation(int articleID)
+        {
+            Article arr = new ItemFactory().GetArticleID(articleID);
+            Assert.AreEqual(3, arr.DownVotes);
+        }
+        [RowTest, RollBack]
+        [Row(30)]
+        public void CountArticleIDInVoteHistory(int articleID)
+        {
+            List<VoteHistory> vHis = new ItemFactory().GetVoteHistory(articleID);
+            Assert.AreEqual(4, vHis.Count);
         }
 
 
