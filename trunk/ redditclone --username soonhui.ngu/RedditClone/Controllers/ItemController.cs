@@ -54,10 +54,11 @@ namespace RedditClone.Controllers
         {
             return new ItemFactory().GetArticleID(id);
         }
-        //public void CastUpVote()
-        //{
-        //    new ItemFactory().CastUpVote(int.Parse(Request.Form["id"]));
-        //}
+        public void CastUpVote()
+        {
+            new ItemFactory().CastUpVote(int.Parse(Request.Form["articleID"]), Request.Form["diggers"]);
+            RedirectToAction("Main", "Item");
+        }
 
         
     }

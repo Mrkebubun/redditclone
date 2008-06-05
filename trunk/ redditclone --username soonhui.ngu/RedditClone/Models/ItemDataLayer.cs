@@ -60,13 +60,19 @@ namespace RedditClone.Models
 
         }
 
-        //public void CastUpVote(int id)
-        //{
-        //    RedditCloneDataContext dc = new RedditCloneDataContext();
-        //    Article article = dc.Articles.Single<Article>(a => a.id == id);
-        //    article.UpVotes++;
-        //    dc.SubmitChanges();
-        //}
+        public void CastUpVote(int id, string digger)
+        {
+            RedditCloneDataContext dc = new RedditCloneDataContext();
+            VoteHistory vh = new VoteHistory()
+            {
+                articleID = id,
+                diggers = digger,
+                voteChoice = (int)VoteChoiceEnum.UpVote
+
+            };
+            dc.VoteHistories.InsertOnSubmit(vh);
+            dc.SubmitChanges();
+        }
 
 
         public Article GetArticleID(int id)

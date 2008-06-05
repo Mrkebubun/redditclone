@@ -98,20 +98,16 @@ namespace RedditCloneTests.Controllers
             }
         }
         [RowTest, RollBack]
-        [Row(1)]
-        public void CastUpVoteTest(int id)
+        [Row(1, "Joseph")]
+        public void CastUpVoteTest(int id, string digger)
         {
-   //         Assert.AreEqual(1, new ItemController().GetArticleID(id).UpVotes);
-
             NameValueCollection nvm = new NameValueCollection();
-            nvm.Add("id", id.ToString());
+            nvm.Add("articleID", id.ToString());
+            nvm.Add("diggers", digger);
             SubItemController controller = CreateSubItemController(nvm);
-       //     Article arr = controller.
+            controller.CastUpVote();
 
-            throw new NotImplementedException();
-            //controller.CastUpVote();
-
-            //Assert.AreEqual(2, controller.GetArticleID(id).UpVotes);
+            Assert.AreEqual(3, controller.GetArticleID(id).UpVotes);
         }
 
         [RowTest, RollBack]
