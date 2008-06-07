@@ -38,6 +38,24 @@ namespace RedditClone.Models
             RedditCloneDataContext dc = new RedditCloneDataContext();
             dc.Articles.InsertOnSubmit(arr);
             dc.SubmitChanges();
+
+            var article = (from arr1 in dc.Articles
+                          where arr1.URL== url
+                          orderby arr1.submittedDate descending
+                          select arr1);
+            Article arrNew = article.ToList()[0];
+
+            VoteHistory vHis = new VoteHistory()
+            {
+                articleID = arrNew.id,
+                diggers = owner,
+                voteChoice=(int)VoteChoiceEnum.UpVote
+
+            };
+ //           RedditCloneDataContext dc1= new RedditCloneDataContext();
+            dc.VoteHistories.InsertOnSubmit(vHis);
+            dc.SubmitChanges();
+
             
         }
 
@@ -62,24 +80,44 @@ namespace RedditClone.Models
 
         public void CastUpVote(int id, string digger)
         {
-            RedditCloneDataContext dc = new RedditCloneDataContext();
-            VoteHistory vh = new VoteHistory()
-            {
-                articleID = id,
-                diggers = digger,
-                voteChoice = (int)VoteChoiceEnum.UpVote
-
-            };
-            dc.VoteHistories.InsertOnSubmit(vh);
-            dc.SubmitChanges();
+            CastVote(id, digger, (int)VoteChoiceEnum.UpVote);
         }
 
+        public void CastDownVote(int id, string digger)
+        {
+            int voteChoice1 = (int)VoteChoiceEnum.DownVote;
+            CastVote(id, digger, voteChoice1);
+
+        }
+
+        private void CastVote(int id, string digger, int voteChoice1)
+        {
+            RedditCloneDataContext dc = new RedditCloneDataContext();
+            VoteHistory vHis = dc.VoteHistories.SingleOrDefault(prop => (prop.diggers == digger && prop.articleID == id));
+            if (vHis == null)
+            {
+                VoteHistory vh = new VoteHistory()
+                    {
+                        articleID = id,
+                        diggers = digger,
+                        voteChoice = voteChoice1
+
+                    };
+                dc.VoteHistories.InsertOnSubmit(vh);
+            }
+            else
+            {
+                vHis.voteChoice = voteChoice1;
+            }
+            dc.SubmitChanges();
+        }
 
         public Article GetArticleID(int id)
         {
             RedditCloneDataContext dc = new RedditCloneDataContext();
             return dc.Articles.Single<Article>(a => a.id == id);
         }
+     //   public GetUpVote(string )
         public List<Article> SearchURL(string url)
         {
             RedditCloneDataContext dc = new RedditCloneDataContext();
