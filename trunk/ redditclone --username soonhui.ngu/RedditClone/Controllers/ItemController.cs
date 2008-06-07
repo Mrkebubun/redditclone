@@ -43,6 +43,7 @@ namespace RedditClone.Controllers
 
         public void Delete()
         {
+         
             ItemFactory factory = new ItemFactory();
             factory.DeleteArticle(int.Parse(Request.Form["id"]));
             RedirectToAction("Main", "Item");
@@ -54,10 +55,17 @@ namespace RedditClone.Controllers
         {
             return new ItemFactory().GetArticleID(id);
         }
-        public void CastUpVote()
+        public void CastUpVote(int articleID, string digger)
         {
-            new ItemFactory().CastUpVote(int.Parse(Request.Form["articleID"]), Request.Form["diggers"]);
+
+            new ItemFactory().CastUpVote(articleID, digger);
             RedirectToAction("Main", "Item");
+        }
+
+        public void CastDownVote(int articleID, string digger)
+        {
+            new ItemFactory().CastDownVote(articleID, digger);
+            RedirectToAction("Main", "Item"); 
         }
 
         

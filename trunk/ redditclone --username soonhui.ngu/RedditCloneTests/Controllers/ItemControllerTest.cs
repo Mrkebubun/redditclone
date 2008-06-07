@@ -94,8 +94,42 @@ namespace RedditCloneTests.Controllers
             Assert.IsTrue(viewData.Count>=2);
             for (int i = 0; i < viewData.Count-1; i++)
             {
-                Assert.IsTrue(viewData[i].submittedDate>viewData[i+1].submittedDate);
+                Assert.GreaterThan(viewData[i].submittedDate, viewData[i + 1].submittedDate);
+                //Assert.IsTrue(viewData[i].submittedDate>viewData[i+1].submittedDate);
             }
+        }
+
+        [RowTest, RollBack]
+        [Row(1, "Joseph")]
+        public void DoubleCastTest(int id, string voter)
+        {
+            NameValueCollection nvm = new NameValueCollection();
+            nvm.Add("articleID", id.ToString());
+            nvm.Add("diggers", voter);
+            SubItemController controller = CreateSubItemController(nvm);
+            controller.CastUpVote(id, voter);
+
+            int upVoteCount = controller.GetArticleID(id).UpVotes;
+            controller.CastUpVote(id, voter);
+            Assert.AreEqual(upVoteCount, controller.GetArticleID(id).UpVotes);
+        }
+
+        [RowTest, RollBack]
+        [Row(1, "Joseph")]
+        public void OppositeCastTest(int id, string voter)
+        {
+
+            NameValueCollection nvm = new NameValueCollection();
+            nvm.Add("articleID", id.ToString());
+            nvm.Add("diggers", voter);
+            SubItemController controller = CreateSubItemController(nvm);
+            int upVoteCount = controller.GetArticleID(id).UpVotes;
+            int downVoteCount = controller.GetArticleID(id).DownVotes;
+
+            controller.CastUpVote(id, voter);
+            controller.CastDownVote(id, voter);
+            Assert.AreEqual(upVoteCount, controller.GetArticleID(id).UpVotes);
+            Assert.AreEqual(downVoteCount + 1, controller.GetArticleID(id).DownVotes);
         }
         [RowTest, RollBack]
         [Row(1, "Joseph")]
@@ -105,11 +139,23 @@ namespace RedditCloneTests.Controllers
             nvm.Add("articleID", id.ToString());
             nvm.Add("diggers", digger);
             SubItemController controller = CreateSubItemController(nvm);
-            controller.CastUpVote();
+            controller.CastUpVote(id, digger);
 
             Assert.AreEqual(3, controller.GetArticleID(id).UpVotes);
         }
 
+        [RowTest, RollBack]
+        [Row(1, "Joseph")]
+        public void CastDownVoteTest(int id, string digger)
+        {
+            NameValueCollection nvm = new NameValueCollection();
+            nvm.Add("articleID", id.ToString());
+            nvm.Add("diggers", digger);
+            SubItemController controller = CreateSubItemController(nvm);
+            controller.CastDownVote(id, digger);
+
+            Assert.AreEqual(1, controller.GetArticleID(id).DownVotes);
+        }
         [RowTest, RollBack]
         [Row("http://itscommonsensestupid.blogspot.com/2008/05/zephyr-test-management-tool.html", "Soon Hui")]
         public void GetLatestVoteHistory(string url,  string voters)
@@ -171,7 +217,6 @@ namespace RedditCloneTests.Controllers
         [Row("Soon Hui", "http://www.live.com", "live")]
         public void SubmitTest(string owner, string url, string title)
         {
- //           SubItemController controller = new SubItemController();
             NameValueCollection nvm = new NameValueCollection();
             nvm.Add("Title", title);
             nvm.Add("URL", url);
@@ -186,6 +231,8 @@ namespace RedditCloneTests.Controllers
             Assert.AreEqual(1, articles.Count);
             Assert.AreEqual(owner, articles[0].Diggers);
             Assert.AreEqual(title, articles[0].Title);
+            Assert.AreEqual(1, articles[0].UpVotes);
+            Assert.AreEqual(0, articles[0].DownVotes);
 
         }
 
