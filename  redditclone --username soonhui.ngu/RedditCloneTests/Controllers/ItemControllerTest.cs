@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using System.Collections;
 using RedditClone.Controllers;
 using RedditClone.Models;
 using Rhino.Mocks;
@@ -167,6 +168,26 @@ namespace RedditCloneTests.Controllers
             
 
 
+        }
+
+        [Test]
+        public void TestStupid()
+        {
+            ArrayList a = new ArrayList();
+
+            ArrayList b = new ArrayList();
+
+            a.Add(1);
+
+            b.Add(1);
+
+            a.Add(2);
+
+            b.Add(2.0);
+            Assert.AreEqual(a[0], b[0]);
+            Assert.AreNotEqual(a[1], b[1]);
+            Assert.IsFalse((a[0] == b[0]));
+            Assert.IsFalse((a[1] == b[1]));
         }
         [RowTest, RollBack]
         [Row("http://www.dotnetkicks.com/", 30)]
