@@ -214,22 +214,9 @@ namespace RedditCloneTests.Controllers
         private SubItemController CreateSubItemController(NameValueCollection nvm)
         {
             SubItemController controller = new SubItemController();
-            HttpContextBase httpContext;
-            HttpRequestBase httpRequest;
-            using (mocks.Record())
-            {
-                httpContext = mocks.DynamicMock<HttpContextBase>();
-                httpRequest = mocks.DynamicMock<HttpRequestBase>();
-                HttpResponseBase httpResponse = mocks.DynamicMock<HttpResponseBase>();
-
-                SetupResult.For(httpRequest.Form).Return(nvm);
-                SetupResult.For(httpContext.Request).Return(httpRequest);
-                SetupResult.For(httpContext.Response).Return(httpResponse);
-
-            }
-            ControllerContext c = new ControllerContext(httpContext, new RouteData(), controller);
-            controller.ControllerContext = c;
+            ControllerTestHelper.CreateMockController(controller, nvm, mocks);
             return controller;
+
         }
 
         [RowTest, RollBack]
