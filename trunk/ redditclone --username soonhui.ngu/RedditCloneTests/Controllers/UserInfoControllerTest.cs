@@ -59,7 +59,7 @@ namespace RedditCloneTests.Controllers
         #endregion
 
         [RowTest, RollBack]
-        [Row("Dennis", "Dennis")]
+        [Row("Dennis2", "Dennis2")]
         public void AddUserTest(string username, string password)
         {
             NameValueCollection nvm = new NameValueCollection();
