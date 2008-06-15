@@ -55,6 +55,8 @@ namespace RedditClone.Controllers
         {
             return new ItemFactory().GetArticleID(id);
         }
+
+        [RequiresAuthentication]
         public void CastUpVote(int articleID, string digger)
         {
 
