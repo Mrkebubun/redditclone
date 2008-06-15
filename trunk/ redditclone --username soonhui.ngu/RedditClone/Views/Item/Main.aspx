@@ -2,8 +2,11 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContentPlaceHolder" runat="server">
 
 <form action="/Item/SubmitView" method="post">
-<input type="submit" value="Add New" />
+<input type="submit" value="Add New Article" />
 </form>
+
+<%=Html.ActionLink<RedditClone.Controllers.UserInfoController>(s=>s.Login(), "Login") %>
+
 
 <ol>
     <% foreach (var item in ViewData)  {  %>

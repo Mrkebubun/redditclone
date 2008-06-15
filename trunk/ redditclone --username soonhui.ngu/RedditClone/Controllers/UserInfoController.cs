@@ -19,5 +19,10 @@ namespace RedditClone.Controllers
             new UserDataLayer().AddUser(Request.Form["username"], Request.Form["password"]);
             RedirectToAction("Main", "Item");
         }
+
+        public void Login()
+        {
+            RenderView("Login");
+        }
     }
 }
