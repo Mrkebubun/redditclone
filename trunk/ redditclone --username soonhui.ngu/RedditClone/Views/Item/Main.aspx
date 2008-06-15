@@ -5,7 +5,7 @@
 <input type="submit" value="Add New Article" />
 </form>
 
-<%=Html.ActionLink<RedditClone.Controllers.UserInfoController>(s=>s.Login(), "Login") %>
+<%=Html.ActionLink<RedditClone.Controllers.UserInfoController>(s=>s.ShouldLogin(), "Login") %>
 
 
 <ol>
