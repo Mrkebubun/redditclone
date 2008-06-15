@@ -50,12 +50,22 @@ namespace RedditClone.Controllers
 
         public void ShouldLogin()
         {
+            
             RenderView("Login");
         }
 
-        public void Login(string username, string password, bool rememberMe)
+        public void Login(string username, 
+            string password, bool rememberMe, string returnUrl)
         {
-            throw new NotImplementedException();
+            if(Membership.ValidateUser(username, password))
+            {
+                FormsAuthentication.SetAuthCookie(username, rememberMe);
+                Response.Redirect(returnUrl);
+            }
+            else
+            {
+                ViewData["ErrorMessage"] = "Incorrect user name or password";
+            }
         }
     }
 }
