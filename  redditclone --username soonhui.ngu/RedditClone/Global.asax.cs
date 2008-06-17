@@ -18,6 +18,14 @@ namespace RedditClone
             // Note: Change the URL to "{controller}.mvc/{action}/{id}" to enable
             //       automatic support on IIS6 and IIS7 classic mode
 
+            routes.Add(new Route("Login", new MvcRouteHandler())
+            {
+                Defaults = new RouteValueDictionary(new { controller = "UserInfo", action = "LoginPage" }),
+            });
+            routes.Add(new Route("Register", new MvcRouteHandler())
+            {
+                Defaults = new RouteValueDictionary(new { controller = "UserInfo", action = "RegisterPage" }),
+            });
             routes.Add(new Route("Main", new MvcRouteHandler())
             {
                 Defaults = new RouteValueDictionary(new { controller = "Item", action = "Main" }),
