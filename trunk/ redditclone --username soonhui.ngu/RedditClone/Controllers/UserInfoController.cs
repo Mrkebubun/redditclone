@@ -48,23 +48,49 @@ namespace RedditClone.Controllers
             RedirectToAction("Main", "Item");
         }
 
-        public void ShouldLogin()
+        public void LoginPage()
         {
             
             RenderView("Login");
         }
 
+        public void RegisterPage()
+        {
+            RenderView("Register");
+        }
+
         public void Login(string username, 
-            string password, bool rememberMe, string returnUrl)
+            string password, string rememberMe, string returnUrl)
         {
             if(Membership.ValidateUser(username, password))
             {
-                FormsAuthentication.SetAuthCookie(username, rememberMe);
+                FormsAuthentication.SetAuthCookie(username, rememberMe=="checked");
                 Response.Redirect(returnUrl);
             }
             else
             {
                 ViewData["ErrorMessage"] = "Incorrect user name or password";
+            }
+        }
+
+        public void CreateUser(string userName, string emailAddress, 
+            string password, string returnUrl)
+        {
+            
+            try
+            {
+                if (Membership.CreateUser(userName, password) == null)
+                {
+                    throw new MembershipCreateUserException("");
+
+                }
+                FormsAuthentication.SetAuthCookie(userName, true);
+                Response.Redirect(returnUrl);
+            }
+            catch(MembershipCreateUserException mcue)
+            {
+                ViewData["ErrorMessage"] = mcue.Message;
+                RenderView("Login");
             }
         }
     }

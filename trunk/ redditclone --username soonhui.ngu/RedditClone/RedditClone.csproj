@@ -142,6 +142,13 @@
     <Compile Include="Views\UserInfo\Login.aspx.designer.cs">
       <DependentUpon>Login.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Views\UserInfo\Register.aspx.cs">
+      <DependentUpon>Register.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\UserInfo\Register.aspx.designer.cs">
+      <DependentUpon>Register.aspx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\RedditClone.mdf">
@@ -156,6 +163,7 @@
     <Content Include="Views\Item\Submit.aspx" />
     <Content Include="Views\Item\WhatNew.aspx" />
     <Content Include="Views\UserInfo\Login.aspx" />
+    <Content Include="Views\UserInfo\Register.aspx" />
     <Content Include="Web.config" />
     <Content Include="Content\Site.css" />
     <Content Include="Views\Home\About.aspx" />
