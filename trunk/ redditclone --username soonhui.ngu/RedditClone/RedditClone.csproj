@@ -151,6 +151,11 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\ASPNETDB.MDF">
+    </Content>
+    <Content Include="App_Data\ASPNETDB_log.ldf">
+      <DependentUpon>ASPNETDB.MDF</DependentUpon>
+    </Content>
     <Content Include="App_Data\RedditClone.mdf">
     </Content>
     <Content Include="App_Data\RedditClone_log.LDF">
