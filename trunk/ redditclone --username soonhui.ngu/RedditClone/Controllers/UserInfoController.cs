@@ -44,7 +44,8 @@ namespace RedditClone.Controllers
 
         public void AddUser()
         {
-            new UserDataLayer().AddUser(Request.Form["username"], Request.Form["password"]);
+            Membership.CreateUser(Request.Form["username"], Request.Form["password"]);
+     //       new UserDataLayer().AddUser(Request.Form["username"], Request.Form["password"]);
             RedirectToAction("Main", "Item");
         }
 

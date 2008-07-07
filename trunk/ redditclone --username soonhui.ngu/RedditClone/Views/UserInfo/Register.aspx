@@ -10,9 +10,8 @@
    <p><% =ViewData["ErrorMessage"] %></p>
  <% } %>
 
-  
 
-  <% using(Html.Form("Security","CreateUser" )){ %>
+  <% using(Html.Form("UserInfo","CreateUser" )){ %>
 
     <fieldset>
 
