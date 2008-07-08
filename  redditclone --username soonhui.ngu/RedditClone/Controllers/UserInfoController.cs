@@ -9,32 +9,8 @@ using System.Web.Security;
 namespace RedditClone.Controllers
 {
 
-    /// <summary>
-    /// Checks the User's authentication using FormsAuthentication
-    /// and redirects to the Login Url for the application on fail
-    /// </summary>
-    public class RequiresAuthenticationAttribute : ActionFilterAttribute
-    {
 
-        public override void OnActionExecuting(FilterExecutingContext filterContext)
-        {
 
-            //redirect if not authenticated
-            if (!filterContext.HttpContext.User.Identity.IsAuthenticated)
-            {
-
-                //use the current url for the redirect
-                string redirectOnSuccess = filterContext.HttpContext.Request.Url.AbsolutePath;
-
-                //send them off to the login page
-                string redirectUrl = string.Format("?ReturnUrl={0}", redirectOnSuccess);
-                string loginUrl = FormsAuthentication.LoginUrl + redirectUrl;
-                filterContext.HttpContext.Response.Redirect(loginUrl, true);
-
-            }
-
-        }
-    }
     public class UserInfoController : Controller
     {
         public void Index()
@@ -44,7 +20,13 @@ namespace RedditClone.Controllers
 
         public void AddUser()
         {
-            Membership.CreateUser(Request.Form["username"], Request.Form["password"]);
+            
+            RedditMembershipProvider p = (RedditMembershipProvider)Membership.Provider;
+            MembershipCreateStatus mcs;
+            p.CreateUser(Request.Form["username"], Request.Form["password"],
+                string.Empty, string.Empty, string.Empty, true, null, out mcs);
+
+            //Membership.CreateUser(Request.Form["username"], Request.Form["password"]);
      //       new UserDataLayer().AddUser(Request.Form["username"], Request.Form["password"]);
             RedirectToAction("Main", "Item");
         }
