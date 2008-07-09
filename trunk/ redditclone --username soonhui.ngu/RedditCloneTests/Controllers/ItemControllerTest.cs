@@ -281,17 +281,27 @@ namespace RedditCloneTests.Controllers
         /// </summary>
         public object SelectedViewData { get; private set; }
 
-        protected override void RenderView(string viewName
+
+        protected override ViewResult View(string viewName
           , string masterName, object viewData)
         {
             this.SelectedViewName = viewName;
             SelectedViewData = viewData;
+            return null;
+     //       return base.View()
      //       base.RenderView(viewName, masterName, viewData);
         }
 
-        protected override void RedirectToAction(RouteValueDictionary values)
+        protected override RedirectToRouteResult RedirectToAction(string actionName, string controllerName, RouteValueDictionary values)
         {
             RedirecedAction = values;
+            return null;
+       //     return base.RedirectToAction(actionName, controllerName, values);
         }
+        //protected override RedirectToRouteResult RedirectToAction(RouteValueDictionary values)
+        //{
+        //    RedirecedAction = values;
+        //    return null;
+        //}
     }
 }

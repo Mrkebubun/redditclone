@@ -11,7 +11,7 @@
  <% } %>
 
 
-  <% using(Html.Form("UserInfo","CreateUser" )){ %>
+  <% using(Html.Form("UserInfo","Register" )){ %>
 
     <fieldset>
 
