@@ -16,7 +16,7 @@ namespace RedditClone.Controllers
     public class RequiresAuthenticationAttribute : ActionFilterAttribute
     {
 
-        public override void OnActionExecuting(FilterExecutingContext filterContext)
+        public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
 
             //redirect if not authenticated
@@ -83,7 +83,12 @@ namespace RedditClone.Controllers
         }
         public override bool ValidateUser(string username, string password)
         {
-            throw new NotImplementedException();
+            UserInfo user = new UserDataLayer().GetUserInfo(username);
+            if (user == null)
+            {
+                return false;
+            }
+            return (user.password == password);
         }
         public override bool UnlockUser(string userName)
         {

@@ -18,63 +18,73 @@ namespace RedditClone.Controllers
             // Add action logic here
         }
 
-        public void AddUser()
+        public void Register()
         {
             
             RedditMembershipProvider p = (RedditMembershipProvider)Membership.Provider;
             MembershipCreateStatus mcs;
             p.CreateUser(Request.Form["username"], Request.Form["password"],
                 string.Empty, string.Empty, string.Empty, true, null, out mcs);
-
-            //Membership.CreateUser(Request.Form["username"], Request.Form["password"]);
-     //       new UserDataLayer().AddUser(Request.Form["username"], Request.Form["password"]);
+   
             RedirectToAction("Main", "Item");
         }
 
-        public void LoginPage()
+        public ActionResult LoginPage()
         {
             
-            RenderView("Login");
+            return View("Login");
         }
 
-        public void RegisterPage()
+        public ActionResult RegisterPage()
         {
-            RenderView("Register");
+            return View("Register");
         }
 
         public void Login(string username, 
             string password, string rememberMe, string returnUrl)
         {
-            if(Membership.ValidateUser(username, password))
+            RedditMembershipProvider p = (RedditMembershipProvider)Membership.Provider;
+            if(p.ValidateUser(username, password))
             {
-                FormsAuthentication.SetAuthCookie(username, rememberMe=="checked");
+               
+                FormsAuthentication.SetAuthCookie(username, rememberMe == "checked");
                 Response.Redirect(returnUrl);
             }
             else
             {
                 ViewData["ErrorMessage"] = "Incorrect user name or password";
+                RedirectToAction("LoginPage");
             }
+            //if(Membership.ValidateUser(username, password))
+            //{
+            //    FormsAuthentication.SetAuthCookie(username, rememberMe=="checked");
+            //    Response.Redirect(returnUrl);
+            //}
+            //else
+            //{
+            //    ViewData["ErrorMessage"] = "Incorrect user name or password";
+            //}
         }
 
-        public void CreateUser(string userName, string emailAddress, 
-            string password, string returnUrl)
-        {
+        //public void CreateUser(string userName, string emailAddress, 
+        //    string password, string returnUrl)
+        //{
             
-            try
-            {
-                if (Membership.CreateUser(userName, password) == null)
-                {
-                    throw new MembershipCreateUserException("");
+        //    try
+        //    {
+        //        if (Membership.CreateUser(userName, password) == null)
+        //        {
+        //            throw new MembershipCreateUserException("");
 
-                }
-                FormsAuthentication.SetAuthCookie(userName, true);
-                Response.Redirect(returnUrl);
-            }
-            catch(MembershipCreateUserException mcue)
-            {
-                ViewData["ErrorMessage"] = mcue.Message;
-                RenderView("Login");
-            }
-        }
+        //        }
+        //        FormsAuthentication.SetAuthCookie(userName, true);
+        //        Response.Redirect(returnUrl);
+        //    }
+        //    catch(MembershipCreateUserException mcue)
+        //    {
+        //        ViewData["ErrorMessage"] = mcue.Message;
+        //        RenderView("Login");
+        //    }
+        //}
     }
 }

@@ -10,7 +10,7 @@ namespace RedditClone.Models
         public UserInfo GetUserInfo(string userName)
         {
             RedditCloneDataContext dc = new RedditCloneDataContext();
-            return dc.UserInfos.Single<UserInfo>(uit => uit.Diggers == userName);
+            return dc.UserInfos.SingleOrDefault<UserInfo>(uit => uit.Diggers == userName);
         }
 
         public void AddUser(string userName, string password)

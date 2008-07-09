@@ -67,12 +67,51 @@ namespace RedditCloneTests.Controllers
             nvm.Add("password", password);
             
             UserInfoController controller =CreateSubUserInfoController(nvm);
-            controller.AddUser();
+            controller.Register();
 
             UserInfo information = new UserDataLayer().GetUserInfo(username);
             Assert.AreEqual(username, information.Diggers);
             Assert.AreEqual(password, information.password);
             
+        }
+
+        [RowTest, RollBack]
+        [Row("Joseph", "Joseph")]
+        public void LoginTest(string username, string password)
+        {
+            NameValueCollection nvm = new NameValueCollection();
+            nvm.Add("username", username);
+            nvm.Add("password", password);
+            SubUserInfoController controller = CreateSubUserInfoController(nvm);
+            controller.Login(username, password, "checked", "/Main");
+            Assert.AreEqual(controller.RedirecedAction["Controller"], "Item");
+            Assert.AreEqual(controller.RedirecedAction["Action"], "Main");
+        }
+
+        [RowTest, RollBack]
+        [Row("Joseph", "rtyhdthdt")]
+        public void LoginFailTest(string username, string password)
+        {
+            NameValueCollection nvm = new NameValueCollection();
+            nvm.Add("username", username);
+            nvm.Add("password", password);
+            SubUserInfoController controller = CreateSubUserInfoController(nvm);
+            controller.Login(username, password, "checked", "/Main");
+            Assert.AreEqual(controller.RedirecedAction["action"], "LoginPage");
+            Assert.AreEqual(controller.ViewData["ErrorMessage"], "Incorrect user name or password");
+        }
+
+        [RowTest, RollBack]
+        [Row("gesghhrs", "rtyhdthdt")]
+        public void LoginFailNoUserTest(string username, string password)
+        {
+            NameValueCollection nvm = new NameValueCollection();
+            nvm.Add("username", username);
+            nvm.Add("password", password);
+            SubUserInfoController controller = CreateSubUserInfoController(nvm);
+            controller.Login(username, password, "checked", "/Main");
+            Assert.AreEqual(controller.RedirecedAction["action"], "LoginPage");
+            Assert.AreEqual(controller.ViewData["ErrorMessage"], "Incorrect user name or password");
         }
 
         [RowTest, RollBack]
@@ -104,17 +143,24 @@ namespace RedditCloneTests.Controllers
         /// </summary>
         public object SelectedViewData { get; private set; }
 
-        protected override void RenderView(string viewName
+        protected override ViewResult View(string viewName
           , string masterName, object viewData)
         {
+            
             this.SelectedViewName = viewName;
             SelectedViewData = viewData;
+            return null;
             //       base.RenderView(viewName, masterName, viewData);
         }
-
-        protected override void RedirectToAction(RouteValueDictionary values)
+        protected override RedirectToRouteResult RedirectToAction(string actionName, string controllerName, RouteValueDictionary values)
         {
             RedirecedAction = values;
+            return null;
         }
+        //protected override RedirectToRouteResult RedirectToAction(RouteValueDictionary values)
+        //{
+        //    RedirecedAction = values;
+        //    return null;
+        //}
     }
 }

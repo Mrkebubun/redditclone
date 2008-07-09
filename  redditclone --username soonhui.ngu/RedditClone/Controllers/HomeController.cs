@@ -8,14 +8,14 @@ namespace RedditClone.Controllers
 {
     public class HomeController : Controller
     {
-        public void Index()
+        public ActionResult Index()
         {
-            RenderView("Index");
+            return View("Index");
         }
 
-        public void About()
+        public ActionResult About()
         {
-            RenderView("About");
+            return View("About");
         }
     }
 }

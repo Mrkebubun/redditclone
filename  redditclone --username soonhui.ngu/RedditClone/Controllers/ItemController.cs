@@ -15,22 +15,22 @@ namespace RedditClone.Controllers
             // Add action logic here
         }
 
-        public void Main()
+        public ActionResult Main()
         {
             ItemFactory factory = new ItemFactory();
 
-            RenderView("Main", factory.GetHotArticles());
+            return View("Main", factory.GetHotArticles());
         }
 
-        public void WhatNew()
+        public ActionResult WhatNew()
         {
             ItemFactory factory = new ItemFactory();
-            RenderView("WhatNew", factory.GetNewestArticles());
+            return View("WhatNew", factory.GetNewestArticles());
         }
 
-        public void SubmitView()
+        public ActionResult SubmitView()
         {
-            RenderView("Submit", ViewData);
+            return View("Submit", ViewData);
         }
 
         public void SubmitNew()
