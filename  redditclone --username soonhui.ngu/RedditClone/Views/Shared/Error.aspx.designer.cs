@@ -8,9 +8,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace RedditClone.Views.Home {
+namespace RedditClone.Views.Shared {
     
     
-    public partial class Index {
+    public partial class Error {
     }
 }

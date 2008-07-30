@@ -4,12 +4,12 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30428</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{1503E02A-6900-4422-B4C6-E21F1643E811}</ProjectGuid>
+    <ProjectGuid>{D55421D6-0998-4929-B794-8896A2585589}</ProjectGuid>
     <ProjectTypeGuids>{603c0e0b-db56-11dc-be95-000d561079b0};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MvcApplication3</RootNamespace>
-    <AssemblyName>MvcApplication3</AssemblyName>
+    <RootNamespace>RedditClone</RootNamespace>
+    <AssemblyName>RedditClone</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -30,10 +30,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Web.Mvc, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files\Microsoft ASP.NET\ASP.NET MVC CodePlex Preview 4\Assemblies\Microsoft.Web.Mvc.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Core">
@@ -72,61 +68,25 @@
     <Reference Include="System.Web.Mobile" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ItemController.cs" />
     <Compile Include="Controllers\RedditMembershipProvider.cs" />
     <Compile Include="Controllers\UserInfoController.cs" />
-    <Compile Include="Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Enums.cs" />
-    <Compile Include="Models\ItemDataLayer.cs" />
     <Compile Include="Models\RedditClone.cs">
       <DependentUpon>RedditClone.dbml</DependentUpon>
     </Compile>
     <Compile Include="Models\RedditClone.designer.cs">
-      <DependentUpon>RedditClone.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Models\RedditClone1.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>RedditClone.dbml</DependentUpon>
     </Compile>
+    <Compile Include="Models\ItemDataLayer.cs" />
     <Compile Include="Models\UserDataLayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Views\Account\ChangePassword.aspx.cs">
-      <DependentUpon>ChangePassword.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Views\Account\ChangePassword.aspx.designer.cs">
-      <DependentUpon>ChangePassword.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Account\ChangePasswordSuccess.aspx.cs">
-      <DependentUpon>ChangePasswordSuccess.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Views\Account\ChangePasswordSuccess.aspx.designer.cs">
-      <DependentUpon>ChangePasswordSuccess.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Account\Login.aspx.cs">
-      <DependentUpon>Login.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Views\Account\Login.aspx.designer.cs">
-      <DependentUpon>Login.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Account\Register.aspx.cs">
-      <DependentUpon>Register.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Views\Account\Register.aspx.designer.cs">
-      <DependentUpon>Register.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Views\Home\About.aspx.cs">
       <DependentUpon>About.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -140,6 +100,13 @@
     </Compile>
     <Compile Include="Views\Home\Index.aspx.designer.cs">
       <DependentUpon>Index.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UserControls\ArticleUserControl.ascx.cs">
+      <DependentUpon>ArticleUserControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\UserControls\ArticleUserControl.ascx.designer.cs">
+      <DependentUpon>ArticleUserControl.ascx</DependentUpon>
     </Compile>
     <Compile Include="Views\Item\Main.aspx.cs">
       <DependentUpon>Main.aspx</DependentUpon>
@@ -162,26 +129,12 @@
     <Compile Include="Views\Item\WhatNew.aspx.designer.cs">
       <DependentUpon>WhatNew.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Views\Shared\Error.aspx.cs">
-      <DependentUpon>Error.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Views\Shared\Error.aspx.designer.cs">
-      <DependentUpon>Error.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Views\Shared\Site.Master.cs">
       <DependentUpon>Site.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Views\Shared\Site.Master.designer.cs">
       <DependentUpon>Site.Master</DependentUpon>
-    </Compile>
-    <Compile Include="Views\UserControls\ArticleUserControl.ascx.cs">
-      <DependentUpon>ArticleUserControl.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Views\UserControls\ArticleUserControl.ascx.designer.cs">
-      <DependentUpon>ArticleUserControl.ascx</DependentUpon>
     </Compile>
     <Compile Include="Views\UserInfo\Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>
@@ -207,38 +160,33 @@
     </Content>
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
+    <Content Include="Views\UserControls\ArticleUserControl.ascx" />
     <Content Include="Views\Item\Main.aspx" />
     <Content Include="Views\Item\Submit.aspx" />
     <Content Include="Views\Item\WhatNew.aspx" />
-    <Content Include="Views\UserControls\ArticleUserControl.ascx" />
     <Content Include="Views\UserInfo\Login.aspx" />
     <Content Include="Views\UserInfo\Register.aspx" />
-    <Content Include="Views\Web.config" />
     <Content Include="Web.config" />
     <Content Include="Content\Site.css" />
-    <Content Include="Views\Account\ChangePassword.aspx" />
-    <Content Include="Views\Account\ChangePasswordSuccess.aspx" />
-    <Content Include="Views\Account\Login.aspx" />
-    <Content Include="Views\Account\Register.aspx" />
     <Content Include="Views\Home\About.aspx" />
     <Content Include="Views\Home\Index.aspx" />
-    <Content Include="Views\Shared\Error.aspx" />
     <Content Include="Views\Shared\Site.Master" />
+    <Content Include="Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Models\RedditClone.dbml">
       <Generator>MSLinqToSQLGenerator</Generator>
-      <LastGenOutput>RedditClone1.designer.cs</LastGenOutput>
+      <LastGenOutput>RedditClone.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Models\RedditClone.dbml.layout">
       <DependentUpon>RedditClone.dbml</DependentUpon>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" />
@@ -255,7 +203,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>2566</DevelopmentServerPort>
+          <DevelopmentServerPort>1865</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>

@@ -6,6 +6,7 @@ using System.Collections.Specialized;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using System.Configuration;
 
 using RedditClone.Controllers;
 using RedditClone.Models;
@@ -34,6 +35,8 @@ namespace RedditCloneTests.Controllers
         {
 
             mocks = new MockRepository();
+            //System.Configuration.ConfigurationManager.ConnectionStrings["RedditCloneConnectionString"].ConnectionString =
+            //    @"D:\C#\Test\RedditClone\RedditClone\App_Data\RedditClone.mdf";
 
         }
         #region Additional test attributes
