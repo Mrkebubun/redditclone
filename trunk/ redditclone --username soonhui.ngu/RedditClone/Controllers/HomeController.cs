@@ -6,11 +6,14 @@ using System.Web.Mvc;
 
 namespace RedditClone.Controllers
 {
+    [HandleError]
     public class HomeController : Controller
     {
         public ActionResult Index()
         {
-            return View("Index");
+            ViewData["Title"] = "Home Page";
+            ViewData["Message"] = "Welcome to ASP.NET MVC!";
+            return View();
         }
 
         public ActionResult About()

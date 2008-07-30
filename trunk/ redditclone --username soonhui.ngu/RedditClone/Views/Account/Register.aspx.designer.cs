@@ -8,9 +8,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace RedditClone.Views.Home {
+namespace RedditClone.Views.Account {
     
     
-    public partial class Index {
+    public partial class Register {
     }
 }

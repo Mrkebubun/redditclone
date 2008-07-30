@@ -13,32 +13,38 @@ namespace RedditClone
     {
         public static void RegisterRoutes(RouteCollection routes)
         {
-            
+            routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+
+            routes.MapRoute(
+                "Default",                                              // Route name
+                "{controller}/{action}/{id}",                           // URL with parameters
+                new { controller = "Home", action = "Index", id = "" }  // Parameter defaults
+            );
             
             // Note: Change the URL to "{controller}.mvc/{action}/{id}" to enable
             //       automatic support on IIS6 and IIS7 classic mode
 
-            routes.Add(new Route("Login", new MvcRouteHandler())
-            {
-                Defaults = new RouteValueDictionary(new { controller = "UserInfo", action = "LoginPage" }),
-            });
-            routes.Add(new Route("Register", new MvcRouteHandler())
-            {
-                Defaults = new RouteValueDictionary(new { controller = "UserInfo", action = "RegisterPage" }),
-            });
-            routes.Add(new Route("Main", new MvcRouteHandler())
-            {
-                Defaults = new RouteValueDictionary(new { controller = "Item", action = "Main" }),
-            });
-            routes.Add(new Route("{controller}/{action}/{id}", new MvcRouteHandler())
-            {
-                Defaults = new RouteValueDictionary(new { action = "Index", id = "" }),
-            });
+            //routes.Add(new Route("Login", new MvcRouteHandler())
+            //{
+            //    Defaults = new RouteValueDictionary(new { controller = "UserInfo", action = "LoginPage" }),
+            //});
+            //routes.Add(new Route("Register", new MvcRouteHandler())
+            //{
+            //    Defaults = new RouteValueDictionary(new { controller = "UserInfo", action = "RegisterPage" }),
+            //});
+            //routes.Add(new Route("Main", new MvcRouteHandler())
+            //{
+            //    Defaults = new RouteValueDictionary(new { controller = "Item", action = "Main" }),
+            //});
+            //routes.Add(new Route("{controller}/{action}/{id}", new MvcRouteHandler())
+            //{
+            //    Defaults = new RouteValueDictionary(new { action = "Index", id = "" }),
+            //});
 
-            routes.Add(new Route("Default.aspx", new MvcRouteHandler())
-            {
-                Defaults = new RouteValueDictionary(new { controller = "Home", action = "Index", id = "" }),
-            });
+            //routes.Add(new Route("Default.aspx", new MvcRouteHandler())
+            //{
+            //    Defaults = new RouteValueDictionary(new { controller = "Home", action = "Index", id = "" }),
+            //});
         }
 
         protected void Application_Start(object sender, EventArgs e)

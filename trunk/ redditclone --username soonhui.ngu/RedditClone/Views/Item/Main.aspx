@@ -9,7 +9,7 @@
 
 
 <ol>
-    <% foreach (var item in ViewData)  {  %>
+    <% foreach (var item in ViewData.Model)  {  %>
     <li>
      <%= Html.RenderUserControl("~/Views/UserControls/ArticleUserControl.ascx", item) %>  
 
