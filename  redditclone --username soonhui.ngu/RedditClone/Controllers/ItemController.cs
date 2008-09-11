@@ -33,20 +33,21 @@ namespace RedditClone.Controllers
             return View("Submit", ViewData);
         }
 
-        public void SubmitNew()
+        public ActionResult SubmitNew(string url, string title, string digger)
         {
             ItemFactory factory = new ItemFactory();
-            factory.SubmitArticle(Request.Form["URL"],
-                Request.Form["Title"], Request.Form["Diggers"]);
-            RedirectToAction("Main","Item");
+            factory.SubmitArticle(url,
+                title,digger);
+            return RedirectToAction("Main","Item");
+            //return View();
         }
 
-        public void Delete()
+        public ActionResult Delete()
         {
          
             ItemFactory factory = new ItemFactory();
             factory.DeleteArticle(int.Parse(Request.Form["id"]));
-            RedirectToAction("Main", "Item");
+            return RedirectToAction("Main", "Item");
         }
 
 
@@ -57,17 +58,17 @@ namespace RedditClone.Controllers
         }
 
         [RequiresAuthentication]
-        public void CastUpVote(int articleID, string digger)
+        public ActionResult CastUpVote(int articleID, string digger)
         {
 
             new ItemFactory().CastUpVote(articleID, digger);
-            RedirectToAction("Main", "Item");
+            return RedirectToAction("Main", "Item");
         }
 
-        public void CastDownVote(int articleID, string digger)
+        public ActionResult CastDownVote(int articleID, string digger)
         {
             new ItemFactory().CastDownVote(articleID, digger);
-            RedirectToAction("Main", "Item"); 
+            return RedirectToAction("Main", "Item"); 
         }
 
         

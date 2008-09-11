@@ -10,6 +10,8 @@ using System.Configuration;
 
 using RedditClone.Controllers;
 using RedditClone.Models;
+
+
 using MbUnit.Framework;
 using Rhino.Mocks;
 
@@ -69,7 +71,7 @@ namespace RedditCloneTests.Controllers
             nvm.Add("username", username);
             nvm.Add("password", password);
             
-            UserInfoController controller =CreateSubUserInfoController(nvm);
+            UserInfoController controller =CreateSubUserInfoController();
             controller.Register();
 
             UserInfo information = new UserDataLayer().GetUserInfo(username);
@@ -82,39 +84,45 @@ namespace RedditCloneTests.Controllers
         [Row("Joseph", "Joseph")]
         public void LoginTest(string username, string password)
         {
-            NameValueCollection nvm = new NameValueCollection();
-            nvm.Add("username", username);
-            nvm.Add("password", password);
-            SubUserInfoController controller = CreateSubUserInfoController(nvm);
-            controller.Login(username, password, "checked", "/Main");
-            Assert.AreEqual(controller.RedirecedAction["Controller"], "Item");
-            Assert.AreEqual(controller.RedirecedAction["Action"], "Main");
+            SubUserInfoController controller = CreateSubUserInfoController();
+            RedirectToRouteResult result = (RedirectToRouteResult)controller.Login(username, password, false);
+            Assert.AreEqual("Item", (result).Values["controller"]);
+            Assert.AreEqual("Main", (result).Values["action"]);
+            //Assert.AreEqual(controller.RedirecedAction["Controller"], "Item");
+            //Assert.AreEqual(controller.RedirecedAction["Action"], "Main");
         }
 
         [RowTest, RollBack]
         [Row("Joseph", "rtyhdthdt")]
         public void LoginFailTest(string username, string password)
         {
-            NameValueCollection nvm = new NameValueCollection();
-            nvm.Add("username", username);
-            nvm.Add("password", password);
-            SubUserInfoController controller = CreateSubUserInfoController(nvm);
-            controller.Login(username, password, "checked", "/Main");
-            Assert.AreEqual(controller.RedirecedAction["action"], "LoginPage");
-            Assert.AreEqual(controller.ViewData["ErrorMessage"], "Incorrect user name or password");
+            //NameValueCollection nvm = new NameValueCollection();
+            //nvm.Add("username", username);
+            //nvm.Add("password", password);
+            SubUserInfoController controller = CreateSubUserInfoController();
+            ViewResult result = (ViewResult)controller.Login(username, password, true);
+            Assert.Greater(((List<string>)controller.ViewData["errors"]).Count, 0);
+            
+           //result
+            //Assert.AreEqual(controller.RedirecedAction["action"], "LoginPage");
+            //Assert.AreEqual(controller.ViewData["ErrorMessage"], "Incorrect user name or password");
         }
 
         [RowTest, RollBack]
         [Row("gesghhrs", "rtyhdthdt")]
         public void LoginFailNoUserTest(string username, string password)
         {
-            NameValueCollection nvm = new NameValueCollection();
-            nvm.Add("username", username);
-            nvm.Add("password", password);
-            SubUserInfoController controller = CreateSubUserInfoController(nvm);
-            controller.Login(username, password, "checked", "/Main");
-            Assert.AreEqual(controller.RedirecedAction["action"], "LoginPage");
-            Assert.AreEqual(controller.ViewData["ErrorMessage"], "Incorrect user name or password");
+            //NameValueCollection nvm = new NameValueCollection();
+            //nvm.Add("username", username);
+            //nvm.Add("password", password);
+            UserInfoController controller = CreateSubUserInfoController();
+            ViewResult result = (ViewResult)controller.Login(username, password, true);
+           
+            
+            //Assert.AreEqual(controller.RedirecedAction["action"], "LoginPage");
+           
+            Assert.Greater(((List<string>)controller.ViewData["errors"]).Count, 0);
+           
         }
 
         [RowTest, RollBack]
@@ -127,10 +135,11 @@ namespace RedditCloneTests.Controllers
             Assert.AreEqual(username, uif.password);
         }
 
-        private SubUserInfoController CreateSubUserInfoController(NameValueCollection nvm)
+        private SubUserInfoController CreateSubUserInfoController()
         {
-            SubUserInfoController controller = new SubUserInfoController();
-            ControllerTestHelper.CreateMockController(controller, nvm, mocks);
+            IFormsAuthentication frmAuthentication = mocks.DynamicMock<IFormsAuthentication>();
+            SubUserInfoController controller = new SubUserInfoController(frmAuthentication);
+            ControllerTestHelper.CreateMockController(controller, mocks);            
             return controller;
 
         }
@@ -138,6 +147,10 @@ namespace RedditCloneTests.Controllers
 
     public class SubUserInfoController : UserInfoController
     {
+        public SubUserInfoController(IFormsAuthentication formsAutho):base (formsAutho)
+        {
+
+        }
         public string SelectedViewName { get; private set; }
         public RouteValueDictionary RedirecedAction { get; private set; }
 
@@ -155,11 +168,11 @@ namespace RedditCloneTests.Controllers
             return null;
             //       base.RenderView(viewName, masterName, viewData);
         }
-        protected override RedirectToRouteResult RedirectToAction(string actionName, string controllerName, RouteValueDictionary values)
-        {
-            RedirecedAction = values;
-            return null;
-        }
+        //protected override RedirectToRouteResult RedirectToAction(string actionName, string controllerName, RouteValueDictionary values)
+        //{
+        //    RedirecedAction = values;
+        //    return null;
+        //}
         //protected override RedirectToRouteResult RedirectToAction(RouteValueDictionary values)
         //{
         //    RedirecedAction = values;

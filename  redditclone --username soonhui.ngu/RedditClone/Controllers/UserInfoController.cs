@@ -13,20 +13,44 @@ namespace RedditClone.Controllers
 
     public class UserInfoController : Controller
     {
+        public UserInfoController(IFormsAuthentication formsAutho):this (formsAutho, null)
+        {
+
+        }
+        public UserInfoController():this(null, null)
+        {
+
+        }
+        public UserInfoController(IFormsAuthentication formsAuth, MembershipProvider provider)
+        {
+            FormsAuth = formsAuth ?? new FormsAuthenticationWrapper();
+            Provider = provider ?? Membership.Provider;
+        }
         public void Index()
         {
             // Add action logic here
         }
 
-        public void Register()
+        public MembershipProvider Provider
+        {
+            get;
+            private set;
+        }
+
+        public IFormsAuthentication FormsAuth
+        {
+            get;
+            private set;
+        }
+        public ActionResult Register()
         {
             
-            RedditMembershipProvider p = (RedditMembershipProvider)Membership.Provider;
+            //RedditMembershipProvider p = (RedditMembershipProvider)Membership.Provider;
             MembershipCreateStatus mcs;
-            p.CreateUser(Request.Form["username"], Request.Form["password"],
+            Provider.CreateUser(Request.Form["username"], Request.Form["password"],
                 string.Empty, string.Empty, string.Empty, true, null, out mcs);
    
-            RedirectToAction("Main", "Item");
+            return RedirectToAction("Main", "Item");
         }
 
         public ActionResult LoginPage()
@@ -40,30 +64,48 @@ namespace RedditClone.Controllers
             return View("Register");
         }
 
-        public void Login(string username, 
-            string password, string rememberMe, string returnUrl)
+        public ActionResult Login(string username, string password, bool? rememberMe)
         {
-            RedditMembershipProvider p = (RedditMembershipProvider)Membership.Provider;
-            if(p.ValidateUser(username, password))
+            //RedditMembershipProvider Provider = (RedditMembershipProvider)Membership.Provider;
+            ViewData["Title"] = "Login";
+
+            // Non-POST requests should just display the Login form 
+            if (Request.HttpMethod != "POST")
             {
-               
-                FormsAuthentication.SetAuthCookie(username, rememberMe == "checked");
-                Response.Redirect(returnUrl);
+                return View();
             }
-            else
+
+            // Basic parameter validation
+            List<string> errors = new List<string>();
+
+            if (String.IsNullOrEmpty(username))
             {
-                ViewData["ErrorMessage"] = "Incorrect user name or password";
-                RedirectToAction("LoginPage");
+                errors.Add("You must specify a username.");
             }
-            //if(Membership.ValidateUser(username, password))
-            //{
-            //    FormsAuthentication.SetAuthCookie(username, rememberMe=="checked");
-            //    Response.Redirect(returnUrl);
-            //}
-            //else
-            //{
-            //    ViewData["ErrorMessage"] = "Incorrect user name or password";
-            //}
+
+            if (errors.Count == 0)
+            {
+
+                // Attempt to login
+                bool loginSuccessful = Provider.ValidateUser(username, password);
+
+                if (loginSuccessful)
+                {
+
+                    FormsAuth.SetAuthCookie(username, rememberMe ?? false);
+                    return RedirectToAction("Main", "Item");
+                }
+                else
+                {
+                    errors.Add("The username or password provided is incorrect.");
+                }
+            }
+
+            // If we got this far, something failed, redisplay form
+            ViewData["errors"] = errors;
+            ViewData["username"] = username;
+            return View();
+ 
         }
 
         //public void CreateUser(string userName, string emailAddress, 
