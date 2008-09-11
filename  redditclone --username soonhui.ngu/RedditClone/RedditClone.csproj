@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30428</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{1503E02A-6900-4422-B4C6-E21F1643E811}</ProjectGuid>
     <ProjectTypeGuids>{603c0e0b-db56-11dc-be95-000d561079b0};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
@@ -32,7 +32,7 @@
   <ItemGroup>
     <Reference Include="Microsoft.Web.Mvc, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files\Microsoft ASP.NET\ASP.NET MVC CodePlex Preview 4\Assemblies\Microsoft.Web.Mvc.dll</HintPath>
+      <HintPath>C:\Program Files\Microsoft ASP.NET\ASP.NET MVC CodePlex Preview 5\Assemblies\Microsoft.Web.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -45,18 +45,18 @@
     <Reference Include="System.Data.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Web.Abstractions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="System.Web.Abstractions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files\Microsoft ASP.NET\ASP.NET MVC CodePlex Preview 4\Assemblies\System.Web.Abstractions.dll</HintPath>
+      <HintPath>C:\Program Files\Microsoft ASP.NET\ASP.NET MVC CodePlex Preview 5\Assemblies\System.Web.Abstractions.dll</HintPath>
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Web.Mvc, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files\Microsoft ASP.NET\ASP.NET MVC CodePlex Preview 4\Assemblies\System.Web.Mvc.dll</HintPath>
+      <HintPath>C:\Program Files\Microsoft ASP.NET\ASP.NET MVC CodePlex Preview 5\Assemblies\System.Web.Mvc.dll</HintPath>
     </Reference>
-    <Reference Include="System.Web.Routing, Version=0.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="System.Web.Routing, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files\Microsoft ASP.NET\ASP.NET MVC CodePlex Preview 4\Assemblies\System.Web.Routing.dll</HintPath>
+      <HintPath>C:\Program Files\Microsoft ASP.NET\ASP.NET MVC CodePlex Preview 5\Assemblies\System.Web.Routing.dll</HintPath>
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Xml.Linq">
@@ -91,11 +91,6 @@
     </Compile>
     <Compile Include="Models\RedditClone.designer.cs">
       <DependentUpon>RedditClone.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Models\RedditClone1.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>RedditClone.dbml</DependentUpon>
     </Compile>
     <Compile Include="Models\UserDataLayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -228,7 +223,6 @@
   <ItemGroup>
     <None Include="Models\RedditClone.dbml">
       <Generator>MSLinqToSQLGenerator</Generator>
-      <LastGenOutput>RedditClone1.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
