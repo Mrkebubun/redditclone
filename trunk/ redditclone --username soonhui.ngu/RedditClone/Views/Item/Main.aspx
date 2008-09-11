@@ -5,13 +5,13 @@
 <input type="submit" value="Add New Article" />
 </form>
 
-<%=Html.ActionLink<RedditClone.Controllers.UserInfoController>(s=>s.LoginPage(), "Login") %>
+<%=Html.ActionLink("Login","LoginPage", "UserInfoController") %>
 
 
 <ol>
     <% foreach (var item in ViewData.Model)  {  %>
     <li>
-     <%= Html.RenderUserControl("~/Views/UserControls/ArticleUserControl.ascx", item) %>  
+     <%Html.RenderPartial("~/Views/UserControls/ArticleUserControl.ascx", item);%>  
 
      </li>
     <% } %>

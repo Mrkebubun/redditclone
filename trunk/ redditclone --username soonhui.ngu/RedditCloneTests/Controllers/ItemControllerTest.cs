@@ -107,7 +107,7 @@ namespace RedditCloneTests.Controllers
             NameValueCollection nvm = new NameValueCollection();
             nvm.Add("articleID", id.ToString());
             nvm.Add("diggers", voter);
-            SubItemController controller = CreateSubItemController(nvm);
+            SubItemController controller = CreateSubItemController();
             controller.CastUpVote(id, voter);
 
             int upVoteCount = controller.GetArticleID(id).UpVotes;
@@ -123,7 +123,7 @@ namespace RedditCloneTests.Controllers
             NameValueCollection nvm = new NameValueCollection();
             nvm.Add("articleID", id.ToString());
             nvm.Add("diggers", voter);
-            SubItemController controller = CreateSubItemController(nvm);
+            SubItemController controller = CreateSubItemController();
             int upVoteCount = controller.GetArticleID(id).UpVotes;
             int downVoteCount = controller.GetArticleID(id).DownVotes;
 
@@ -139,7 +139,7 @@ namespace RedditCloneTests.Controllers
             NameValueCollection nvm = new NameValueCollection();
             nvm.Add("articleID", id.ToString());
             nvm.Add("diggers", digger);
-            SubItemController controller = CreateSubItemController(nvm);
+            SubItemController controller = CreateSubItemController();
             controller.CastUpVote(id, digger);
 
             Assert.AreEqual(3, controller.GetArticleID(id).UpVotes);
@@ -152,7 +152,7 @@ namespace RedditCloneTests.Controllers
             NameValueCollection nvm = new NameValueCollection();
             nvm.Add("articleID", id.ToString());
             nvm.Add("diggers", digger);
-            SubItemController controller = CreateSubItemController(nvm);
+            SubItemController controller = CreateSubItemController();
             controller.CastDownVote(id, digger);
 
             Assert.AreEqual(1, controller.GetArticleID(id).DownVotes);
@@ -200,7 +200,7 @@ namespace RedditCloneTests.Controllers
 
             List<Article> articles1 = new ItemFactory().SearchURL(url);
             Assert.AreEqual(1, articles1.Count, "THere should be only 1 article");
-            SubItemController controller = CreateSubItemController(nvm);
+            SubItemController controller = CreateSubItemController();
             controller.Delete();
 
             List<Article> articles = new ItemFactory().SearchURL(url);
@@ -211,10 +211,11 @@ namespace RedditCloneTests.Controllers
 
         }
 
-        private SubItemController CreateSubItemController(NameValueCollection nvm)
+        private SubItemController CreateSubItemController()
         {
             SubItemController controller = new SubItemController();
-            ControllerTestHelper.CreateMockController(controller, nvm, mocks);
+            ControllerTestHelper.CreateMockController(controller, mocks);
+            
             return controller;
 
         }
@@ -225,15 +226,17 @@ namespace RedditCloneTests.Controllers
         [Row("Soon Hui", "http://www.live.com", "live")]
         public void SubmitTest(string owner, string url, string title)
         {
-            NameValueCollection nvm = new NameValueCollection();
-            nvm.Add("Title", title);
-            nvm.Add("URL", url);
-            nvm.Add("Diggers", owner);
+            //NameValueCollection nvm = new NameValueCollection();
+            //nvm.Add("Title", title);
+            //nvm.Add("URL", url);
+            //nvm.Add("Diggers", owner);
 
-            SubItemController controller =CreateSubItemController(nvm);
-            controller.SubmitNew();
-            Assert.AreEqual(controller.RedirecedAction["Controller"], "Item");
-            Assert.AreEqual(controller.RedirecedAction["Action"], "Main");
+            ItemController controller = new ItemController();
+            RedirectToRouteResult actionEesult = (RedirectToRouteResult)controller.SubmitNew(url, title, owner);
+            actionEesult.Values["controller"] = "Main";
+            actionEesult.Values["action"] = "Item";
+            //Assert.AreEqual(controller.RedirecedAction["Controller"], "Item");
+            //Assert.AreEqual(controller.RedirecedAction["Action"], "Main");
 
             List<Article> articles= new ItemFactory().SearchURL(url);
             Assert.AreEqual(1, articles.Count);
