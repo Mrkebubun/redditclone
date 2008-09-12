@@ -197,7 +197,7 @@
   <ItemGroup>
     <Content Include="App_Data\RedditClone.mdf">
     </Content>
-    <Content Include="App_Data\RedditClone_log.ldf">
+    <Content Include="App_Data\RedditClone_log.LDF">
       <DependentUpon>RedditClone.mdf</DependentUpon>
     </Content>
     <Content Include="Default.aspx" />

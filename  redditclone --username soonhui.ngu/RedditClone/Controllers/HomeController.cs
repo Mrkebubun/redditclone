@@ -11,6 +11,7 @@ namespace RedditClone.Controllers
     {
         public ActionResult Index()
         {
+            
             ViewData["Title"] = "Home Page";
             ViewData["Message"] = "Welcome to ASP.NET MVC!";
             return View();

@@ -201,7 +201,10 @@ namespace RedditCloneTests.Controllers
             List<Article> articles1 = new ItemFactory().SearchURL(url);
             Assert.AreEqual(1, articles1.Count, "THere should be only 1 article");
             SubItemController controller = CreateSubItemController();
-            controller.Delete();
+            RedirectToRouteResult result = (RedirectToRouteResult)controller.Delete(articleID);
+            Assert.AreEqual("Main",result.Values["controller"]);
+            Assert.AreEqual("Item", result.Values["action"]);
+
 
             List<Article> articles = new ItemFactory().SearchURL(url);
             Assert.AreEqual(0, articles.Count, "The article should have been deleted");
@@ -295,12 +298,12 @@ namespace RedditCloneTests.Controllers
      //       base.RenderView(viewName, masterName, viewData);
         }
 
-        protected override RedirectToRouteResult RedirectToAction(string actionName, string controllerName, RouteValueDictionary values)
-        {
-            RedirecedAction = values;
-            return null;
-       //     return base.RedirectToAction(actionName, controllerName, values);
-        }
+       // protected override RedirectToRouteResult RedirectToAction(string actionName, string controllerName, RouteValueDictionary values)
+       // {
+       //     RedirecedAction = values;
+       //     return null;
+       ////     return base.RedirectToAction(actionName, controllerName, values);
+       // }
         //protected override RedirectToRouteResult RedirectToAction(RouteValueDictionary values)
         //{
         //    RedirecedAction = values;

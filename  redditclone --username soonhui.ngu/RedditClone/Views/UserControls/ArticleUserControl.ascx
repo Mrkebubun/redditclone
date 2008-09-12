@@ -2,9 +2,18 @@
 
 
 <a href="<%= ViewData.Model.URL %>"><%= ViewData.Model.Title%> </a>
-<%=Html.Button<RedditClone.Controllers.ItemController>
+
+
+<form method="post" action="<%= Html.AttributeEncode(Url.Action("CastUpVote")) %>">
+<input type="submit" value="<%=ViewData.Model.UpVotes%> up votes" />
+</form>
+
+<form method="post" action="<%= Html.AttributeEncode(Url.Action("CastDownVote")) %>">
+<input type="submit" value="<%=ViewData.Model.DownVotes%> down votes" />
+</form>
+<%--<%= Html.Button<RedditClone.Controllers.ItemController>
     (s=>s.CastUpVote(ViewData.Model.id, ViewData.Model.Diggers), "upVotes",
-    ViewData.Model.UpVotes+" votes") %>
-<%=Html.Button<RedditClone.Controllers.ItemController>
+    ViewData.Model.UpVotes+" votes") %>--%>
+<%--<%=Html.Button<RedditClone.Controllers.ItemController>
 (s=>s.CastDownVote(ViewData.Model.id, ViewData.Model.Diggers), "upVotes",
-ViewData.Model.DownVotes+" votes") %>
+ViewData.Model.DownVotes+" votes") %>--%>

@@ -42,12 +42,12 @@ namespace RedditClone.Controllers
             get;
             private set;
         }
-        public ActionResult Register()
+        public ActionResult Register(string username, string password)
         {
             
             //RedditMembershipProvider p = (RedditMembershipProvider)Membership.Provider;
             MembershipCreateStatus mcs;
-            Provider.CreateUser(Request.Form["username"], Request.Form["password"],
+            Provider.CreateUser(username, password,
                 string.Empty, string.Empty, string.Empty, true, null, out mcs);
    
             return RedirectToAction("Main", "Item");

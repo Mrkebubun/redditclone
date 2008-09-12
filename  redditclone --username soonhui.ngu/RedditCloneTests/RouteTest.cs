@@ -28,12 +28,15 @@ namespace RedditCloneTests
 
         }
 
-        [Test]
-        public void LoginRoute()
+        [RowTest]
+        [Row("~/Login", "UserInfo", "LoginPage")]
+        [Row("~/", "Item", "Main")]
+        [Row("~/Main", "Item", "Main")]
+        public void LoginRoute(string url, string controller, string action)
         {
             using (mocks.Record())
             {
-                httpContext = GetHttpContext(mocks, "~/Login");
+                httpContext = GetHttpContext(mocks, url);
             }
 
             using (mocks.Playback())
@@ -41,9 +44,8 @@ namespace RedditCloneTests
                 RouteData routeData = routes.GetRouteData(httpContext);
 
                 Assert.IsNotNull(routeData);
-                Assert.AreEqual("UserInfo", routeData.Values["controller"]);
-                Assert.AreEqual("LoginPage", routeData.Values["action"]);
-                //Assert.AreEqual("1", routeData.Values["id"]);
+                Assert.AreEqual(controller, routeData.Values["controller"]);
+                Assert.AreEqual(action, routeData.Values["action"]);
             }
 
         }

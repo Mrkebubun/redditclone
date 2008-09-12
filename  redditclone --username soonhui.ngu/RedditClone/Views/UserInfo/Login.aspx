@@ -5,48 +5,30 @@
     <p><% =ViewData["ErrorMessage"] %></p>
 <% } %>
 
-   
+  
+  
+      <form method="post" action="<%= Html.AttributeEncode(Url.Action("Login")) %>">
+        <div>
+            <table>
+                <tr>
+                    <td>Username:</td>
+                    <td><%= Html.TextBox("userName")%></td>
+                </tr>
+                <tr>
+                    <td>Password:</td>
+                    <td><%= Html.Password("password")%></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="checkbox" name="rememberMe" value="true" /> Remember me?</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="submit" value="Login" /></td>
+                </tr>
+            </table>
+        </div>
+    </form>
 
-      <% using (Html.Form("UserInfo", "Login"))
-         { %>
 
-     <fieldset>
-
-         <legend>Login</legend>
-
-        <div><label for="userName">User Name:</label> <% =Html.TextBox("userName")%></div>
-
-        <div><label for="password">Password:</label> <% =Html.Password("password")%></div>
-
-          <div><label for="rememberMe">Remember Me:</label>
-           <input type="checkbox" id="rememberMe" name="rememberMe" checked="checked" value="Remember Me" /></div>
-
-       <div><% =Html.SubmitButton()%></div>
-
-        <% =Html.Hidden("returnUrl", "/")%>
-
-  </fieldset>
-  <%} %>
-
-<%--<form action="/UserInfo/AddUser" method="post">
-<table>
-    <tr>
-        <td>User Name:</td>
-        <td><input id="username" type="text" name="username" /></td>
-    </tr>
-    
-     <tr>
-        <td>Password:</td>
-        <td><input id="password" type="password" name="password"/></td>
-
-    </tr>
-    
-
-</table>
-
-<p></p>
-
-<input type="submit" value="add" />
-
-</form>--%>
 </asp:Content>

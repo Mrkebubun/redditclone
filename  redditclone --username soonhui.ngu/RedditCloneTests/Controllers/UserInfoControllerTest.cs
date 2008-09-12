@@ -68,11 +68,11 @@ namespace RedditCloneTests.Controllers
         public void AddUserTest(string username, string password)
         {
             NameValueCollection nvm = new NameValueCollection();
-            nvm.Add("username", username);
-            nvm.Add("password", password);
+            //nvm.Add("username", username);
+            //nvm.Add("password", password);
             
             UserInfoController controller =CreateSubUserInfoController();
-            controller.Register();
+            controller.Register(username, password);
 
             UserInfo information = new UserDataLayer().GetUserInfo(username);
             Assert.AreEqual(username, information.Diggers);
