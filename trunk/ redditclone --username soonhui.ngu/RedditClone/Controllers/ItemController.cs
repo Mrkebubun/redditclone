@@ -12,7 +12,7 @@ namespace RedditClone.Controllers
     {
         public void Index()
         {
-            // Add action logic here
+            
         }
 
         public ActionResult Main()
@@ -42,12 +42,12 @@ namespace RedditClone.Controllers
             //return View();
         }
 
-        public ActionResult Delete()
+        public ActionResult Delete(int articleID)
         {
          
             ItemFactory factory = new ItemFactory();
-            factory.DeleteArticle(int.Parse(Request.Form["id"]));
-            return RedirectToAction("Main", "Item");
+            factory.DeleteArticle(articleID);
+            return RedirectToAction("Item", "Main");
         }
 
 
@@ -60,7 +60,7 @@ namespace RedditClone.Controllers
         [RequiresAuthentication]
         public ActionResult CastUpVote(int articleID, string digger)
         {
-
+            
             new ItemFactory().CastUpVote(articleID, digger);
             return RedirectToAction("Main", "Item");
         }

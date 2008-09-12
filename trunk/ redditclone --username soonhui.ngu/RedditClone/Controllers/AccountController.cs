@@ -75,6 +75,7 @@ namespace RedditClone.Controllers
                 bool changeSuccessful = false;
                 try
                 {
+                 
                     changeSuccessful = currentUser.ChangePassword(currentPassword, newPassword);
                 }
                 catch
