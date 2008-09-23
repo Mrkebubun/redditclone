@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 
+using RedditClone.Models;
 namespace RedditClone.Controllers
 {
 
@@ -44,7 +45,7 @@ namespace RedditClone.Controllers
             ViewData["PasswordLength"] = Provider.MinRequiredPasswordLength;
 
             // Non-POST requests should just display the ChangePassword form 
-            if (Request.HttpMethod != "POST")
+            if (Request.HttpMethod != HttpMethod.Post)
             {
                 return View();
             }
@@ -112,7 +113,7 @@ namespace RedditClone.Controllers
             ViewData["Title"] = "Login";
 
             // Non-POST requests should just display the Login form 
-            if (Request.HttpMethod != "POST")
+            if (Request.HttpMethod != HttpMethod.Post)
             {
                 return View();
             }
@@ -163,7 +164,7 @@ namespace RedditClone.Controllers
             ViewData["PasswordLength"] = Provider.MinRequiredPasswordLength;
 
             // Non-POST requests should just display the Register form 
-            if (Request.HttpMethod != "POST")
+            if (Request.HttpMethod != HttpMethod.Post)
             {
                 return View();
             }

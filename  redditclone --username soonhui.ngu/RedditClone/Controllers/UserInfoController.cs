@@ -45,7 +45,7 @@ namespace RedditClone.Controllers
         public ActionResult Register(string username, string password, string email)
         {
             ViewData["Title"] = "Registration";
-            if (Request.HttpMethod!="POST")
+            if (Request.HttpMethod!=HttpMethod.Post)
             {
                 return View();
             }
@@ -65,7 +65,7 @@ namespace RedditClone.Controllers
             ViewData["Title"] = "Login";
 
             // Non-POST requests should just display the Login form 
-            if (Request.HttpMethod != "POST")
+            if (Request.HttpMethod != HttpMethod.Post)
             {
                 return View();
             }

@@ -11,4 +11,10 @@ namespace RedditClone.Models
         UpVote=1,
         DownVote=2,
     }
+
+    public static class HttpMethod
+    {
+        public const string Get = "GET";
+        public const string Post = "POST";
+    }
 }
