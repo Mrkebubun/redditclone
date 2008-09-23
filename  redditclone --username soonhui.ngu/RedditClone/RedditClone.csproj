@@ -86,11 +86,13 @@
     </Compile>
     <Compile Include="Models\Enums.cs" />
     <Compile Include="Models\ItemDataLayer.cs" />
-    <Compile Include="Models\RedditClone.cs">
-      <DependentUpon>RedditClone.dbml</DependentUpon>
+    <Compile Include="Models\RedditCloneDataContext.cs">
+      <DependentUpon>RedditCloneDataContext.dbml</DependentUpon>
     </Compile>
-    <Compile Include="Models\RedditClone.designer.cs">
-      <DependentUpon>RedditClone.cs</DependentUpon>
+    <Compile Include="Models\RedditCloneDataContext.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RedditCloneDataContext.dbml</DependentUpon>
     </Compile>
     <Compile Include="Models\UserDataLayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -221,18 +223,20 @@
     <Content Include="Views\Shared\Site.Master" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Models\RedditClone.dbml">
+    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
+    <None Include="Models\RedditCloneDataContext.dbml">
       <Generator>MSLinqToSQLGenerator</Generator>
+      <LastGenOutput>RedditCloneDataContext.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Models\RedditClone.dbml.layout">
-      <DependentUpon>RedditClone.dbml</DependentUpon>
+    <None Include="Models\RedditCloneDataContext.dbml.layout">
+      <DependentUpon>RedditCloneDataContext.dbml</DependentUpon>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" />
@@ -249,7 +253,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>2566</DevelopmentServerPort>
+          <DevelopmentServerPort>2270</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>

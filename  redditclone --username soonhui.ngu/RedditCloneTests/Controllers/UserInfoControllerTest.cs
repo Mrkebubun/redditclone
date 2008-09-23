@@ -64,15 +64,15 @@ namespace RedditCloneTests.Controllers
         #endregion
 
         [RowTest, RollBack]
-        [Row("Dennis2", "Dennis2")]
-        public void AddUserTest(string username, string password)
+        [Row("Dennis2", "Dennis2", "myemail@gmail.com")]
+        public void AddUserTest(string username, string password, string email)
         {
             NameValueCollection nvm = new NameValueCollection();
             //nvm.Add("username", username);
             //nvm.Add("password", password);
             
-            UserInfoController controller =CreateSubUserInfoController();
-            controller.Register(username, password);
+            UserInfoController controller =CreateSubUserInfoController("POST");
+            controller.Register(username, password, email);
 
             UserInfo information = new UserDataLayer().GetUserInfo(username);
             Assert.AreEqual(username, information.Diggers);
@@ -84,28 +84,37 @@ namespace RedditCloneTests.Controllers
         [Row("Joseph", "Joseph")]
         public void LoginTest(string username, string password)
         {
-            SubUserInfoController controller = CreateSubUserInfoController();
+            SubUserInfoController controller = CreateSubUserInfoController("POST");
             RedirectToRouteResult result = (RedirectToRouteResult)controller.Login(username, password, false);
             Assert.AreEqual("Item", (result).Values["controller"]);
             Assert.AreEqual("Main", (result).Values["action"]);
-            //Assert.AreEqual(controller.RedirecedAction["Controller"], "Item");
-            //Assert.AreEqual(controller.RedirecedAction["Action"], "Main");
+
         }
 
         [RowTest, RollBack]
         [Row("Joseph", "rtyhdthdt")]
         public void LoginFailTest(string username, string password)
         {
-            //NameValueCollection nvm = new NameValueCollection();
-            //nvm.Add("username", username);
-            //nvm.Add("password", password);
-            SubUserInfoController controller = CreateSubUserInfoController();
+            SubUserInfoController controller = CreateSubUserInfoController("POST");
             ViewResult result = (ViewResult)controller.Login(username, password, true);
             Assert.Greater(((List<string>)controller.ViewData["errors"]).Count, 0);
             
-           //result
-            //Assert.AreEqual(controller.RedirecedAction["action"], "LoginPage");
-            //Assert.AreEqual(controller.ViewData["ErrorMessage"], "Incorrect user name or password");
+        }
+
+        [Test, RollBack]
+        public void RegisterGetTest()
+        {
+            SubUserInfoController controller = CreateSubUserInfoController("GET");
+            ViewResult result =(ViewResult)controller.Register(null, null, null);
+            Assert.AreEqual("Registration", controller.ViewData["Title"]);
+        }
+        [Test, RollBack]
+        public void LoginGetTest()
+        {
+            SubUserInfoController controller = CreateSubUserInfoController("GET");
+            ViewResult result = (ViewResult)controller.Login(null, null, true);
+            Assert.AreEqual("Login", controller.ViewData["Title"]);
+            //Assert.Greater(((List<string>)controller.ViewData["errors"]).Count, 0);
         }
 
         [RowTest, RollBack]
@@ -115,7 +124,7 @@ namespace RedditCloneTests.Controllers
             //NameValueCollection nvm = new NameValueCollection();
             //nvm.Add("username", username);
             //nvm.Add("password", password);
-            UserInfoController controller = CreateSubUserInfoController();
+            UserInfoController controller = CreateSubUserInfoController("POST");
             ViewResult result = (ViewResult)controller.Login(username, password, true);
            
             
@@ -135,11 +144,11 @@ namespace RedditCloneTests.Controllers
             Assert.AreEqual(username, uif.password);
         }
 
-        private SubUserInfoController CreateSubUserInfoController()
+        private SubUserInfoController CreateSubUserInfoController(string httpMethod)
         {
             IFormsAuthentication frmAuthentication = mocks.DynamicMock<IFormsAuthentication>();
             SubUserInfoController controller = new SubUserInfoController(frmAuthentication);
-            ControllerTestHelper.CreateMockController(controller, mocks);            
+            ControllerTestHelper.CreateMockController(controller, mocks, httpMethod);            
             return controller;
 
         }

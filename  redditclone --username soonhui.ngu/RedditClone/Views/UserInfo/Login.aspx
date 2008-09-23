@@ -1,9 +1,22 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" AutoEventWireup="true" CodeBehind="Login.aspx.cs" Inherits="RedditClone.Views.UserInfo.Login" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContentPlaceHolder" runat="server">
-<h2>Login</h2>
-<% if( ViewData["ErrorMessage"] != null ){ %>
-    <p><% =ViewData["ErrorMessage"] %></p>
-<% } %>
+    <h2>Login</h2>
+    <p>
+        Please enter your username and password below. If you don't have an account,
+        please <%= Html.ActionLink("register", "Register") %>.
+    </p>
+    <%
+        IList<string> errors = ViewData["errors"] as IList<string>;
+        if (errors != null) {
+            %>
+                <ul class="error">
+                <% foreach (string error in errors) { %>
+                    <li><%= Html.Encode(error) %></li>
+                <% } %>
+                </ul>
+            <%
+        }
+         %>
 
   
   

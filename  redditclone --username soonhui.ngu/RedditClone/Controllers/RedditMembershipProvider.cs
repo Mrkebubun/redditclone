@@ -161,7 +161,7 @@ namespace RedditClone.Controllers
             email, passwordQuestion, null, isApproved, false, DateTime.Now, DateTime.Now,
             DateTime.Now, DateTime.Now, DateTime.Now);
 
-            new UserDataLayer().AddUser(username, password);
+            new UserDataLayer().AddUser(username, password, email);
             status = MembershipCreateStatus.Success;
             return user;
 

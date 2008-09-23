@@ -29,9 +29,10 @@ namespace RedditCloneTests
         }
 
         [RowTest]
-        [Row("~/Login", "UserInfo", "LoginPage")]
+        [Row("~/Login", "UserInfo", "Login")]
         [Row("~/", "Item", "Main")]
         [Row("~/Main", "Item", "Main")]
+        [Row("~/Register", "UserInfo", "Register")]
         public void LoginRoute(string url, string controller, string action)
         {
             using (mocks.Record())

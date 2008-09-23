@@ -107,7 +107,7 @@ namespace RedditCloneTests.Controllers
             NameValueCollection nvm = new NameValueCollection();
             nvm.Add("articleID", id.ToString());
             nvm.Add("diggers", voter);
-            SubItemController controller = CreateSubItemController();
+            SubItemController controller = CreateSubItemController("POST");
             controller.CastUpVote(id, voter);
 
             int upVoteCount = controller.GetArticleID(id).UpVotes;
@@ -123,7 +123,7 @@ namespace RedditCloneTests.Controllers
             NameValueCollection nvm = new NameValueCollection();
             nvm.Add("articleID", id.ToString());
             nvm.Add("diggers", voter);
-            SubItemController controller = CreateSubItemController();
+            SubItemController controller = CreateSubItemController("POST");
             int upVoteCount = controller.GetArticleID(id).UpVotes;
             int downVoteCount = controller.GetArticleID(id).DownVotes;
 
@@ -139,7 +139,7 @@ namespace RedditCloneTests.Controllers
             NameValueCollection nvm = new NameValueCollection();
             nvm.Add("articleID", id.ToString());
             nvm.Add("diggers", digger);
-            SubItemController controller = CreateSubItemController();
+            SubItemController controller = CreateSubItemController("POST");
             controller.CastUpVote(id, digger);
 
             Assert.AreEqual(3, controller.GetArticleID(id).UpVotes);
@@ -152,7 +152,7 @@ namespace RedditCloneTests.Controllers
             NameValueCollection nvm = new NameValueCollection();
             nvm.Add("articleID", id.ToString());
             nvm.Add("diggers", digger);
-            SubItemController controller = CreateSubItemController();
+            SubItemController controller = CreateSubItemController("POST");
             controller.CastDownVote(id, digger);
 
             Assert.AreEqual(1, controller.GetArticleID(id).DownVotes);
@@ -200,7 +200,7 @@ namespace RedditCloneTests.Controllers
 
             List<Article> articles1 = new ItemFactory().SearchURL(url);
             Assert.AreEqual(1, articles1.Count, "THere should be only 1 article");
-            SubItemController controller = CreateSubItemController();
+            SubItemController controller = CreateSubItemController("POST");
             RedirectToRouteResult result = (RedirectToRouteResult)controller.Delete(articleID);
             Assert.AreEqual("Main",result.Values["controller"]);
             Assert.AreEqual("Item", result.Values["action"]);
@@ -214,10 +214,10 @@ namespace RedditCloneTests.Controllers
 
         }
 
-        private SubItemController CreateSubItemController()
+        private SubItemController CreateSubItemController(string httpMethod)
         {
             SubItemController controller = new SubItemController();
-            ControllerTestHelper.CreateMockController(controller, mocks);
+            ControllerTestHelper.CreateMockController(controller, mocks, httpMethod);
             
             return controller;
 
@@ -229,17 +229,12 @@ namespace RedditCloneTests.Controllers
         [Row("Soon Hui", "http://www.live.com", "live")]
         public void SubmitTest(string owner, string url, string title)
         {
-            //NameValueCollection nvm = new NameValueCollection();
-            //nvm.Add("Title", title);
-            //nvm.Add("URL", url);
-            //nvm.Add("Diggers", owner);
 
-            ItemController controller = new ItemController();
+
+            ItemController controller = CreateSubItemController("POST");
             RedirectToRouteResult actionEesult = (RedirectToRouteResult)controller.SubmitNew(url, title, owner);
             actionEesult.Values["controller"] = "Main";
             actionEesult.Values["action"] = "Item";
-            //Assert.AreEqual(controller.RedirecedAction["Controller"], "Item");
-            //Assert.AreEqual(controller.RedirecedAction["Action"], "Main");
 
             List<Article> articles= new ItemFactory().SearchURL(url);
             Assert.AreEqual(1, articles.Count);
@@ -248,6 +243,14 @@ namespace RedditCloneTests.Controllers
             Assert.AreEqual(1, articles[0].UpVotes);
             Assert.AreEqual(0, articles[0].DownVotes);
 
+        }
+
+        [RowTest, RollBack]
+        public void SubmitViewTest()
+        {
+            ItemController controller = CreateSubItemController("GET");
+            controller.SubmitNew(null, null, null);
+            Assert.AreEqual("Submit", controller.ViewData["Title"]);
         }
 
         [RowTest, RollBack]

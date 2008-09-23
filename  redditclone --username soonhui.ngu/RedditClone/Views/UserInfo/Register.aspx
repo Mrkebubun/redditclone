@@ -10,22 +10,27 @@
    <p><% =ViewData["ErrorMessage"] %></p>
  <% } %>
 
+<form method="post" action= "<%=Html.AttributeEncode(Url.Action("Register")) %>">
+        <div>
+            <table>
+                <tr>
+                    <td>Username:</td>
+                    <td><%= Html.TextBox("userName")%></td>
+                </tr>
+                <tr>
+                    <td>Password:</td>
+                    <td><%= Html.Password("password")%></td>
+                </tr>
+                 <tr>
+                    <td>email:</td>
+                    <td><%= Html.TextBox("email")%></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="submit" value="Login" /></td>
+                </tr>
+            </table>
+        </div>
+</form>
 
-  <% using(Html.Form("UserInfo","Register" )){ %>
-
-    <fieldset>
-
-       <legend>Register</legend>
-
-    <div><label for="userName">User Name:</label> <% =Html.TextBox( "userName" ) %></div>
-      <div><label for="emailAddress">Email Address:</label> <% =Html.TextBox( "emailAddress" ) %></div>
-
-     <div><label for="password">Password:</label> <% =Html.Password( "password" ) %></div>
-
-       <div><% =Html.SubmitButton() %></div>
-
-      <% =Html.Hidden( "returnUrl", "/" ) %>
-
-     </fieldset>
-    <% } %>
 </asp:Content>

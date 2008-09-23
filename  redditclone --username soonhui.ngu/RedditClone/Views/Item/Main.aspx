@@ -5,7 +5,7 @@
 <input type="submit" value="Add New Article" />
 </form>
 
-<%=Html.ActionLink("Login","LoginPage", "UserInfoController") %>
+<%=Html.ActionLink("Login","Login", "UserInfo") %>
 
 
 <ol>

@@ -28,13 +28,13 @@ namespace RedditClone.Controllers
             return View("WhatNew", factory.GetNewestArticles());
         }
 
-        public ActionResult SubmitView()
-        {
-            return View("Submit", ViewData);
-        }
 
         public ActionResult SubmitNew(string url, string title, string digger)
         {
+            if(Request.HttpMethod!="POST")
+            {
+                return View();
+            }
             ItemFactory factory = new ItemFactory();
             factory.SubmitArticle(url,
                 title,digger);

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -20,7 +20,7 @@ namespace RedditClone.Models
             get
             {
                 var upVotes = from up in VoteHistories
-                              where up.articleID== id &&
+                              where up.articleID == id &&
                                 up.voteChoice == (int)VoteChoiceEnum.UpVote
                               select up;
                 return upVotes.ToList<VoteHistory>().Count;

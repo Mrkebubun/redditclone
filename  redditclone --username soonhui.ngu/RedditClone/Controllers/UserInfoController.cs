@@ -42,27 +42,22 @@ namespace RedditClone.Controllers
             get;
             private set;
         }
-        public ActionResult Register(string username, string password)
+        public ActionResult Register(string username, string password, string email)
         {
+            ViewData["Title"] = "Registration";
+            if (Request.HttpMethod!="POST")
+            {
+                return View();
+            }
             
-            //RedditMembershipProvider p = (RedditMembershipProvider)Membership.Provider;
+    
             MembershipCreateStatus mcs;
             Provider.CreateUser(username, password,
-                string.Empty, string.Empty, string.Empty, true, null, out mcs);
+                email, string.Empty, string.Empty, true, null, out mcs);
    
             return RedirectToAction("Main", "Item");
         }
 
-        public ActionResult LoginPage()
-        {
-            
-            return View("Login");
-        }
-
-        public ActionResult RegisterPage()
-        {
-            return View("Register");
-        }
 
         public ActionResult Login(string username, string password, bool? rememberMe)
         {
@@ -108,25 +103,6 @@ namespace RedditClone.Controllers
  
         }
 
-        //public void CreateUser(string userName, string emailAddress, 
-        //    string password, string returnUrl)
-        //{
-            
-        //    try
-        //    {
-        //        if (Membership.CreateUser(userName, password) == null)
-        //        {
-        //            throw new MembershipCreateUserException("");
 
-        //        }
-        //        FormsAuthentication.SetAuthCookie(userName, true);
-        //        Response.Redirect(returnUrl);
-        //    }
-        //    catch(MembershipCreateUserException mcue)
-        //    {
-        //        ViewData["ErrorMessage"] = mcue.Message;
-        //        RenderView("Login");
-        //    }
-        //}
     }
 }
