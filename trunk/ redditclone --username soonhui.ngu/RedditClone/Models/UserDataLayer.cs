@@ -13,13 +13,17 @@ namespace RedditClone.Models
             return dc.UserInfos.SingleOrDefault<UserInfo>(uit => uit.Diggers == userName);
         }
 
-        public void AddUser(string userName, string password)
+        public void AddUser(string userName, string password, string email)
         {
             RedditCloneDataContext dc = new RedditCloneDataContext();
             UserInfo uif = new UserInfo()
             {
                 Diggers = userName,
-                password = password
+                password = password,
+           
+             
+                
+               
             };
             dc.UserInfos.InsertOnSubmit(uif);
             dc.SubmitChanges();

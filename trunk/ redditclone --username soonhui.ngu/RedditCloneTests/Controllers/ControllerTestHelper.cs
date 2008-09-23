@@ -15,7 +15,7 @@ namespace RedditCloneTests.Controllers
 {
     public static class ControllerTestHelper
     {
-        public static void CreateMockController(Controller controller,MockRepository mocks)
+        public static void CreateMockController(Controller controller,MockRepository mocks, string httpMethod)
         {
             HttpContextBase httpContext;
             HttpRequestBase httpRequest;
@@ -25,7 +25,7 @@ namespace RedditCloneTests.Controllers
                 httpRequest = mocks.DynamicMock<HttpRequestBase>();
 
 
-                SetupResult.For(httpRequest.HttpMethod).Return("POST");
+                SetupResult.For(httpRequest.HttpMethod).Return(httpMethod);
                 HttpResponseBase httpResponse = mocks.DynamicMock<HttpResponseBase>();
 
                 //SetupResult.For(httpRequest.Form).Return(nvm);
