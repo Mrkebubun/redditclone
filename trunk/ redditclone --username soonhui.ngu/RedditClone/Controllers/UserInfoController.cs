@@ -58,6 +58,11 @@ namespace RedditClone.Controllers
             return RedirectToAction("Main", "Item");
         }
 
+        public UserInfo GetUser(string username)
+        {
+            RedditCloneDataContext dc = new RedditCloneDataContext();
+            throw new NotImplementedException();
+        }
 
         public ActionResult Login(string username, string password, bool? rememberMe)
         {

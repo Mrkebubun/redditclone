@@ -121,17 +121,19 @@ namespace RedditCloneTests.Controllers
         [Row("gesghhrs", "rtyhdthdt")]
         public void LoginFailNoUserTest(string username, string password)
         {
-            //NameValueCollection nvm = new NameValueCollection();
-            //nvm.Add("username", username);
-            //nvm.Add("password", password);
+
             UserInfoController controller = CreateSubUserInfoController(HttpMethod.Post);
             ViewResult result = (ViewResult)controller.Login(username, password, true);
-           
-            
-            //Assert.AreEqual(controller.RedirecedAction["action"], "LoginPage");
-           
             Assert.Greater(((List<string>)controller.ViewData["errors"]).Count, 0);
            
+        }
+        [RowTest, RollBack]
+        [Row("Daniel", 5)]
+        public void UserReputation(string username, int hisReputation)
+        {
+            UserInfoController controller = CreateSubUserInfoController(HttpMethod.Get);
+            throw new NotImplementedException();
+            
         }
 
         [RowTest, RollBack]

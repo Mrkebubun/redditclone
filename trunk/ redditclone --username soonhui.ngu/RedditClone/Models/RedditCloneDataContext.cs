@@ -13,6 +13,16 @@ namespace RedditClone.Models
         //}
     }
 
+    public partial class UserInfo
+    {
+        public int Reputation
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+    }
     public partial class Article
     {
         public int UpVotes
