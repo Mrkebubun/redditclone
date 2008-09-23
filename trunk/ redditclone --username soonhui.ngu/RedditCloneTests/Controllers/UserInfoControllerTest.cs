@@ -71,7 +71,7 @@ namespace RedditCloneTests.Controllers
             //nvm.Add("username", username);
             //nvm.Add("password", password);
             
-            UserInfoController controller =CreateSubUserInfoController("POST");
+            UserInfoController controller =CreateSubUserInfoController(HttpMethod.Post);
             controller.Register(username, password, email);
 
             UserInfo information = new UserDataLayer().GetUserInfo(username);
@@ -84,7 +84,7 @@ namespace RedditCloneTests.Controllers
         [Row("Joseph", "Joseph")]
         public void LoginTest(string username, string password)
         {
-            SubUserInfoController controller = CreateSubUserInfoController("POST");
+            SubUserInfoController controller = CreateSubUserInfoController(HttpMethod.Post);
             RedirectToRouteResult result = (RedirectToRouteResult)controller.Login(username, password, false);
             Assert.AreEqual("Item", (result).Values["controller"]);
             Assert.AreEqual("Main", (result).Values["action"]);
@@ -95,7 +95,7 @@ namespace RedditCloneTests.Controllers
         [Row("Joseph", "rtyhdthdt")]
         public void LoginFailTest(string username, string password)
         {
-            SubUserInfoController controller = CreateSubUserInfoController("POST");
+            SubUserInfoController controller = CreateSubUserInfoController(HttpMethod.Post);
             ViewResult result = (ViewResult)controller.Login(username, password, true);
             Assert.Greater(((List<string>)controller.ViewData["errors"]).Count, 0);
             
@@ -124,7 +124,7 @@ namespace RedditCloneTests.Controllers
             //NameValueCollection nvm = new NameValueCollection();
             //nvm.Add("username", username);
             //nvm.Add("password", password);
-            UserInfoController controller = CreateSubUserInfoController("POST");
+            UserInfoController controller = CreateSubUserInfoController(HttpMethod.Post);
             ViewResult result = (ViewResult)controller.Login(username, password, true);
            
             

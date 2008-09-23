@@ -8,6 +8,7 @@ using System.Web.Routing;
 using System.Collections;
 using RedditClone.Controllers;
 using RedditClone.Models;
+
 using Rhino.Mocks;
 using System.Collections.Specialized;
 using MbUnit.Framework;
@@ -107,7 +108,7 @@ namespace RedditCloneTests.Controllers
             NameValueCollection nvm = new NameValueCollection();
             nvm.Add("articleID", id.ToString());
             nvm.Add("diggers", voter);
-            SubItemController controller = CreateSubItemController("POST");
+            SubItemController controller = CreateSubItemController(HttpMethod.Post);
             controller.CastUpVote(id, voter);
 
             int upVoteCount = controller.GetArticleID(id).UpVotes;
@@ -123,7 +124,7 @@ namespace RedditCloneTests.Controllers
             NameValueCollection nvm = new NameValueCollection();
             nvm.Add("articleID", id.ToString());
             nvm.Add("diggers", voter);
-            SubItemController controller = CreateSubItemController("POST");
+            SubItemController controller = CreateSubItemController(HttpMethod.Post);
             int upVoteCount = controller.GetArticleID(id).UpVotes;
             int downVoteCount = controller.GetArticleID(id).DownVotes;
 
@@ -139,7 +140,7 @@ namespace RedditCloneTests.Controllers
             NameValueCollection nvm = new NameValueCollection();
             nvm.Add("articleID", id.ToString());
             nvm.Add("diggers", digger);
-            SubItemController controller = CreateSubItemController("POST");
+            SubItemController controller = CreateSubItemController(HttpMethod.Post);
             controller.CastUpVote(id, digger);
 
             Assert.AreEqual(3, controller.GetArticleID(id).UpVotes);
@@ -152,7 +153,7 @@ namespace RedditCloneTests.Controllers
             NameValueCollection nvm = new NameValueCollection();
             nvm.Add("articleID", id.ToString());
             nvm.Add("diggers", digger);
-            SubItemController controller = CreateSubItemController("POST");
+            SubItemController controller = CreateSubItemController(HttpMethod.Post);
             controller.CastDownVote(id, digger);
 
             Assert.AreEqual(1, controller.GetArticleID(id).DownVotes);
@@ -190,7 +191,7 @@ namespace RedditCloneTests.Controllers
             Assert.IsFalse((a[1] == b[1]));
         }
         [RowTest, RollBack]
-        [Row("http://www.dotnetkicks.com/", 30)]
+        [Row("http://www.dotnetkicks.com/", 5)]
         public void DeleteTest(string url, int articleID)
         {
 
@@ -200,7 +201,7 @@ namespace RedditCloneTests.Controllers
 
             List<Article> articles1 = new ItemFactory().SearchURL(url);
             Assert.AreEqual(1, articles1.Count, "THere should be only 1 article");
-            SubItemController controller = CreateSubItemController("POST");
+            SubItemController controller = CreateSubItemController(HttpMethod.Post);
             RedirectToRouteResult result = (RedirectToRouteResult)controller.Delete(articleID);
             Assert.AreEqual("Main",result.Values["controller"]);
             Assert.AreEqual("Item", result.Values["action"]);
@@ -231,7 +232,7 @@ namespace RedditCloneTests.Controllers
         {
 
 
-            ItemController controller = CreateSubItemController("POST");
+            ItemController controller = CreateSubItemController(HttpMethod.Post);
             RedirectToRouteResult actionEesult = (RedirectToRouteResult)controller.SubmitNew(url, title, owner);
             actionEesult.Values["controller"] = "Main";
             actionEesult.Values["action"] = "Item";
@@ -262,14 +263,14 @@ namespace RedditCloneTests.Controllers
         }
 
         [RowTest, RollBack]
-        [Row(30)]
+        [Row(5)]
         public void DownVoteCalculation(int articleID)
         {
             Article arr = new ItemFactory().GetArticleID(articleID);
             Assert.AreEqual(3, arr.DownVotes);
         }
         [RowTest, RollBack]
-        [Row(30)]
+        [Row(5)]
         public void CountArticleIDInVoteHistory(int articleID)
         {
             List<VoteHistory> vHis = new ItemFactory().GetVoteHistory(articleID);

@@ -31,7 +31,7 @@ namespace RedditClone.Controllers
 
         public ActionResult SubmitNew(string url, string title, string digger)
         {
-            if(Request.HttpMethod!="POST")
+            if(Request.HttpMethod!=HttpMethod.Post)
             {
                 return View();
             }
