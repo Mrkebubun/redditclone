@@ -68,8 +68,6 @@ namespace RedditCloneTests.Controllers
         public void AddUserTest(string username, string password, string email)
         {
             NameValueCollection nvm = new NameValueCollection();
-            //nvm.Add("username", username);
-            //nvm.Add("password", password);
             
             UserInfoController controller =CreateSubUserInfoController(HttpMethod.Post);
             controller.Register(username, password, email);
@@ -132,7 +130,8 @@ namespace RedditCloneTests.Controllers
         public void UserReputation(string username, int hisReputation)
         {
             UserInfoController controller = CreateSubUserInfoController(HttpMethod.Get);
-            throw new NotImplementedException();
+            Assert.AreEqual(hisReputation, controller.GetUser(username).Reputation);
+            //throw new NotImplementedException();
             
         }
 
