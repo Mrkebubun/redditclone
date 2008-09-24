@@ -102,14 +102,14 @@ namespace RedditCloneTests.Controllers
         [Test, RollBack]
         public void RegisterGetTest()
         {
-            SubUserInfoController controller = CreateSubUserInfoController("GET");
+            SubUserInfoController controller = CreateSubUserInfoController(HttpMethod.Get);
             ViewResult result =(ViewResult)controller.Register(null, null, null);
             Assert.AreEqual("Registration", controller.ViewData["Title"]);
         }
         [Test, RollBack]
         public void LoginGetTest()
         {
-            SubUserInfoController controller = CreateSubUserInfoController("GET");
+            SubUserInfoController controller = CreateSubUserInfoController(HttpMethod.Get);
             ViewResult result = (ViewResult)controller.Login(null, null, true);
             Assert.AreEqual("Login", controller.ViewData["Title"]);
             //Assert.Greater(((List<string>)controller.ViewData["errors"]).Count, 0);

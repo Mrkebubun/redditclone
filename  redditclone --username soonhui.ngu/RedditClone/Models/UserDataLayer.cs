@@ -20,9 +20,6 @@ namespace RedditClone.Models
             {
                 Diggers = userName,
                 password = password,
-           
-             
-                
                
             };
             dc.UserInfos.InsertOnSubmit(uif);

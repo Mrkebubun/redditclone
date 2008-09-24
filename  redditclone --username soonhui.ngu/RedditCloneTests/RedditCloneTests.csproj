@@ -62,6 +62,7 @@
   <ItemGroup>
     <Compile Include="Controllers\ControllerTestHelper.cs" />
     <Compile Include="Controllers\ItemControllerTest.cs" />
+    <Compile Include="Controllers\RedditMembershipTest.cs" />
     <Compile Include="Controllers\UserInfoControllerTest.cs" />
     <Compile Include="Controllers\UserInfoControllerTest2.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

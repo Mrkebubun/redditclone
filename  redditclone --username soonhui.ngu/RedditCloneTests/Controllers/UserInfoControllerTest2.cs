@@ -25,37 +25,75 @@ namespace RedditCloneTests.Controllers
         {
 
         }
+        private UserInfoController controllerFake;
+        private HttpRequestBase requestFake;
+        private UserInfoController controller;
+        private IFormsAuthentication formAuthenFake;
+        private RedditMembershipProvider providerFake;
 
+        [SetUp]
         public void Init()
         {
+            controllerFake = Isolate.Fake.Instance<UserInfoController>(Members.CallOriginal);
+            Isolate.Swap<UserInfoController>().With(controllerFake);
+
+            requestFake = Isolate.Fake.Instance<HttpRequestBase>(Members.MustSpecifyReturnValues);
+            Isolate.WhenCalled(() => requestFake.HttpMethod).WillReturn(HttpMethod.Post);
+            Isolate.WhenCalled(() => controllerFake.Request).WillReturn(requestFake);
+
+            formAuthenFake = Isolate.Fake.Instance<IFormsAuthentication>(Members.ReturnNulls);
+            Isolate.WhenCalled(() => controllerFake.FormsAuth).WillReturn(formAuthenFake);
+
+            providerFake = Isolate.Fake.Instance<RedditMembershipProvider>(Members.ReturnNulls);
+            Isolate.WhenCalled(() => providerFake.Name).WillReturn("RedditMembershipProvider");
+            Isolate.WhenCalled(() => controllerFake.Provider).WillReturn(providerFake);
+
+           controller = new UserInfoController();
+
+
 
         }
 
+        [TearDown]
         public void Clean()
         {
 
         }
+        [Test, RollBack]
+        public void RegisterGetTest()
+        {
+            Isolate.WhenCalled(() => requestFake.HttpMethod).WillReturn(HttpMethod.Get);
+            ViewResult result = (ViewResult)controller.Register(null, null, null);
+            Assert.AreEqual("Registration", controller.ViewData["Title"]);
+        }
 
+        [Test, RollBack]
+        public void LoginGetTest()
+        {
+            Isolate.WhenCalled(() => requestFake.HttpMethod).WillReturn(HttpMethod.Get);  
+            ViewResult result = (ViewResult)controller.Login(null, null, true);
+            Assert.AreEqual("Login", controller.ViewData["Title"]);
+            Assert.IsNull(controller.ViewData["errors"]);
+            //Assert.AreEqual(0,((List<string>)controller.ViewData["errors"]).Count);
+        }
+
+        [RowTest, RollBack]
+        [Row("gesghhrs", "rtyhdthdt")]
+        public void LoginFailNoUserTest(string username, string password)
+        {
+            Isolate.WhenCalled(() => providerFake.ValidateUser(username, password)).WillReturn(false);  
+            ViewResult result = (ViewResult)controller.Login(username, password, true);
+            Assert.Greater(((List<string>)controller.ViewData["errors"]).Count, 0);
+
+        }
         [Isolated]
         [RowTest, RollBack]
         [Row("Joseph", "Joseph")]
         public void LoginTest(string username, string password)
         {
-            UserInfoController controllerFake = Isolate.Fake.Instance<UserInfoController>(Members.CallOriginal);
 
-            HttpRequestBase requestFake = Isolate.Fake.Instance<HttpRequestBase>(Members.MustSpecifyReturnValues);
-            Isolate.WhenCalled(() => requestFake.HttpMethod).WillReturn(HttpMethod.Post);
-            Isolate.WhenCalled(() => controllerFake.Request).WillReturn(requestFake);
-
-            RedditMembershipProvider providerFake = Isolate.Fake.Instance<RedditMembershipProvider>(Members.MustSpecifyReturnValues);
             Isolate.WhenCalled(() => providerFake.ValidateUser(username, password)).WillReturn(true);
-            Isolate.WhenCalled(() => controllerFake.Provider).WillReturn(providerFake);
-            Isolate.Swap<UserInfoController>().With(controllerFake);
 
-            IFormsAuthentication formAuthenFake = Isolate.Fake.Instance<IFormsAuthentication>(Members.ReturnNulls);
-            Isolate.WhenCalled(() => controllerFake.FormsAuth).WillReturn(formAuthenFake);
-
-            UserInfoController controller = new UserInfoController();
             RedirectToRouteResult result = (RedirectToRouteResult)controller.Login(username, password, false);
             Assert.AreEqual("Item", (result).Values["controller"]);
             Assert.AreEqual("Main", (result).Values["action"]);
@@ -65,27 +103,27 @@ namespace RedditCloneTests.Controllers
 
 
         }
+        [RowTest, RollBack]
+        [Row("Joseph", "rtyhdthdt")]
+        public void LoginFailTest(string username, string password)
+        {
+            Isolate.WhenCalled(() => providerFake.ValidateUser(username, password)).WillReturn(false);
+            controller.Login(username, password, false);
+            Assert.Greater(((List<string>)controller.ViewData["errors"]).Count, 0);
 
+            Isolate.Verify.WasCalledWithExactArguments(() => providerFake.ValidateUser(username, password));
+
+        }
         [Isolated]
         [RowTest, RollBack]
         [Row("Dennis2", "Dennis2", "myemail@gmail.com")]
         public void AddUserTest(string username, string password, string email)
         {
-            UserInfoController controllerFake = Isolate.Fake.Instance<UserInfoController>(Members.CallOriginal);
 
-            HttpRequestBase requestFake = Isolate.Fake.Instance<HttpRequestBase>(Members.MustSpecifyReturnValues);
-            Isolate.WhenCalled(() => requestFake.HttpMethod).WillReturn(HttpMethod.Post);
 
-            RedditMembershipProvider providerFake = Isolate.Fake.Instance<RedditMembershipProvider>(Members.MustSpecifyReturnValues);
             MembershipCreateStatus mcs;
             Isolate.WhenCalled(() => providerFake.CreateUser(null, null, null, string.Empty, string.Empty, false, null, out mcs)).WillReturn(null);
 
-
-            Isolate.WhenCalled(()=>controllerFake.Request).WillReturn(requestFake);
-            Isolate.WhenCalled(() => controllerFake.Provider).WillReturn(providerFake);
-            Isolate.Swap<UserInfoController>().With(controllerFake);
-
-            UserInfoController controller = new UserInfoController();
             RedirectToRouteResult result = (RedirectToRouteResult)controller.Register(username, password, email);
             Assert.AreEqual("Item", (result).Values["controller"]);
             Assert.AreEqual("Main", (result).Values["action"]);

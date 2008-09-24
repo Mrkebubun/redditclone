@@ -37,6 +37,11 @@ namespace RedditClone.Controllers
     }
     public class RedditMembershipProvider : MembershipProvider
     {
+        private UserDataLayer userLayer;
+        public RedditMembershipProvider()
+        {
+            userLayer = new UserDataLayer();
+        }
         public override int PasswordAttemptWindow
         {
             get { throw new NotImplementedException(); }
@@ -67,7 +72,7 @@ namespace RedditClone.Controllers
         }
         public override string GetPassword(string username, string answer)
         {
-            throw new NotImplementedException();
+            return userLayer.GetUserInfo(username).password;
         }
         public override bool ChangePassword(string username, string oldPassword, string newPassword)
         {
@@ -83,7 +88,7 @@ namespace RedditClone.Controllers
         }
         public override bool ValidateUser(string username, string password)
         {
-            UserInfo user = new UserDataLayer().GetUserInfo(username);
+            UserInfo user = userLayer.GetUserInfo(username);
             if (user == null)
             {
                 return false;
@@ -157,12 +162,12 @@ namespace RedditClone.Controllers
         {
 
 
+
+            userLayer.AddUser(username, password, email);
+            status = MembershipCreateStatus.Success;
             MembershipUser user = new MembershipUser(Name, username, providerUserKey,
             email, passwordQuestion, null, isApproved, false, DateTime.Now, DateTime.Now,
             DateTime.Now, DateTime.Now, DateTime.Now);
-
-            new UserDataLayer().AddUser(username, password, email);
-            status = MembershipCreateStatus.Success;
             return user;
 
         }
