@@ -6,7 +6,7 @@ using System.Web;
 namespace RedditClone.Models
 {
 
-    public class ItemFactory
+    public class ItemFactory : RedditClone.Models.IItemFactory
     {
         public List<Article> GetHotArticles()
         {

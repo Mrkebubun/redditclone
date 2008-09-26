@@ -35,7 +35,7 @@ namespace RedditCloneTests.Controllers
 
             controllerFake = Isolate.Fake.Instance<ItemController>(Members.CallOriginal);
             itemFactoryFake = Isolate.Fake.Instance<ItemFactory>(Members.MustSpecifyReturnValues);
-            Isolate.WhenCalled(() => itemFactoryFake.GetHotArticles()).WillReturn(new List<Article>());
+
             Isolate.Swap<ItemFactory>().With(itemFactoryFake);
 
             Isolate.Swap<ItemController>().With(controllerFake);
@@ -43,9 +43,10 @@ namespace RedditCloneTests.Controllers
         }
 
         [Test]
+        [Isolated]
         public void DisplayItemTest()
         {
-            controller = new ItemController();
+            Isolate.WhenCalled(() => itemFactoryFake.GetHotArticles()).WillReturn(new List<Article>());
             ViewResult result = (ViewResult)controller.Main();
             
             Assert.AreEqual("Main", result.ViewName);
@@ -55,33 +56,18 @@ namespace RedditCloneTests.Controllers
         }
 
         [Test]
+        [Isolated]
         public void WhatNewTest()
         {
-            controller = new ItemController();
+
+            Isolate.WhenCalled(() => itemFactoryFake.GetNewestArticles()).WillReturn(new List<Article>());
             ViewResult result = (ViewResult)controller.WhatNew();
             Assert.IsInstanceOfType(typeof(List<Article>), result.ViewData.Model);
             List<Article> viewData = (List<Article>)result.ViewData.Model;
-            Assert.IsTrue(viewData.Count >= 2);
-            for (int i = 0; i < viewData.Count - 1; i++)
-            {
-                Assert.GreaterEqualThan(viewData[i].submittedDate, viewData[i + 1].submittedDate);
-            }
+
         }
 
-        //[RowTest, RollBack]
-        //[Row(1, "Joseph")]
-        //public void DoubleCastTest(int id, string voter)
-        //{
-        //    NameValueCollection nvm = new NameValueCollection();
-        //    nvm.Add("articleID", id.ToString());
-        //    nvm.Add("diggers", voter);
-        //    SubItemController controller = CreateSubItemController(HttpMethod.Post);
-        //    controller.CastUpVote(id, voter);
 
-        //    int upVoteCount = controller.GetArticleID(id).UpVotes;
-        //    controller.CastUpVote(id, voter);
-        //    Assert.AreEqual(upVoteCount, controller.GetArticleID(id).UpVotes);
-        //}
 
         //[RowTest, RollBack]
         //[Row(1, "Joseph")]
@@ -100,31 +86,31 @@ namespace RedditCloneTests.Controllers
         //    Assert.AreEqual(upVoteCount, controller.GetArticleID(id).UpVotes);
         //    Assert.AreEqual(downVoteCount + 1, controller.GetArticleID(id).DownVotes);
         //}
-        //[RowTest, RollBack]
-        //[Row(1, "Joseph")]
-        //public void CastUpVoteTest(int id, string digger)
-        //{
-        //    NameValueCollection nvm = new NameValueCollection();
-        //    nvm.Add("articleID", id.ToString());
-        //    nvm.Add("diggers", digger);
-        //    SubItemController controller = CreateSubItemController(HttpMethod.Post);
-        //    controller.CastUpVote(id, digger);
+        [RowTest, RollBack]
+        [Row(1, "Joseph")]
+        public void CastUpVoteTest(int id, string digger)
+        {
+             RedirectToRouteResult result = (RedirectToRouteResult)controller.CastUpVote(id, digger);
 
-        //    Assert.AreEqual(3, controller.GetArticleID(id).UpVotes);
-        //}
+            Assert.AreEqual("Item", result.Values["controller"]);
+            Assert.AreEqual("Main", result.Values["Action"]);
 
-        //[RowTest, RollBack]
-        //[Row(1, "Joseph")]
-        //public void CastDownVoteTest(int id, string digger)
-        //{
-        //    NameValueCollection nvm = new NameValueCollection();
-        //    nvm.Add("articleID", id.ToString());
-        //    nvm.Add("diggers", digger);
-        //    SubItemController controller = CreateSubItemController(HttpMethod.Post);
-        //    controller.CastDownVote(id, digger);
+            Isolate.Verify.WasCalledWithExactArguments(() => itemFactoryFake.CastUpVote(id, digger));
 
-        //    Assert.AreEqual(1, controller.GetArticleID(id).DownVotes);
-        //}
+
+        }
+
+        [RowTest, RollBack]
+        [Row(1, "Joseph")]
+        public void CastDownVoteTest(int id, string digger)
+        {
+
+            RedirectToRouteResult result =(RedirectToRouteResult) controller.CastDownVote(id, digger);
+            Assert.AreEqual("Item", result.Values["controller"]);
+            Assert.AreEqual("Main", result.Values["Action"]);
+
+            Isolate.Verify.WasCalledWithExactArguments(() => itemFactoryFake.CastDownVote(id, digger));
+        }
         //[RowTest, RollBack]
         //[Row("http://itscommonsensestupid.blogspot.com/2008/05/zephyr-test-management-tool.html", "Soon Hui")]
         //public void GetLatestVoteHistory(string url, string voters)

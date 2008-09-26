@@ -63,7 +63,7 @@
     <Compile Include="Controllers\ControllerTestHelper.cs" />
     <Compile Include="Controllers\ItemControllerTest.cs" />
     <Compile Include="Controllers\ItemControllerTest2.cs" />
-    <Compile Include="Controllers\RedditMembershipTest.cs" />
+    <Compile Include="Model\RedditMembershipTest.cs" />
     <Compile Include="Controllers\UserInfoControllerTest.cs" />
     <Compile Include="Controllers\UserInfoControllerTest2.cs" />
     <Compile Include="Model\ItemFactoryTest.cs" />
