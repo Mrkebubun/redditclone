@@ -10,6 +10,39 @@ using System.Web.Security;
 namespace RedditCloneTests.TypeMockTesting
 {
     [TestFixture]
+    public class TestItemFactory
+    {
+        private ItemController controllerFake;
+        private ItemController controller;
+        private ItemFactory itemFactoryFake;
+        public TestItemFactory()
+        {
+
+        }
+
+
+        [SetUp]
+        public void Init()
+        {
+
+            controllerFake = Isolate.Fake.Instance<ItemController>(Members.CallOriginal);
+            Isolate.Swap<ItemController>().With(controllerFake);
+
+            itemFactoryFake = Isolate.Fake.Instance<ItemFactory>(Members.MustSpecifyReturnValues);
+            Isolate.WhenCalled(() => controllerFake.Factory).WillReturn(itemFactoryFake);
+
+
+            controller = new ItemController();
+        }
+
+        [Test]
+        public void TestItemFactory1()
+        {
+
+        }
+    }
+
+    [TestFixture]
     public class TestNestedCall
     {
         public TestNestedCall()
@@ -23,12 +56,12 @@ namespace RedditCloneTests.TypeMockTesting
         {
             ClassComp compFake = Isolate.Fake.Instance<ClassComp>(Members.CallOriginal);
             ClassSim simFake = Isolate.Fake.Instance<ClassSim>();
-            Isolate.WhenCalled(()=>compFake.sim).WillReturn(simFake);
+            Isolate.WhenCalled(() => compFake.sim).WillReturn(simFake);
 
             Isolate.Swap<ClassComp>().With(compFake);
             ClassComp comp = new ClassComp();
             comp.CallClassSim();
-            Isolate.Verify.WasCalledWithExactArguments(()=>simFake.DoNothing());
+            Isolate.Verify.WasCalledWithExactArguments(() => simFake.DoNothing());
         }
 
         [Test]
@@ -46,5 +79,7 @@ namespace RedditCloneTests.TypeMockTesting
             comp.CallMemberShip("user", "password");
             Isolate.Verify.WasCalledWithExactArguments(() => membershipFake.CreateUser("user", "password", string.Empty, string.Empty, string.Empty, false, null, out mcs));
         }
+
+
     }
 }

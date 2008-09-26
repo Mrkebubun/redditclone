@@ -10,6 +10,19 @@ namespace RedditClone.Controllers
 {
     public class ItemController : Controller
     {
+        public IItemFactory factory;
+        public RedditClone.Models.IItemFactory Factory
+        {
+            get { return factory; }
+        }
+        public ItemController():this(null)
+        {
+
+        }
+        public ItemController(IItemFactory itemFactory)
+        {
+            factory = itemFactory ?? new ItemFactory();
+        }
         public void Index()
         {
             
@@ -17,15 +30,14 @@ namespace RedditClone.Controllers
 
         public ActionResult Main()
         {
-            ItemFactory factory = new ItemFactory();
 
-            return View("Main", factory.GetHotArticles());
+
+            return View("Main", Factory.GetHotArticles());
         }
 
         public ActionResult WhatNew()
         {
-            ItemFactory factory = new ItemFactory();
-            return View("WhatNew", factory.GetNewestArticles());
+            return View("WhatNew", Factory.GetNewestArticles());
         }
 
 
@@ -35,9 +47,7 @@ namespace RedditClone.Controllers
             {
                 return View();
             }
-            ItemFactory factory = new ItemFactory();
-            factory.SubmitArticle(url,
-                title,digger);
+            Factory.SubmitArticle(url, title,digger);
             return RedirectToAction("Main","Item");
             //return View();
         }
@@ -45,8 +55,7 @@ namespace RedditClone.Controllers
         public ActionResult Delete(int articleID)
         {
          
-            ItemFactory factory = new ItemFactory();
-            factory.DeleteArticle(articleID);
+            Factory.DeleteArticle(articleID);
             return RedirectToAction("Item", "Main");
         }
 
@@ -54,20 +63,20 @@ namespace RedditClone.Controllers
         [NonAction]
         public Article GetArticleID(int id)
         {
-            return new ItemFactory().GetArticleID(id);
+            return Factory.GetArticleID(id);
         }
 
         [RequiresAuthentication]
         public ActionResult CastUpVote(int articleID, string digger)
         {
             
-            new ItemFactory().CastUpVote(articleID, digger);
+            Factory.CastUpVote(articleID, digger);
             return RedirectToAction("Main", "Item");
         }
 
         public ActionResult CastDownVote(int articleID, string digger)
         {
-            new ItemFactory().CastDownVote(articleID, digger);
+            Factory.CastDownVote(articleID, digger);
             return RedirectToAction("Main", "Item"); 
         }
 

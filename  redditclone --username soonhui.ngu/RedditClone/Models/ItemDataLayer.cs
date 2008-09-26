@@ -8,6 +8,10 @@ namespace RedditClone.Models
 
     public class ItemFactory : RedditClone.Models.IItemFactory
     {
+        public ItemFactory()
+        {
+
+        }
         public List<Article> GetHotArticles()
         {
             RedditCloneDataContext dc = new RedditCloneDataContext();

@@ -34,11 +34,12 @@ namespace RedditCloneTests.Controllers
         {
 
             controllerFake = Isolate.Fake.Instance<ItemController>(Members.CallOriginal);
-            itemFactoryFake = Isolate.Fake.Instance<ItemFactory>(Members.MustSpecifyReturnValues);
-
-            Isolate.Swap<ItemFactory>().With(itemFactoryFake);
-
             Isolate.Swap<ItemController>().With(controllerFake);
+
+            itemFactoryFake = Isolate.Fake.Instance<ItemFactory>(Members.MustSpecifyReturnValues);
+            Isolate.WhenCalled(() => controllerFake.Factory).WillReturn(itemFactoryFake);
+
+
             controller = new ItemController();
         }
 
