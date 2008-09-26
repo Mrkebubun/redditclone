@@ -96,7 +96,7 @@ namespace RedditCloneTests.Controllers
             Assert.IsTrue(viewData.Count>=2);
             for (int i = 0; i < viewData.Count-1; i++)
             {
-                Assert.GreaterThan(viewData[i].submittedDate, viewData[i + 1].submittedDate);
+                Assert.GreaterEqualThan(viewData[i].submittedDate, viewData[i + 1].submittedDate);
                 //Assert.IsTrue(viewData[i].submittedDate>viewData[i+1].submittedDate);
             }
         }

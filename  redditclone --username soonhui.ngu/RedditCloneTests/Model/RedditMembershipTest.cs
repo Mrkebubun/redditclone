@@ -9,14 +9,13 @@ using System.Web.Routing;
 using System.Configuration;
 using System.Web.Security;
 
-using RedditClone.Controllers;
 using RedditClone.Models;
 
 using MbUnit.Framework;
 using TypeMock;
 using TypeMock.ArrangeActAssert;
 
-namespace RedditCloneTests.Controllers
+namespace RedditCloneTests.Model
 {
     [TestFixture]
     public class RedditMembershipTest
