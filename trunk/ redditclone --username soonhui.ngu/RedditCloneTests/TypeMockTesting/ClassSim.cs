@@ -4,8 +4,36 @@ using System.Linq;
 using System.Text;
 using System.Web.Security;
 
+using System.Web.Mvc;
 namespace RedditCloneTests.TypeMockTesting
 {
+    public interface IItemFactory 
+    {
+
+    }
+    public class ItemFactory:IItemFactory
+    {
+
+    }
+
+    public class ItemController:Controller
+    {
+        public IItemFactory factory;
+        public RedditCloneTests.TypeMockTesting.IItemFactory Factory
+        {
+            get { return factory; }
+            set { factory = value; }
+        }
+        public ItemController()
+            : this(null)
+        {
+
+        }
+        public ItemController(IItemFactory itemFactory)
+        {
+            factory = itemFactory ?? new ItemFactory();
+        }
+    }
     public class ClassSim
     {
         public void DoNothing()
