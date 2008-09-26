@@ -59,6 +59,8 @@ namespace RedditCloneTests.Controllers
         {
 
         }
+
+
         [Test, RollBack]
         public void RegisterGetTest()
         {
@@ -66,6 +68,8 @@ namespace RedditCloneTests.Controllers
             ViewResult result = (ViewResult)controller.Register(null, null, null);
             Assert.AreEqual("Registration", controller.ViewData["Title"]);
         }
+
+
 
         [Test, RollBack]
         public void LoginGetTest()

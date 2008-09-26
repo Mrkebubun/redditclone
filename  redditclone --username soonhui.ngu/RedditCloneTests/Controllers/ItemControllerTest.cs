@@ -171,25 +171,7 @@ namespace RedditCloneTests.Controllers
 
         }
 
-        [Test]
-        public void TestStupid()
-        {
-            ArrayList a = new ArrayList();
 
-            ArrayList b = new ArrayList();
-
-            a.Add(1);
-
-            b.Add(1);
-
-            a.Add(2);
-
-            b.Add(2.0);
-            Assert.AreEqual(a[0], b[0]);
-            Assert.AreNotEqual(a[1], b[1]);
-            Assert.IsFalse((a[0] == b[0]));
-            Assert.IsFalse((a[1] == b[1]));
-        }
         [RowTest, RollBack]
         [Row("http://www.dotnetkicks.com/", 5)]
         public void DeleteTest(string url, int articleID)
@@ -215,14 +197,7 @@ namespace RedditCloneTests.Controllers
 
         }
 
-        private SubItemController CreateSubItemController(string httpMethod)
-        {
-            SubItemController controller = new SubItemController();
-            ControllerTestHelper.CreateMockController(controller, mocks, httpMethod);
-            
-            return controller;
 
-        }
 
         [RowTest, RollBack]
         [Row("Soon Hui", "http://www.google.com", "Google")]
@@ -277,7 +252,14 @@ namespace RedditCloneTests.Controllers
             Assert.AreEqual(4, vHis.Count);
         }
 
+        private SubItemController CreateSubItemController(string httpMethod)
+        {
+            SubItemController controller = new SubItemController();
+            ControllerTestHelper.CreateMockController(controller, mocks, httpMethod);
 
+            return controller;
+
+        }
 
     }
 
