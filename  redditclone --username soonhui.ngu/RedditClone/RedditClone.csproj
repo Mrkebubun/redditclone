@@ -146,12 +146,12 @@
     <Compile Include="Views\Item\Main.aspx.designer.cs">
       <DependentUpon>Main.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Views\Item\Submit.aspx.cs">
-      <DependentUpon>Submit.aspx</DependentUpon>
+    <Compile Include="Views\Item\SubmitNew.aspx.cs">
+      <DependentUpon>SubmitNew.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Views\Item\Submit.aspx.designer.cs">
-      <DependentUpon>Submit.aspx</DependentUpon>
+    <Compile Include="Views\Item\SubmitNew.aspx.designer.cs">
+      <DependentUpon>SubmitNew.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Item\WhatNew.aspx.cs">
       <DependentUpon>WhatNew.aspx</DependentUpon>
@@ -206,7 +206,7 @@
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Views\Item\Main.aspx" />
-    <Content Include="Views\Item\Submit.aspx" />
+    <Content Include="Views\Item\SubmitNew.aspx" />
     <Content Include="Views\Item\WhatNew.aspx" />
     <Content Include="Views\UserControls\ArticleUserControl.ascx" />
     <Content Include="Views\UserInfo\Login.aspx" />
