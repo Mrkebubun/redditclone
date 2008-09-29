@@ -25,17 +25,18 @@ namespace RedditCloneTests.TypeMockTesting
         public void Init()
         {
 
-            controllerFake = Isolate.Fake.Instance<ItemController>(Members.CallOriginal);
+            controllerFake = Isolate.Fake.Instance<ItemController>(Members.ReturnRecursiveFakes);
             Isolate.Swap<ItemController>().With(controllerFake);
 
-            itemFactoryFake = Isolate.Fake.Instance<ItemFactory>(Members.MustSpecifyReturnValues);
-            Isolate.WhenCalled(() => controllerFake.Factory).WillReturn(itemFactoryFake);
+            //itemFactoryFake = Isolate.Fake.Instance<ItemFactory>(Members.MustSpecifyReturnValues);
+            //Isolate.WhenCalled(() => controllerFake.Factory).WillReturn(itemFactoryFake);
 
 
             controller = new ItemController();
         }
 
         [Test]
+        [Isolated]
         public void TestItemFactory1()
         {
 

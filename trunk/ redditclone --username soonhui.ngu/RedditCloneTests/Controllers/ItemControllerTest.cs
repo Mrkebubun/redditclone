@@ -86,20 +86,20 @@ namespace RedditCloneTests.Controllers
 
         }
 
-        [Test]
-        public void WhatNewTest()
-        {
-            SubItemController controller = new SubItemController();
-            controller.WhatNew();
-            Assert.IsInstanceOfType(typeof(List<Article>),controller.SelectedViewData);
-            List<Article> viewData = (List<Article>)controller.SelectedViewData;
-            Assert.IsTrue(viewData.Count>=2);
-            for (int i = 0; i < viewData.Count-1; i++)
-            {
-                Assert.GreaterEqualThan(viewData[i].submittedDate, viewData[i + 1].submittedDate);
-                //Assert.IsTrue(viewData[i].submittedDate>viewData[i+1].submittedDate);
-            }
-        }
+        //[Test]
+        //public void WhatNewTest()
+        //{
+        //    SubItemController controller = new SubItemController();
+        //    controller.WhatNew();
+        //    Assert.IsInstanceOfType(typeof(List<Article>),controller.SelectedViewData);
+        //    List<Article> viewData = (List<Article>)controller.SelectedViewData;
+        //    Assert.IsTrue(viewData.Count>=2);
+        //    for (int i = 0; i < viewData.Count-1; i++)
+        //    {
+        //        Assert.GreaterEqualThan(viewData[i].submittedDate, viewData[i + 1].submittedDate);
+        //        //Assert.IsTrue(viewData[i].submittedDate>viewData[i+1].submittedDate);
+        //    }
+        //}
 
         [RowTest, RollBack]
         [Row(1, "Joseph")]

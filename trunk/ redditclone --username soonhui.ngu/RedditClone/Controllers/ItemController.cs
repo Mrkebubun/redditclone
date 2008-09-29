@@ -43,6 +43,7 @@ namespace RedditClone.Controllers
 
         public ActionResult SubmitNew(string url, string title, string digger)
         {
+            ViewData["title"] = "Submit New Item!";
             if(Request.HttpMethod!=HttpMethod.Post)
             {
                 return View();
