@@ -26,7 +26,7 @@ namespace RedditCloneTests.TypeMockTesting
         {
 
             controllerFake = Isolate.Fake.Instance<ItemController>(Members.ReturnRecursiveFakes);
-            Isolate.Swap<ItemController>().With(controllerFake);
+            Isolate.SwapNextInstance<ItemController>().With(controllerFake);
 
             //itemFactoryFake = Isolate.Fake.Instance<ItemFactory>(Members.MustSpecifyReturnValues);
             //Isolate.WhenCalled(() => controllerFake.Factory).WillReturn(itemFactoryFake);
@@ -59,7 +59,7 @@ namespace RedditCloneTests.TypeMockTesting
             ClassSim simFake = Isolate.Fake.Instance<ClassSim>();
             Isolate.WhenCalled(() => compFake.sim).WillReturn(simFake);
 
-            Isolate.Swap<ClassComp>().With(compFake);
+            Isolate.SwapNextInstance<ClassComp>().With(compFake);
             ClassComp comp = new ClassComp();
             comp.CallClassSim();
             Isolate.Verify.WasCalledWithExactArguments(() => simFake.DoNothing());
@@ -75,7 +75,7 @@ namespace RedditCloneTests.TypeMockTesting
             Isolate.WhenCalled(() => membershipFake.CreateUser(null, null, null, string.Empty, string.Empty, false, null, out mcs)).WillReturn(null);
             Isolate.WhenCalled(() => compFake.Provider).WillReturn(membershipFake);
 
-            Isolate.Swap<ClassComp>().With(compFake);
+            Isolate.SwapNextInstance<ClassComp>().With(compFake);
             ClassComp comp = new ClassComp();
             comp.CallMemberShip("user", "password");
             Isolate.Verify.WasCalledWithExactArguments(() => membershipFake.CreateUser("user", "password", string.Empty, string.Empty, string.Empty, false, null, out mcs));
