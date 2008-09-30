@@ -25,11 +25,34 @@ namespace RedditCloneTests.Model
         public void Init()
         {
             factoryFake = Isolate.Fake.Instance<ItemFactory>(Members.CallOriginal);
-            Isolate.Swap<ItemFactory>().With(factoryFake);
+            Isolate.SwapNextInstance<ItemFactory>().With(factoryFake);
 
             factory = new ItemFactory();
         }
 
+        [RowTest, RollBack]
+        [Row(1)]
+        public void UpVoteCalculation(int articleID)
+        {
+            Article arr = factory.GetArticleID(articleID);
+            Assert.AreEqual(2, arr.UpVotes);
+        }
+
+        [RowTest, RollBack]
+        [Row(5)]
+        public void DownVoteCalculation(int articleID)
+        {
+            Article arr = factory.GetArticleID(articleID);
+            Assert.AreEqual(3, arr.DownVotes);
+        }
+
+        [RowTest, RollBack]
+        [Row(5)]
+        public void CountArticleIDInVoteHistory(int articleID)
+        {
+            List<VoteHistory> vHis = factory.GetVoteHistory(articleID);
+            Assert.AreEqual(4, vHis.Count);
+        }
         [RowTest, RollBack]
         [Row(1, "Joseph")]
         public void OppositeCastTest(int id, string voter)

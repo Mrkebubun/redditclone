@@ -35,7 +35,7 @@ namespace RedditCloneTests.Controllers
         {
 
             controllerFake = Isolate.Fake.Instance<ItemController>(Members.CallOriginal);
-            Isolate.Swap<ItemController>().With(controllerFake);
+            Isolate.SwapNextInstance<ItemController>().With(controllerFake);
 
             itemFactoryFake = Isolate.Fake.Instance<ItemFactory>(Members.MustSpecifyReturnValues);
             Isolate.WhenCalled(() => controllerFake.Factory).WillReturn(itemFactoryFake);
@@ -144,27 +144,8 @@ namespace RedditCloneTests.Controllers
             Assert.AreEqual("Submit New Item!", controller.ViewData["Title"]);
         }
 
-        //[RowTest, RollBack]
-        //[Row(1)]
-        //public void UpVoteCalculation(int articleID)
-        //{
-        //    Article arr = new ItemFactory().GetArticleID(articleID);
-        //    Assert.AreEqual(2, arr.UpVotes);
-        //}
 
-        //[RowTest, RollBack]
-        //[Row(5)]
-        //public void DownVoteCalculation(int articleID)
-        //{
-        //    Article arr = new ItemFactory().GetArticleID(articleID);
-        //    Assert.AreEqual(3, arr.DownVotes);
-        //}
-        //[RowTest, RollBack]
-        //[Row(5)]
-        //public void CountArticleIDInVoteHistory(int articleID)
-        //{
-        //    List<VoteHistory> vHis = new ItemFactory().GetVoteHistory(articleID);
-        //    Assert.AreEqual(4, vHis.Count);
-        //}
+
+
     }
 }

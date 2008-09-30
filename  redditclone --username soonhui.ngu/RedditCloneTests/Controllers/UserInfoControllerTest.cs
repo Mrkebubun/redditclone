@@ -125,15 +125,7 @@ namespace RedditCloneTests.Controllers
             Assert.Greater(((List<string>)controller.ViewData["errors"]).Count, 0);
            
         }
-        [RowTest, RollBack]
-        [Row("Daniel", 5)]
-        public void UserReputation(string username, int hisReputation)
-        {
-            UserInfoController controller = CreateSubUserInfoController(HttpMethod.Get);
-            Assert.AreEqual(hisReputation, controller.GetUser(username).Reputation);
-            //throw new NotImplementedException();
-            
-        }
+
 
         [RowTest, RollBack]
         [Row("Joseph")]
