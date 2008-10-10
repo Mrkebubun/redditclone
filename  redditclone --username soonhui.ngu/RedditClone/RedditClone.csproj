@@ -76,6 +76,9 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ItemController.cs" />
     <Compile Include="Models\IItemFactory.cs" />
+    <Compile Include="Models\RedditCloneDataContext.designer.cs">
+      <DependentUpon>RedditCloneDataContext.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\RedditMembershipProvider.cs" />
     <Compile Include="Controllers\UserInfoController.cs" />
     <Compile Include="Default.aspx.cs">
@@ -88,11 +91,6 @@
     <Compile Include="Models\Enums.cs" />
     <Compile Include="Models\ItemDataLayer.cs" />
     <Compile Include="Models\RedditCloneDataContext.cs">
-      <DependentUpon>RedditCloneDataContext.dbml</DependentUpon>
-    </Compile>
-    <Compile Include="Models\RedditCloneDataContext.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
       <DependentUpon>RedditCloneDataContext.dbml</DependentUpon>
     </Compile>
     <Compile Include="Models\UserDataLayer.cs" />
@@ -229,7 +227,6 @@
   <ItemGroup>
     <None Include="Models\RedditCloneDataContext.dbml">
       <Generator>MSLinqToSQLGenerator</Generator>
-      <LastGenOutput>RedditCloneDataContext.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
@@ -253,7 +250,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>2270</DevelopmentServerPort>
+          <DevelopmentServerPort>2070</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>

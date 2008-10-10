@@ -14,6 +14,7 @@ using TypeMock.ArrangeActAssert;
 namespace RedditCloneTests
 {
     [TestFixture]
+     [Isolated]
     public class RouteTest
     {
         private RouteCollection routes;
@@ -31,7 +32,7 @@ namespace RedditCloneTests
 
         }
 
-        [RowTest]
+        [RowTest, Isolated]
         [Row("~/Login", "UserInfo", "Login")]
         [Row("~/", "Item", "Main")]
         [Row("~/Main", "Item", "Main")]

@@ -18,6 +18,21 @@ namespace RedditClone.Models
             return dc.Articles.ToList<Article>();
         }
 
+        public List<Article> GetSubmittedArticles(string username)
+        {
+            RedditCloneDataContext dc = new RedditCloneDataContext();
+            var articles = from p in dc.Articles
+                           where p.Diggers == username
+                           select p;
+
+            return articles.ToList();
+        }
+
+        public VoteHistory GetArticleHistory(string articleName)
+        {
+            throw new NotImplementedException();
+        }
+
         public List<Article> GetNewestArticles()
         {
             RedditCloneDataContext dc = new RedditCloneDataContext();
