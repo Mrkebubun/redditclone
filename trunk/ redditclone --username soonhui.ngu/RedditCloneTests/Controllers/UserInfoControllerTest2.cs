@@ -19,6 +19,7 @@ using TypeMock.ArrangeActAssert;
 namespace RedditCloneTests.Controllers
 {
     [TestFixture]
+    [ClearMocks]
     public class UserInfoControllerTest2
     {
         public UserInfoControllerTest2()
@@ -56,7 +57,7 @@ namespace RedditCloneTests.Controllers
             Assert.AreEqual("Registration", controller.ViewData["Title"]);
         }
 
-        [RowTest, RollBack]
+        [RowTest, RollBack, Isolated]
         [Row("Daniel", 5)]
         public void UserReputation(string username, int hisReputation)
         {

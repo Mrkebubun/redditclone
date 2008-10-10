@@ -14,7 +14,6 @@ namespace RedditCloneTests.Model
     [TestFixture]
     public class ItemFactoryTest
     {
-        ItemFactory factoryFake;
         ItemFactory factory;
         public ItemFactoryTest()
         {
@@ -24,8 +23,7 @@ namespace RedditCloneTests.Model
         [SetUp]
         public void Init()
         {
-            factoryFake = Isolate.Fake.Instance<ItemFactory>(Members.CallOriginal);
-            Isolate.SwapNextInstance<ItemFactory>().With(factoryFake);
+
 
             factory = new ItemFactory();
         }
@@ -99,12 +97,26 @@ namespace RedditCloneTests.Model
 
         }
 
+        [RowTest, RollBack]
+        [Row("Soon Hui")]
+        public void GetSubmittedArticles(string username)
+        {
+            List<Article> articles = factory.GetSubmittedArticles(username);
+            Assert.AreEqual(4, articles.Count);
+        }
+
+        [RowTest, RollBack]
+        [Row("Soon Hui")]
+        public void GetArticleHistoryTest(string articleName)
+        {
+            factory.GetArticleHistory(articleName);
+        }
+
 
         [RowTest, RollBack]
         [Row("Soon Hui", "http://www.google.com", "Google")]
         [Row("Soon Hui", "http://www.yahoo.com", "yahoo")]
         [Row("Soon Hui", "http://www.live.com", "live")]
-        [Isolated]
         public void SubmitTest(string owner, string url, string title)
         {
 
