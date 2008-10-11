@@ -83,4 +83,23 @@ namespace RedditCloneTests.TypeMockTesting
 
 
     }
+
+    [TestFixture]
+    public class TestNaturalMock
+    {
+        public TestNaturalMock()
+        {
+
+        }
+
+        [Test]
+        public void Test23()
+        {
+            using (RecordExpectations recorder = RecorderManager.StartRecording())
+            {
+
+            }
+            Assert.AreEqual(0, 0);
+        }
+    }
 }
