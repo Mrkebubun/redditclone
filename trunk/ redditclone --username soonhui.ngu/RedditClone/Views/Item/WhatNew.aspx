@@ -3,7 +3,7 @@
 <ol>
     <% foreach (var item in ViewData)  {  %>
     <li>
-        <%= Html.RenderUserControl("~/Views/UserControls/ArticleUserControl.ascx", item) %>  
+        <%Html.RenderPartial("~/Views/UserControls/ArticleUserControl.ascx", item); %>  
      </li>
     <% } %>
 </ol>

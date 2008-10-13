@@ -250,7 +250,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>2070</DevelopmentServerPort>
+          <DevelopmentServerPort>4361</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>
@@ -263,4 +263,7 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <PropertyGroup>
+    <PostBuildEvent>C:\WINDOWS\Microsoft.NET\Framework\v2.0.50727\aspnet_compiler.exe -v / -p "$(ProjectDir)\"</PostBuildEvent>
+  </PropertyGroup>
 </Project>
