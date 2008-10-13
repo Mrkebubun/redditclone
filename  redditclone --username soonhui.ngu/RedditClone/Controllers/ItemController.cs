@@ -50,7 +50,7 @@ namespace RedditClone.Controllers
             }
             Factory.SubmitArticle(url, title,digger);
             return RedirectToAction("Main","Item");
-            //return View();
+
         }
 
         public ActionResult Delete(int articleID)

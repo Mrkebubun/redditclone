@@ -85,7 +85,6 @@ namespace RedditCloneTests.Model
 
             List<Article> articles1 =factory.SearchURL(url);
             Assert.AreEqual(1, articles1.Count, "THere should be only 1 article");
-            //SubItemController controller = CreateSubItemController(HttpMethod.Post);
             factory.DeleteArticle(articleID);
 
 
@@ -106,10 +105,24 @@ namespace RedditCloneTests.Model
         }
 
         [RowTest, RollBack]
-        [Row("Soon Hui")]
+        [Row("Zephyr the Test Management Tool")]
         public void GetArticleHistoryTest(string articleName)
         {
-            factory.GetArticleHistory(articleName);
+            List<VoteHistory> vHis = factory.GetArticleHistory(articleName);
+            Assert.AreEqual(2, vHis.Count);
+            Assert.AreEqual("Aaron", vHis[0].diggers);
+            Assert.AreEqual(VoteChoiceEnum.UpVote, (VoteChoiceEnum)vHis[0].voteChoice);
+
+            Assert.AreEqual("Soon Hui", vHis[1].diggers);
+            Assert.AreEqual(VoteChoiceEnum.UpVote, (VoteChoiceEnum)vHis[1].voteChoice);
+        }
+
+        [RowTest, RollBack]
+        [Row("Zephyr the Test Management sgsgr")]
+        public void GetArticleNoHistory(string articleName)
+        {
+            List<VoteHistory> vHis = factory.GetArticleHistory(articleName);
+            Assert.AreEqual(0, vHis.Count);
         }
 
 

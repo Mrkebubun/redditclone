@@ -28,9 +28,17 @@ namespace RedditClone.Models
             return articles.ToList();
         }
 
-        public VoteHistory GetArticleHistory(string articleName)
+        public List<VoteHistory> GetArticleHistory(string articleName)
         {
-            throw new NotImplementedException();
+            RedditCloneDataContext dc = new RedditCloneDataContext();
+            var res = from g in dc.Articles
+                      where g.Title == articleName
+                      select g.id;
+            var res1 = from aa in dc.VoteHistories
+                       where res.Contains(aa.articleID)
+                       orderby aa.diggers ascending
+                       select aa;
+            return res1.ToList();
         }
 
         public List<Article> GetNewestArticles()
