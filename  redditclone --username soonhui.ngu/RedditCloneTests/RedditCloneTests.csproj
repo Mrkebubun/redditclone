@@ -63,6 +63,7 @@
     <Compile Include="Model\RedditMembershipTest.cs" />
     <Compile Include="Controllers\UserInfoControllerTest2.cs" />
     <Compile Include="Model\ItemFactoryTest.cs" />
+    <Compile Include="Model\UserDataLayerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\HomeControllerTest.cs" />
     <Compile Include="RouteTest.cs" />

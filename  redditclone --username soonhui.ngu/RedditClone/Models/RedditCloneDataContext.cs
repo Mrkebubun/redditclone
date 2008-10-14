@@ -19,7 +19,26 @@ namespace RedditClone.Models
         {
             get
             {
-                throw new NotImplementedException();
+                var submittedArticle = from arr in Articles
+                                       where arr.Diggers == Diggers
+                                       select arr.id;
+
+                var voteRecord = from vr in VoteHistories
+                                 where submittedArticle.Contains(vr.articleID)
+                                 group vr by vr.articleID into articleNumber                             
+                                 select new 
+                                 {
+                                     upVotes = articleNumber.Where(vrs => (VoteChoiceEnum)vrs.voteChoice == VoteChoiceEnum.UpVote).Sum(vrs => vrs.voteChoice),
+                                     downVotes = articleNumber.Where(vrs => (VoteChoiceEnum)vrs.voteChoice == VoteChoiceEnum.DownVote).Sum(vrs => vrs.voteChoice)
+                                 };
+
+                
+
+                return (int)voteRecord.Sum(vrecord => Math.Max(-1,vrecord.upVotes-vrecord.downVotes));
+                //int upVotes =(int)voteRecord.Where(vrs => (VoteChoiceEnum)vrs. == VoteChoiceEnum.UpVote).Sum(vrs => vrs.voteChoice);
+                //int downVotes = (int)voteRecord.Where(vrs => (VoteChoiceEnum)vrs.voteChoice == VoteChoiceEnum.DownVote).Sum(vrs => vrs.voteChoice);
+
+                //return Math.Max(upVotes - downVotes, -1);
             }
         }
     }
