@@ -59,7 +59,12 @@ namespace RedditClone.Controllers
         }
 
 
-
+        public ActionResult UserInformation(string username)
+        {
+            UserDataLayer udl = new UserDataLayer();
+            
+            return View("UserInformation", udl.GetUserInfo(username));
+        }
         public ActionResult Login(string username, string password, bool? rememberMe)
         {
             //RedditMembershipProvider Provider = (RedditMembershipProvider)Membership.Provider;

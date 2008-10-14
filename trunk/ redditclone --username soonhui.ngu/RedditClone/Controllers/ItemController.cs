@@ -31,7 +31,6 @@ namespace RedditClone.Controllers
         public ActionResult Main()
         {
 
-
             return View("Main", Factory.GetHotArticles());
         }
 

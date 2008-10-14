@@ -18,6 +18,7 @@ namespace RedditClone.Models
             return dc.Articles.ToList<Article>();
         }
 
+
         public List<Article> GetSubmittedArticles(string username)
         {
             RedditCloneDataContext dc = new RedditCloneDataContext();
