@@ -33,6 +33,11 @@ namespace RedditCloneTests.TypeMockTesting
         {
             factory = itemFactory ?? new ItemFactory();
         }
+
+        public ActionResult Login()
+        {
+            return View("Hi", 1);
+        }
     }
     public class ClassSim
     {

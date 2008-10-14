@@ -36,6 +36,8 @@ namespace RedditCloneTests.Controllers
             controllerFake = Isolate.Fake.Instance<UserInfoController>(Members.CallOriginal);
             Isolate.SwapNextInstance<UserInfoController>().With(controllerFake);
             Isolate.WhenCalled(() => controllerFake.Request.HttpMethod).WillReturn(HttpMethod.Post);
+
+            
            controller = new UserInfoController();
 
 
@@ -57,15 +59,28 @@ namespace RedditCloneTests.Controllers
             Assert.AreEqual("Registration", controller.ViewData["Title"]);
         }
 
+        [Test, RollBack, Isolated]
+        public void UserInformationShow()
+        {
+            Isolate.NonPublic.WhenCalled(controllerFake, "View").WithGenericArguments(typeof(string), typeof(object)).WillReturn(null);
+            UserDataLayer udlFake = Isolate.Fake.Instance<UserDataLayer>(Members.ReturnNulls);
+            Isolate.SwapNextInstance<UserDataLayer>().With(udlFake);
 
+            controller.UserInformation(string.Empty);
+
+            Isolate.Verify.WasCalledWithAnyArguments(() => udlFake.GetUserInfo(string.Empty));
+            Isolate.Verify.NonPublic.WasCalled(controllerFake, "View").WithArguments("UserInformation", null);
+        }
 
         [Test, RollBack, Isolated]
         public void LoginGetTest()
         {
+
             Isolate.WhenCalled(() => controllerFake.Request.HttpMethod).WillReturn(HttpMethod.Get);  
             ViewResult result = (ViewResult)controller.Login(null, null, true);
             Assert.AreEqual("Login", controller.ViewData["Title"]);
             Assert.IsNull(controller.ViewData["errors"]);
+            
         }
 
         [RowTest, RollBack, Isolated]

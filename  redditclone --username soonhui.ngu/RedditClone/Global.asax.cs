@@ -14,6 +14,11 @@ namespace RedditClone
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+            routes.Add(new Route("Users/{id}", new MvcRouteHandler())
+                {
+                    Defaults = new RouteValueDictionary(new { controller ="UserInfo", action = "UserInformation",
+                    id = ""}),
+                });
             routes.Add(new Route("submit", new MvcRouteHandler())
             {
                 Defaults = new RouteValueDictionary(new { controller = "Item", action = "SubmitNew" }),

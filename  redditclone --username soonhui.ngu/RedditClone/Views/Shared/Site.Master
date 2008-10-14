@@ -14,12 +14,16 @@
             <p id="logo">
                 <a href="">A Reddit Clone</a></p>
             <ul id="mainMenu">
+                            <li>
+                <%=  Html.ActionLink(ViewData["UserName"], "UserInformation", "UserInfo", ViewData["UserName"],null)%>
+                </li>
                 <li>
                     <%= Html.ActionLink("Home","Index")%>
                 </li>
                 <li>
                     <%= Html.ActionLink("About","About")%>
                 </li>
+
             </ul>
         </div>
 

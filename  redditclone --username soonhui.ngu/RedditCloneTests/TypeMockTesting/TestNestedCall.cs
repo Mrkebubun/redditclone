@@ -9,7 +9,7 @@ using TypeMock.ArrangeActAssert;
 using System.Web.Security;
 namespace RedditCloneTests.TypeMockTesting
 {
-    [TestFixture]
+    [TestFixture, ClearMocks]
     public class TestItemFactory
     {
         private ItemController controllerFake;
@@ -25,22 +25,20 @@ namespace RedditCloneTests.TypeMockTesting
         public void Init()
         {
 
-            controllerFake = Isolate.Fake.Instance<ItemController>(Members.ReturnRecursiveFakes);
+            controllerFake = Isolate.Fake.Instance<ItemController>(Members.CallOriginal);
             Isolate.SwapNextInstance<ItemController>().With(controllerFake);
-
-            //itemFactoryFake = Isolate.Fake.Instance<ItemFactory>(Members.MustSpecifyReturnValues);
-            //Isolate.WhenCalled(() => controllerFake.Factory).WillReturn(itemFactoryFake);
-
 
             controller = new ItemController();
         }
 
-        [Test]
-        [Isolated]
-        public void TestItemFactory1()
+        [Test, Isolated]
+        public void TestLogin()
         {
-
+            Isolate.NonPublic.WhenCalled(controllerFake, "View").WithGenericArguments(typeof(string), typeof(object)).WillReturn(null);
+            controllerFake.Login();
         }
+
+
     }
 
     [TestFixture]
