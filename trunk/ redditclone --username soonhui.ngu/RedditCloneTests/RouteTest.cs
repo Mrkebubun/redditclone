@@ -37,6 +37,7 @@ namespace RedditCloneTests
         [Row("~/", "Item", "Main")]
         [Row("~/Main", "Item", "Main")]
         [Row("~/Register", "UserInfo", "Register")]
+        [Row("~/submit", "Item", "SubmitNew")]
         public void LoginRoute(string url, string controller, string action)
         {
             Isolate.WhenCalled(()=>contextFake.Request.AppRelativeCurrentExecutionFilePath).WillReturn(url);

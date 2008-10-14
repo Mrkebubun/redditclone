@@ -18,6 +18,9 @@
         <td>Name</td>
         <td><%=Html.TextBox("digger")%></td>
     </tr>
+    <tr>
+     <td><input type="submit" value="Submit" /></td>
+    </tr>
 </table>
       </form>
 
