@@ -27,18 +27,21 @@ namespace RedditCloneTests.Controllers
 
         }
         private UserInfoController controllerFake;
-        private UserInfoController controller;
+        //private UserInfoController controllerFake;
 
         [SetUp]
         public void Init()
         {
             
-            controllerFake = Isolate.Fake.Instance<UserInfoController>(Members.CallOriginal);
-            Isolate.SwapNextInstance<UserInfoController>().With(controllerFake);
+            controllerFake = Isolate.Fake.Instance<UserInfoController>(Members.ReturnRecursiveFakes);
+            //Isolate.SwapNextInstance<UserInfoController>().With(controllerFake);
+            Isolate.WhenCalled(() => controllerFake.Login(string.Empty, string.Empty, false)).CallOriginal();
+            Isolate.NonPublic.WhenCalled(controllerFake, "RedirectToAction").CallOriginal();
             Isolate.WhenCalled(() => controllerFake.Request.HttpMethod).WillReturn(HttpMethod.Post);
 
             
-           controller = new UserInfoController();
+           //controllerFake = new UserInfoController();
+            
 
 
 
@@ -55,8 +58,8 @@ namespace RedditCloneTests.Controllers
         public void RegisterGetTest()
         {
             Isolate.WhenCalled(() => controllerFake.Request.HttpMethod).WillReturn(HttpMethod.Get);
-            ViewResult result = (ViewResult)controller.Register(null, null, null);
-            Assert.AreEqual("Registration", controller.ViewData["Title"]);
+            ViewResult result = (ViewResult)controllerFake.Register(null, null, null);
+            Assert.AreEqual("Registration", controllerFake.ViewData["Title"]);
         }
 
         [Test, RollBack, Isolated]
@@ -66,7 +69,7 @@ namespace RedditCloneTests.Controllers
             UserDataLayer udlFake = Isolate.Fake.Instance<UserDataLayer>(Members.ReturnNulls);
             Isolate.SwapNextInstance<UserDataLayer>().With(udlFake);
 
-            controller.UserInformation(string.Empty);
+            controllerFake.UserInformation(string.Empty);
 
             Isolate.Verify.WasCalledWithAnyArguments(() => udlFake.GetUserInfo(string.Empty));
             Isolate.Verify.NonPublic.WasCalled(controllerFake, "View").WithArguments("UserInformation", null);
@@ -77,9 +80,9 @@ namespace RedditCloneTests.Controllers
         {
 
             Isolate.WhenCalled(() => controllerFake.Request.HttpMethod).WillReturn(HttpMethod.Get);  
-            ViewResult result = (ViewResult)controller.Login(null, null, true);
-            Assert.AreEqual("Login", controller.ViewData["Title"]);
-            Assert.IsNull(controller.ViewData["errors"]);
+            ViewResult result = (ViewResult)controllerFake.Login(null, null, true);
+            Assert.AreEqual("Login", controllerFake.ViewData["Title"]);
+            Assert.IsNull(controllerFake.ViewData["errors"]);
             
         }
 
@@ -88,8 +91,8 @@ namespace RedditCloneTests.Controllers
         public void LoginFailNoUserTest(string username, string password)
         {
             Isolate.WhenCalled(() => controllerFake.Provider.ValidateUser(username, password)).WillReturn(false);  
-            ViewResult result = (ViewResult)controller.Login(username, password, true);
-            Assert.Greater(((List<string>)controller.ViewData["errors"]).Count, 0);
+            ViewResult result = (ViewResult)controllerFake.Login(username, password, true);
+            Assert.Greater(((List<string>)controllerFake.ViewData["errors"]).Count, 0);
 
         }
         [Isolated]
@@ -97,10 +100,12 @@ namespace RedditCloneTests.Controllers
         [Row("Joseph", "Joseph")]
         public void LoginTest(string username, string password)
         {
-            Isolate.WhenCalled(() => controllerFake.FormsAuth.SetAuthCookie(username, false)).IgnoreCall();
-            Isolate.WhenCalled(() => controllerFake.Provider.ValidateUser(null, password)).WillReturn(true);
+            //Isolate.WhenCalled(() => controllerFake.FormsAuth.SetAuthCookie(username, false)).IgnoreCall();
+            MembershipProvider fakeProvided = controllerFake.Provider;
+            Isolate.WhenCalled(() => fakeProvided.ValidateUser(null, password)).WillReturn(true);
 
-            RedirectToRouteResult result = (RedirectToRouteResult)controller.Login(username, password, false);
+
+            RedirectToRouteResult result = (RedirectToRouteResult)controllerFake.Login(username, password, false);
             Assert.AreEqual("Item", (result).Values["controller"]);
             Assert.AreEqual("Main", (result).Values["action"]);
 
@@ -114,8 +119,8 @@ namespace RedditCloneTests.Controllers
         public void LoginFailTest(string username, string password)
         {
             Isolate.WhenCalled(() => controllerFake.Provider.ValidateUser(username, password)).WillReturn(false);
-            controller.Login(username, password, false);
-            Assert.Greater(((List<string>)controller.ViewData["errors"]).Count, 0);
+            controllerFake.Login(username, password, false);
+            Assert.Greater(((List<string>)controllerFake.ViewData["errors"]).Count, 0);
 
             Isolate.Verify.WasCalledWithExactArguments(() => controllerFake.Provider.ValidateUser(username, password));
 
@@ -130,7 +135,7 @@ namespace RedditCloneTests.Controllers
             MembershipCreateStatus mcs;
             Isolate.WhenCalled(() => controllerFake.Provider.CreateUser(username, password, email, string.Empty, string.Empty, false, null, out mcs)).WillReturn(null);
 
-            RedirectToRouteResult result = (RedirectToRouteResult)controller.Register(username, password, email);
+            RedirectToRouteResult result = (RedirectToRouteResult)controllerFake.Register(username, password, email);
             Assert.AreEqual("Item", (result).Values["controller"]);
             Assert.AreEqual("Main", (result).Values["action"]);
 
