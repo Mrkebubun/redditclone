@@ -6,6 +6,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
     <title>A Reddit Clone</title>
     <link href="../../Content/Site.css" rel="stylesheet" type="text/css" />
+   
 </head>
 <body>
     <div class="page">
@@ -15,7 +16,7 @@
                 <a href="">A Reddit Clone</a></p>
             <ul id="mainMenu">
                             <li>
-                <%=  Html.ActionLink(ViewData["UserName"], "UserInformation", "UserInfo", ViewData["UserName"],null)%>
+                <%=  Html.ActionLink("no name", "UserInformation", "UserInfo")%>
                 </li>
                 <li>
                     <%= Html.ActionLink("Home","Index")%>
