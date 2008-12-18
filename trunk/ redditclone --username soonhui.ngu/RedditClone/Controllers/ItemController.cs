@@ -10,10 +10,11 @@ namespace RedditClone.Controllers
 {
     public class ItemController : Controller
     {
-        public IItemFactory factory;
+
         public RedditClone.Models.IItemFactory Factory
         {
-            get { return factory; }
+            get;
+            private set;
         }
         public ItemController():this(null)
         {
@@ -21,37 +22,42 @@ namespace RedditClone.Controllers
         }
         public ItemController(IItemFactory itemFactory)
         {
-            factory = itemFactory ?? new ItemFactory();
+            Factory = itemFactory ?? new ItemFactory();
         }
         public void Index()
         {
             
         }
 
+        [AcceptVerbs(HttpVerbs.Get)]
         public ActionResult Main()
         {
 
             return View("Main", Factory.GetHotArticles());
         }
-
+        [AcceptVerbs(HttpVerbs.Get)]
         public ActionResult WhatNew()
         {
             return View("WhatNew", Factory.GetNewestArticles());
         }
+        [AcceptVerbs(HttpVerbs.Get)]
+        public ActionResult SubmitNew()
+        {
+            ViewData["title"] = "Submit New Item!";
 
+                return View();
 
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult SubmitNew(string url, string title, string digger)
         {
             ViewData["title"] = "Submit New Item!";
-            if(Request.HttpMethod!=HttpMethod.Post)
-            {
-                return View();
-            }
             Factory.SubmitArticle(url, title,digger);
             return RedirectToAction("Main","Item");
 
         }
 
+        [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Delete(int articleID)
         {
          

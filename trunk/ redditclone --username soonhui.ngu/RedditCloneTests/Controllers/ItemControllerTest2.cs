@@ -22,8 +22,7 @@ namespace RedditCloneTests.Controllers
     public class ItemControllerTest2
     {
         private ItemController controllerFake;
-        private ItemController controller;
-        private ItemFactory itemFactoryFake;
+    
         private HttpRequestBase httpRequestFake;
 
         public ItemControllerTest2()
@@ -36,27 +35,27 @@ namespace RedditCloneTests.Controllers
         {
 
             controllerFake = Isolate.Fake.Instance<ItemController>(Members.CallOriginal);
-            Isolate.SwapNextInstance<ItemController>().With(controllerFake);
 
-            itemFactoryFake = Isolate.Fake.Instance<ItemFactory>(Members.MustSpecifyReturnValues);
+
+            IItemFactory itemFactoryFake = Isolate.Fake.Instance<IItemFactory>(Members.MustSpecifyReturnValues);
             Isolate.WhenCalled(() => controllerFake.Factory).WillReturn(itemFactoryFake);
 
             httpRequestFake = Isolate.Fake.Instance<HttpRequestBase>(Members.MustSpecifyReturnValues);
             Isolate.WhenCalled(() => controllerFake.Request).WillReturn(httpRequestFake);
 
-            controller = new ItemController();
+          
         }
 
         [Test]
         [Isolated]
         public void DisplayItemTest()
         {
-            Isolate.WhenCalled(() => itemFactoryFake.GetHotArticles()).WillReturn(new List<Article>());
-            ViewResult result = (ViewResult)controller.Main();
+            Isolate.WhenCalled(() => controllerFake.Factory.GetHotArticles()).WillReturn(new List<Article>());
+            ViewResult result = (ViewResult)controllerFake.Main();
             
             Assert.AreEqual("Main", result.ViewName);
             Assert.IsInstanceOfType(typeof(List<Article>), result.ViewData.Model);
-            Isolate.Verify.WasCalledWithAnyArguments(() => itemFactoryFake.GetHotArticles());
+            Isolate.Verify.WasCalledWithAnyArguments(() => controllerFake.Factory.GetHotArticles());
 
         }
 
@@ -65,8 +64,8 @@ namespace RedditCloneTests.Controllers
         public void WhatNewTest()
         {
             //Isolate.WhenCalled(() => httpRequestFake.HttpMethod).WillReturn(HttpMethod.Get);
-            Isolate.WhenCalled(() => itemFactoryFake.GetNewestArticles()).WillReturn(new List<Article>());
-            ViewResult result = (ViewResult)controller.WhatNew();
+            Isolate.WhenCalled(() => controllerFake.Factory.GetNewestArticles()).WillReturn(new List<Article>());
+            ViewResult result = (ViewResult)controllerFake.WhatNew();
             Assert.IsInstanceOfType(typeof(List<Article>), result.ViewData.Model);
             List<Article> viewData = (List<Article>)result.ViewData.Model;
 
@@ -79,12 +78,12 @@ namespace RedditCloneTests.Controllers
         [Isolated]
         public void CastUpVoteTest(int id, string digger)
         {
-             RedirectToRouteResult result = (RedirectToRouteResult)controller.CastUpVote(id, digger);
+             RedirectToRouteResult result = (RedirectToRouteResult)controllerFake.CastUpVote(id, digger);
 
             Assert.AreEqual("Item", result.Values["controller"]);
             Assert.AreEqual("Main", result.Values["Action"]);
 
-            Isolate.Verify.WasCalledWithExactArguments(() => itemFactoryFake.CastUpVote(id, digger));
+            Isolate.Verify.WasCalledWithExactArguments(() => controllerFake.Factory.CastUpVote(id, digger));
 
 
         }
@@ -95,11 +94,11 @@ namespace RedditCloneTests.Controllers
         public void CastDownVoteTest(int id, string digger)
         {
 
-            RedirectToRouteResult result =(RedirectToRouteResult) controller.CastDownVote(id, digger);
+            RedirectToRouteResult result =(RedirectToRouteResult) controllerFake.CastDownVote(id, digger);
             Assert.AreEqual("Item", result.Values["controller"]);
             Assert.AreEqual("Main", result.Values["Action"]);
 
-            Isolate.Verify.WasCalledWithExactArguments(() => itemFactoryFake.CastDownVote(id, digger));
+            Isolate.Verify.WasCalledWithExactArguments(() => controllerFake.Factory.CastDownVote(id, digger));
         }
 
 
@@ -110,11 +109,10 @@ namespace RedditCloneTests.Controllers
         public void DeleteTest( int articleID)
         {
 
-            Isolate.WhenCalled(() => itemFactoryFake.DeleteArticle(articleID)).IgnoreCall();
-            RedirectToRouteResult result = (RedirectToRouteResult)controller.Delete(articleID);
+            RedirectToRouteResult result = (RedirectToRouteResult)controllerFake.Delete(articleID);
             Assert.AreEqual("Main", result.Values["controller"]);
             Assert.AreEqual("Item", result.Values["action"]);
-            Isolate.Verify.WasCalledWithExactArguments(() => itemFactoryFake.DeleteArticle(articleID));
+            Isolate.Verify.WasCalledWithExactArguments(() => controllerFake.Factory.DeleteArticle(articleID));
 
 
         }
@@ -126,13 +124,12 @@ namespace RedditCloneTests.Controllers
         public void SubmitTest(string owner, string url, string title)
         {
 
-            Isolate.WhenCalled(() => httpRequestFake.HttpMethod).WillReturn(HttpMethod.Post);
-            Isolate.WhenCalled(() => itemFactoryFake.SubmitArticle(url, title, owner)).IgnoreCall();
-            RedirectToRouteResult actionEesult = (RedirectToRouteResult)controller.SubmitNew(url, title, owner);
+       
+            RedirectToRouteResult actionEesult = (RedirectToRouteResult)controllerFake.SubmitNew(url, title, owner);
             actionEesult.Values["controller"] = "Main";
             actionEesult.Values["action"] = "Item";
 
-            Isolate.Verify.WasCalledWithExactArguments(() => itemFactoryFake.SubmitArticle(url, title, owner));
+            Isolate.Verify.WasCalledWithExactArguments(() => controllerFake.Factory.SubmitArticle(url, title, owner));
 
         }
 
@@ -141,8 +138,8 @@ namespace RedditCloneTests.Controllers
         public void SubmitViewTest()
         {
             Isolate.WhenCalled(() => httpRequestFake.HttpMethod).WillReturn(HttpMethod.Get);
-            controller.SubmitNew(null, null, null);
-            Assert.AreEqual("Submit New Item!", controller.ViewData["Title"]);
+            controllerFake.SubmitNew(null, null, null);
+            Assert.AreEqual("Submit New Item!", controllerFake.ViewData["Title"]);
         }
 
 

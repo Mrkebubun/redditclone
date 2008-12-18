@@ -42,15 +42,19 @@ namespace RedditClone.Controllers
             get;
             private set;
         }
+        [AcceptVerbs(HttpVerbs.Get)]
+        public ActionResult Register()
+        {
+            ViewData["Title"] = "Registration";
+            return View();
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Register(string username, string password, string email)
         {
             ViewData["Title"] = "Registration";
-            if (Request.HttpMethod!=HttpMethod.Post)
-            {
-                return View();
-            }
-            
-    
+
+               
             MembershipCreateStatus mcs;
             Provider.CreateUser(username, password,
                 email, string.Empty, string.Empty, true, null, out mcs);
@@ -58,25 +62,26 @@ namespace RedditClone.Controllers
             return RedirectToAction("Main", "Item");
         }
 
-
+        [AcceptVerbs(HttpVerbs.Get)]
         public ActionResult UserInformation(string username)
         {
             UserDataLayer udl = new UserDataLayer();
             
             return View("UserInformation", udl.GetUserInfo(username));
         }
+        [AcceptVerbs(HttpVerbs.Get)]
+        public ActionResult Login()
+        {
+            ViewData["Title"] = "Login";
+            return View();
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Login(string username, string password, bool? rememberMe)
         {
             //RedditMembershipProvider Provider = (RedditMembershipProvider)Membership.Provider;
             ViewData["Title"] = "Login";
 
-            // Non-POST requests should just display the Login form 
-            if (Request.HttpMethod != HttpMethod.Post)
-            {
-                return View();
-            }
 
-            // Basic parameter validation
             List<string> errors = new List<string>();
 
             if (String.IsNullOrEmpty(username))

@@ -9,6 +9,29 @@ using TypeMock.ArrangeActAssert;
 using System.Web.Security;
 namespace RedditCloneTests.TypeMockTesting
 {
+     [TestFixture, ClearMocks]
+    public class ItemFactoryDifficult
+    {
+         [Test, Isolated]
+         public void TestConcrete()
+         {
+             ItemController controller = Isolate.Fake.Instance<ItemController>(Members.CallOriginal);
+             ItemFactory factory = Isolate.Fake.Instance<ItemFactory>(Members.ReturnRecursiveFakes);
+             Isolate.WhenCalled(() => controller.Factory).WillReturn(factory);
+             controller.Submit("");
+             Isolate.Verify.WasCalledWithExactArguments(()=>controller.Factory.Submit(""));
+         }
+
+         [Test, Isolated]
+         public void TestAbstract()
+         {
+             ItemController controller = Isolate.Fake.Instance<ItemController>(Members.CallOriginal);
+             IItemFactory factory = Isolate.Fake.Instance<IItemFactory>(Members.ReturnRecursiveFakes);
+             Isolate.WhenCalled(() => controller.Factory).WillReturn(factory);
+             controller.Submit("");
+             Isolate.Verify.WasCalledWithExactArguments(() => controller.Factory.Submit(""));
+         }
+    }
     [TestFixture, ClearMocks]
     public class TestItemFactory
     {
@@ -26,12 +49,12 @@ namespace RedditCloneTests.TypeMockTesting
         {
 
             controllerFake = Isolate.Fake.Instance<ItemController>(Members.CallOriginal);
-            Isolate.SwapNextInstance<ItemController>().With(controllerFake);
+            Isolate.Swap.NextInstance<ItemController>().With(controllerFake);
 
             controller = new ItemController();
         }
 
-        [Test, Isolated]
+        [Test, Isolated, Ignore("Not relevant")]
         public void TestLogin()
         {
             Isolate.NonPublic.WhenCalled(controllerFake, "View").WithGenericArguments(typeof(string), typeof(object)).WillReturn(null);
@@ -57,7 +80,7 @@ namespace RedditCloneTests.TypeMockTesting
             ClassSim simFake = Isolate.Fake.Instance<ClassSim>();
             Isolate.WhenCalled(() => compFake.sim).WillReturn(simFake);
 
-            Isolate.SwapNextInstance<ClassComp>().With(compFake);
+            Isolate.Swap.NextInstance<ClassComp>().With(compFake);
             ClassComp comp = new ClassComp();
             comp.CallClassSim();
             Isolate.Verify.WasCalledWithExactArguments(() => simFake.DoNothing());
@@ -73,7 +96,7 @@ namespace RedditCloneTests.TypeMockTesting
             Isolate.WhenCalled(() => membershipFake.CreateUser(null, null, null, string.Empty, string.Empty, false, null, out mcs)).WillReturn(null);
             Isolate.WhenCalled(() => compFake.Provider).WillReturn(membershipFake);
 
-            Isolate.SwapNextInstance<ClassComp>().With(compFake);
+            Isolate.Swap.NextInstance<ClassComp>().With(compFake);
             ClassComp comp = new ClassComp();
             comp.CallMemberShip("user", "password");
             Isolate.Verify.WasCalledWithExactArguments(() => membershipFake.CreateUser("user", "password", string.Empty, string.Empty, string.Empty, false, null, out mcs));

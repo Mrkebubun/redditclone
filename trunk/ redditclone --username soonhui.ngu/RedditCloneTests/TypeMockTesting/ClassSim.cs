@@ -9,20 +9,28 @@ namespace RedditCloneTests.TypeMockTesting
 {
     public interface IItemFactory 
     {
-
+        void Submit(string url);
     }
     public class ItemFactory:IItemFactory
     {
 
+        #region IItemFactory Members
+
+        public void Submit(string url)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 
     public class ItemController:Controller
     {
-        public IItemFactory factory;
+
         public RedditCloneTests.TypeMockTesting.IItemFactory Factory
         {
-            get { return factory; }
-            set { factory = value; }
+            get;private set;
+        
         }
         public ItemController()
             : this(null)
@@ -31,12 +39,18 @@ namespace RedditCloneTests.TypeMockTesting
         }
         public ItemController(IItemFactory itemFactory)
         {
-            factory = itemFactory ?? new ItemFactory();
+            Factory = itemFactory ?? new ItemFactory();
         }
 
         public ActionResult Login()
         {
             return View("Hi", 1);
+        }
+
+        public ActionResult Submit(string url)
+        {
+            Factory.Submit(url);
+            return RedirectToAction("Main");
         }
     }
     public class ClassSim

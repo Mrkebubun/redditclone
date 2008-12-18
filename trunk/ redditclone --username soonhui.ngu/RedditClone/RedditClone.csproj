@@ -179,13 +179,6 @@
     <Compile Include="Views\UserControls\ArticleUserControl.ascx.designer.cs">
       <DependentUpon>ArticleUserControl.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Views\UserInfo\UserInformation.aspx.cs">
-      <DependentUpon>UserInformation.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Views\UserInfo\UserInformation.aspx.designer.cs">
-      <DependentUpon>UserInformation.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Views\UserInfo\Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -214,7 +207,6 @@
     <Content Include="Views\Item\SubmitNew.aspx" />
     <Content Include="Views\Item\WhatNew.aspx" />
     <Content Include="Views\UserControls\ArticleUserControl.ascx" />
-    <Content Include="Views\UserInfo\UserInformation.aspx" />
     <Content Include="Views\UserInfo\Login.aspx" />
     <Content Include="Views\UserInfo\Register.aspx" />
     <Content Include="Views\Web.config" />
