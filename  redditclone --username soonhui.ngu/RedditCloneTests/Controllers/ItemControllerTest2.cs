@@ -80,8 +80,8 @@ namespace RedditCloneTests.Controllers
         {
              RedirectToRouteResult result = (RedirectToRouteResult)controllerFake.CastUpVote(id, digger);
 
-            Assert.AreEqual("Item", result.Values["controller"]);
-            Assert.AreEqual("Main", result.Values["Action"]);
+            Assert.AreEqual("Item", result.RouteValues["controller"]);
+            Assert.AreEqual("Main", result.RouteValues["Action"]);
 
             Isolate.Verify.WasCalledWithExactArguments(() => controllerFake.Factory.CastUpVote(id, digger));
 
@@ -95,8 +95,8 @@ namespace RedditCloneTests.Controllers
         {
 
             RedirectToRouteResult result =(RedirectToRouteResult) controllerFake.CastDownVote(id, digger);
-            Assert.AreEqual("Item", result.Values["controller"]);
-            Assert.AreEqual("Main", result.Values["Action"]);
+            Assert.AreEqual("Item", result.RouteValues["controller"]);
+            Assert.AreEqual("Main", result.RouteValues["Action"]);
 
             Isolate.Verify.WasCalledWithExactArguments(() => controllerFake.Factory.CastDownVote(id, digger));
         }
@@ -110,8 +110,8 @@ namespace RedditCloneTests.Controllers
         {
 
             RedirectToRouteResult result = (RedirectToRouteResult)controllerFake.Delete(articleID);
-            Assert.AreEqual("Main", result.Values["controller"]);
-            Assert.AreEqual("Item", result.Values["action"]);
+            Assert.AreEqual("Main", result.RouteValues["controller"]);
+            Assert.AreEqual("Item", result.RouteValues["action"]);
             Isolate.Verify.WasCalledWithExactArguments(() => controllerFake.Factory.DeleteArticle(articleID));
 
 
@@ -126,8 +126,8 @@ namespace RedditCloneTests.Controllers
 
        
             RedirectToRouteResult actionEesult = (RedirectToRouteResult)controllerFake.SubmitNew(url, title, owner);
-            actionEesult.Values["controller"] = "Main";
-            actionEesult.Values["action"] = "Item";
+            actionEesult.RouteValues["controller"] = "Main";
+            actionEesult.RouteValues["action"] = "Item";
 
             Isolate.Verify.WasCalledWithExactArguments(() => controllerFake.Factory.SubmitArticle(url, title, owner));
 
