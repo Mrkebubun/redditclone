@@ -93,8 +93,8 @@ namespace RedditCloneTests.Controllers
 
 
             RedirectToRouteResult result = (RedirectToRouteResult)controller.Login(username, password, false);
-            Assert.AreEqual("Item", (result).Values["controller"]);
-            Assert.AreEqual("Main", (result).Values["action"]);
+            Assert.AreEqual("Item", (result).RouteValues["controller"]);
+            Assert.AreEqual("Main", (result).RouteValues["action"]);
 
             Isolate.Verify.WasCalledWithExactArguments(() => controller.Provider.ValidateUser(username, password));
             Isolate.Verify.WasCalledWithExactArguments(() => controller.FormsAuth.SetAuthCookie(username, false));
@@ -132,8 +132,8 @@ namespace RedditCloneTests.Controllers
             Isolate.WhenCalled(() => controller.Provider.CreateUser(username, password, email, string.Empty, string.Empty, false, null, out mcs)).WillReturn(null);
 
             RedirectToRouteResult result = (RedirectToRouteResult)controller.Register(username, password, email);
-            Assert.AreEqual("Item", (result).Values["controller"]);
-            Assert.AreEqual("Main", (result).Values["action"]);
+            Assert.AreEqual("Item", (result).RouteValues["controller"]);
+            Assert.AreEqual("Main", (result).RouteValues["action"]);
 
             
             Isolate.Verify.WasCalledWithExactArguments(() => controller.Provider.CreateUser(username, password, email, string.Empty, string.Empty, true, null, out mcs));
