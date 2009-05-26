@@ -1,4 +1,4 @@
-<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="RedditClone.Views.Shared.Site" %>
+<%@ Master Language="C#" AutoEventWireup="true" Inherits="System.Web.Mvc.ViewMasterPage" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -12,18 +12,17 @@
     <div class="page">
 
         <div id="header">
-            <p id="logo">
-                <a href="">A Reddit Clone</a></p>
+            <div id="logo">
+                <a href="">A Reddit Clone</a>
+                </div>
+                
+                   <div id="logindisplay">
+                <% Html.RenderPartial("LogOnUserControl"); %>
+            </div> 
             <ul id="mainMenu">
-                            <li>
-                <%=  Html.ActionLink("no name", "UserInformation", "UserInfo")%>
-                </li>
-                <li>
-                    <%= Html.ActionLink("Home","Index")%>
-                </li>
-                <li>
-                    <%= Html.ActionLink("About","About")%>
-                </li>
+                  
+                <li> <%= Html.ActionLink("Home","Index")%></li>
+                <li><%= Html.ActionLink("About","About")%></li>
 
             </ul>
         </div>
@@ -45,7 +44,7 @@
                 </div><!--/leftColumn-->
 
                 <div class="rightColumn">
-                    <asp:ContentPlaceHolder ID="MainContentPlaceHolder" runat="server">
+                    <asp:ContentPlaceHolder ID="MainContent" runat="server">
                     </asp:ContentPlaceHolder>
                 </div><!--/rightColumn-->
 
