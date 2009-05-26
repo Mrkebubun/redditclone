@@ -66,7 +66,7 @@ namespace RedditClone.Controllers
         public ActionResult UserInformation(string username)
         {
             UserDataLayer udl = new UserDataLayer();
-            
+           
             return View("UserInformation", udl.GetUserInfo(username));
         }
         [AcceptVerbs(HttpVerbs.Get)]

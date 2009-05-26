@@ -107,16 +107,22 @@ namespace RedditClone.Controllers
             return View();
         }
 
+        [AcceptVerbs(HttpVerbs.Get)]
+        public ActionResult Login()
+        {
+            return View();
+        }
+        [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Login(string username, string password, bool? rememberMe)
         {
 
             ViewData["Title"] = "Login";
 
-            // Non-POST requests should just display the Login form 
-            if (Request.HttpMethod != HttpMethod.Post)
-            {
-                return View();
-            }
+            //// Non-POST requests should just display the Login form 
+            //if (Request.HttpMethod != HttpMethod.Post)
+            //{
+            //    return View();
+            //}
 
             // Basic parameter validation
             List<string> errors = new List<string>();

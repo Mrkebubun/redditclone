@@ -154,23 +154,8 @@
     <Compile Include="Views\Item\WhatNew.aspx.designer.cs">
       <DependentUpon>WhatNew.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Views\Shared\Error.aspx.cs">
-      <DependentUpon>Error.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Views\Shared\Error.aspx.designer.cs">
-      <DependentUpon>Error.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Shared\Site.Master.cs">
-      <DependentUpon>Site.Master</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Views\Shared\Site.Master.designer.cs">
-      <DependentUpon>Site.Master</DependentUpon>
-    </Compile>
     <Compile Include="Views\UserControls\ArticleUserControl.ascx.cs">
       <DependentUpon>ArticleUserControl.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Views\UserControls\ArticleUserControl.ascx.designer.cs">
       <DependentUpon>ArticleUserControl.ascx</DependentUpon>
@@ -202,6 +187,7 @@
     <Content Include="Views\Item\Main.aspx" />
     <Content Include="Views\Item\SubmitNew.aspx" />
     <Content Include="Views\Item\WhatNew.aspx" />
+    <Content Include="Views\Shared\LogOnUserControl.ascx" />
     <Content Include="Views\UserControls\ArticleUserControl.ascx" />
     <Content Include="Views\UserInfo\Login.aspx" />
     <Content Include="Views\UserInfo\Register.aspx" />
