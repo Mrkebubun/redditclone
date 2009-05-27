@@ -1,5 +1,5 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" AutoEventWireup="true" CodeBehind="Register.aspx.cs" Inherits="RedditClone.Views.UserInfo.Register" %>
-<asp:Content ID="Content1" ContentPlaceHolderID="MainContentPlaceHolder" runat="server">
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master"  Inherits="System.Web.Mvc.ViewPage" %>
+<asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
    
   <h2>Register</h2>
 

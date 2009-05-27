@@ -1,4 +1,4 @@
-﻿    <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="ArticleUserControl.ascx.cs" Inherits="RedditClone.Views.Item.ArticleUserControl" %>
+﻿    <%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<Article>" %>
 
 
 <a href="<%= ViewData.Model.URL %>"><%= ViewData.Model.Title%> </a>
