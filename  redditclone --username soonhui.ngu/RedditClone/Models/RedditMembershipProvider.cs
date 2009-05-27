@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using System.Configuration;
+using System.Web.Configuration;
 
 namespace RedditClone.Models
 {
@@ -34,41 +36,50 @@ namespace RedditClone.Models
 
         }
     }
-    public class RedditMembershipProvider : MembershipProvider
+    public class RedditMembershipProvider : SqlMembershipProvider
     {
         private UserDataLayer userLayer;
         public RedditMembershipProvider()
         {
             userLayer = new UserDataLayer();
         }
-        public override int PasswordAttemptWindow
-        {
-            get { throw new NotImplementedException(); }
-        }
-        public override bool RequiresUniqueEmail
-        {
-            get { throw new NotImplementedException(); }
-        }
-        public override int MinRequiredNonAlphanumericCharacters
-        {
-            get { throw new NotImplementedException(); }
-        }
-        public override MembershipPasswordFormat PasswordFormat
-        {
-            get { throw new NotImplementedException(); }
-        }
-        public override int MinRequiredPasswordLength
-        {
-            get { throw new NotImplementedException(); }
-        }
-        public override string PasswordStrengthRegularExpression
-        {
-            get { throw new NotImplementedException(); }
-        }
-        public override bool ChangePasswordQuestionAndAnswer(string username, string password, string newPasswordQuestion, string newPasswordAnswer)
-        {
-            throw new NotImplementedException();
-        }
+
+     
+    
+
+        //public override int PasswordAttemptWindow
+        //{
+        //    get { throw new NotImplementedException(); }
+        //}
+        //public override bool RequiresUniqueEmail
+        //{
+        //    get { throw new NotImplementedException(); }
+        //}
+        //public override int MinRequiredNonAlphanumericCharacters
+        //{
+        //    get { throw new NotImplementedException(); }
+        //}
+        //public override MembershipPasswordFormat PasswordFormat
+        //{
+        //    get { throw new NotImplementedException(); }
+        //}
+        //public override int MinRequiredPasswordLength
+        //{
+        //    get 
+        //    {
+
+        //        var str = ConfigurationManager.AppSettings.Keys;
+        //        return 10;
+        //        }
+        //}
+        //public override string PasswordStrengthRegularExpression
+        //{
+        //    get { throw new NotImplementedException(); }
+        //}
+        //public override bool ChangePasswordQuestionAndAnswer(string username, string password, string newPasswordQuestion, string newPasswordAnswer)
+        //{
+        //    throw new NotImplementedException();
+        //}
         public override string GetPassword(string username, string answer)
         {
             return userLayer.GetUserInfo(username).password;
@@ -102,33 +113,33 @@ namespace RedditClone.Models
         {
             throw new NotImplementedException();
         }
-        public override int MaxInvalidPasswordAttempts
-        {
-            get { throw new NotImplementedException(); }
-        }
-        public override string ApplicationName
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-        public override bool RequiresQuestionAndAnswer
-        {
-            get { throw new NotImplementedException(); }
-        }
-        public override bool EnablePasswordReset
-        {
-            get { throw new NotImplementedException(); }
-        }
-        public override bool EnablePasswordRetrieval
-        {
-            get { throw new NotImplementedException(); }
-        }
+        //public override int MaxInvalidPasswordAttempts
+        //{
+        //    get { throw new NotImplementedException(); }
+        //}
+        //public override string ApplicationName
+        //{
+        //    get
+        //    {
+        //        throw new NotImplementedException();
+        //    }
+        //    set
+        //    {
+        //        throw new NotImplementedException();
+        //    }
+        //}
+        //public override bool RequiresQuestionAndAnswer
+        //{
+        //    get { throw new NotImplementedException(); }
+        //}
+        //public override bool EnablePasswordReset
+        //{
+        //    get { throw new NotImplementedException(); }
+        //}
+        //public override bool EnablePasswordRetrieval
+        //{
+        //    get { throw new NotImplementedException(); }
+        //}
         public override MembershipUser GetUser(string username, bool userIsOnline)
         {
             throw new NotImplementedException();

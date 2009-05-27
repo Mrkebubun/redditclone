@@ -1,5 +1,5 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" AutoEventWireup="true" CodeBehind="Login.aspx.cs" Inherits="RedditClone.Views.UserInfo.Login" %>
-<asp:Content ID="Content1" ContentPlaceHolderID="MainContentPlaceHolder" runat="server">
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master"  Inherits="System.Web.Mvc.ViewPage" %>
+<asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <h2>Login</h2>
     <p>
         Please enter your username and password below. If you don't have an account,
