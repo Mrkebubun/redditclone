@@ -16,7 +16,10 @@ namespace RedditClone
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             routes.Add(new Route("Users/{id}", new MvcRouteHandler())
                 {
-                    Defaults = new RouteValueDictionary(new { controller ="UserInfo", action = "UserInformation",
+                    Defaults = new RouteValueDictionary(new
+                    {
+                        controller = "Account",
+                        action = "UserInformation",
                     id = ""}),
                 });
             routes.Add(new Route("submit", new MvcRouteHandler())
@@ -25,11 +28,11 @@ namespace RedditClone
             });
             routes.Add(new Route("Register", new MvcRouteHandler())
             {
-                Defaults = new RouteValueDictionary(new { controller = "UserInfo", action = "Register" }),
+                Defaults = new RouteValueDictionary(new { controller = "Account", action = "Register" }),
             });
             routes.Add(new Route("Login", new MvcRouteHandler())
             {
-                Defaults = new RouteValueDictionary(new { controller = "UserInfo", action = "Login" }),
+                Defaults = new RouteValueDictionary(new { controller = "Account", action = "Login" }),
             });
             routes.Add(new Route("Main", new MvcRouteHandler())
             {
@@ -42,7 +45,7 @@ namespace RedditClone
             routes.MapRoute(
                 "Default",                                              // Route name
                 "{controller}/{action}/{id}",                           // URL with parameters
-                new { controller = "Home", action = "Index", id = "" }  // Parameter defaults
+                new { controller = "Item", action = "Main", id = "" }  // Parameter defaults
             );
             
             // Note: Change the URL to "{controller}.mvc/{action}/{id}" to enable

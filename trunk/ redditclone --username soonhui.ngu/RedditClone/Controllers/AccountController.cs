@@ -13,7 +13,7 @@ namespace RedditClone.Controllers
     [HandleError]
     public class AccountController : Controller
     {
-
+        private static string Referrer = "Referrer";
         public AccountController()
             : this(null, null)
         {
@@ -36,9 +36,23 @@ namespace RedditClone.Controllers
             get;
             private set;
         }
+        [AcceptVerbs(HttpVerbs.Get)]
+        public ActionResult UserInformation(string username)
+        {
+            UserDataLayer udl = new UserDataLayer();
 
+            return View("UserInformation", udl.GetUserInfo(username));
+        }
+
+        [AcceptVerbs(HttpVerbs.Get)]
+        public ActionResult Register()
+        {
+            ViewData["Title"] = "Registration";
+            return View();
+        }
         [Authorize]
-        public ActionResult ChangePassword(string currentPassword, string newPassword, string confirmPassword)
+        public ActionResult ChangePassword(string currentPassword, string newPassword, 
+            string confirmPassword)
         {
 
             ViewData["Title"] = "Change Password";
@@ -110,6 +124,7 @@ namespace RedditClone.Controllers
         [AcceptVerbs(HttpVerbs.Get)]
         public ActionResult Login()
         {
+            ViewData[Referrer] = Request.UrlReferrer;
             return View();
         }
         [AcceptVerbs(HttpVerbs.Post)]
@@ -118,13 +133,8 @@ namespace RedditClone.Controllers
 
             ViewData["Title"] = "Login";
 
-            //// Non-POST requests should just display the Login form 
-            //if (Request.HttpMethod != HttpMethod.Post)
-            //{
-            //    return View();
-            //}
 
-            // Basic parameter validation
+
             List<string> errors = new List<string>();
 
             if (String.IsNullOrEmpty(username))
@@ -142,7 +152,7 @@ namespace RedditClone.Controllers
                 {
 
                     FormsAuth.SetAuthCookie(username, rememberMe ?? false);
-                    return RedirectToAction("Index", "Home");
+                    return Redirect(ViewData[Referrer]==null?"/": (string)ViewData[Referrer] );
                 }
                 else
                 {
@@ -156,14 +166,17 @@ namespace RedditClone.Controllers
             return View();
         }
 
+        [AcceptVerbs(HttpVerbs.Get)]
         public ActionResult Logout()
         {
 
+            ViewData[Referrer] = Request.UrlReferrer;
             FormsAuth.SignOut();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Main", "Item");
         }
 
-        public ActionResult Register(string username, string email, string password, string confirmPassword)
+        public ActionResult Register(string username, string email, 
+            string password, string confirmPassword)
         {
 
             ViewData["Title"] = "Register";

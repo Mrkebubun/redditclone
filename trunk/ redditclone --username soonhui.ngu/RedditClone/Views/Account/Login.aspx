@@ -34,7 +34,7 @@
                     <td><input type="checkbox" name="rememberMe" value="true" /> Remember me?</td>
                 </tr>
                 <tr>
-                    <td></td>
+                  <td><input type="hidden" name="Referrer" value="<%= ViewData["Referrer"] %>" /> </td>
                     <td><input type="submit" value="Login" /></td>
                 </tr>
             </table>

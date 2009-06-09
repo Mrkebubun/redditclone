@@ -76,7 +76,6 @@
       <DependentUpon>RedditCloneDataContext.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\RedditMembershipProvider.cs" />
-    <Compile Include="Controllers\UserInfoController.cs" />
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -105,8 +104,6 @@
     <Content Include="Views\Item\WhatNew.aspx" />
     <Content Include="Views\Shared\LogOnUserControl.ascx" />
     <Content Include="Views\UserControls\ArticleUserControl.ascx" />
-    <Content Include="Views\UserInfo\Login.aspx" />
-    <Content Include="Views\UserInfo\Register.aspx" />
     <Content Include="Views\Web.config" />
     <Content Include="Web.config" />
     <Content Include="Content\Site.css" />
@@ -148,7 +145,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>7002</DevelopmentServerPort>
+          <DevelopmentServerPort>4602</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>
