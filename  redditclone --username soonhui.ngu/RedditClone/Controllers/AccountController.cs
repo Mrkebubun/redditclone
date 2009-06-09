@@ -124,7 +124,8 @@ namespace RedditClone.Controllers
         [AcceptVerbs(HttpVerbs.Get)]
         public ActionResult Login()
         {
-            ViewData[Referrer] = Request.UrlReferrer;
+        //    ViewData[Referrer] = Request.UrlReferrer;
+            ViewData["Title"] = "Login";
             return View();
         }
         [AcceptVerbs(HttpVerbs.Post)]
@@ -152,7 +153,7 @@ namespace RedditClone.Controllers
                 {
 
                     FormsAuth.SetAuthCookie(username, rememberMe ?? false);
-                    return Redirect(ViewData[Referrer]==null?"/": (string)ViewData[Referrer] );
+                    return RedirectToAction("Main", "Item");
                 }
                 else
                 {
@@ -175,6 +176,7 @@ namespace RedditClone.Controllers
             return RedirectToAction("Main", "Item");
         }
 
+        [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Register(string username, string email, 
             string password, string confirmPassword)
         {
@@ -182,11 +184,7 @@ namespace RedditClone.Controllers
             ViewData["Title"] = "Register";
             ViewData["PasswordLength"] = Provider.MinRequiredPasswordLength;
 
-            // Non-POST requests should just display the Register form 
-            if (Request.HttpMethod != HttpMethod.Post)
-            {
-                return View();
-            }
+
 
             // Basic parameter validation
             List<string> errors = new List<string>();
@@ -215,13 +213,13 @@ namespace RedditClone.Controllers
 
                 // Attempt to register the user
                 MembershipCreateStatus createStatus;
-                MembershipUser newUser = Provider.CreateUser(username, password, email, null, null, true, null, out createStatus);
+                MembershipUser newUser = Provider.CreateUser(username, password, email, string.Empty, string.Empty, true, null, out createStatus);
 
                 if (newUser != null)
                 {
 
                     FormsAuth.SetAuthCookie(username, false /* createPersistentCookie */);
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Main", "Item");
                 }
                 else
                 {

@@ -99,6 +99,7 @@
     </Content>
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
+    <Content Include="Views\Account\UserInformation.aspx" />
     <Content Include="Views\Item\Main.aspx" />
     <Content Include="Views\Item\SubmitNew.aspx" />
     <Content Include="Views\Item\WhatNew.aspx" />

@@ -23,7 +23,7 @@ namespace RedditCloneTests.Controllers
     {
         private ItemController controllerFake;
     
-        private HttpRequestBase httpRequestFake;
+   
 
         public ItemControllerTest2()
         {
@@ -35,13 +35,11 @@ namespace RedditCloneTests.Controllers
         {
 
             controllerFake = Isolate.Fake.Instance<ItemController>(Members.CallOriginal);
-
-
-            IItemFactory itemFactoryFake = Isolate.Fake.Instance<IItemFactory>(Members.MustSpecifyReturnValues);
-            Isolate.WhenCalled(() => controllerFake.Factory).WillReturn(itemFactoryFake);
-
-            httpRequestFake = Isolate.Fake.Instance<HttpRequestBase>(Members.MustSpecifyReturnValues);
-            Isolate.WhenCalled(() => controllerFake.Request).WillReturn(httpRequestFake);
+            Isolate.WhenCalled(() => controllerFake.Factory)
+                .ReturnRecursiveFake();
+                 
+            Isolate.WhenCalled(() => controllerFake.Request)
+                .ReturnRecursiveFake();
 
           
         }
@@ -53,6 +51,7 @@ namespace RedditCloneTests.Controllers
             Isolate.WhenCalled(() => controllerFake.Factory.GetHotArticles()).WillReturn(new List<Article>());
             ViewResult result = (ViewResult)controllerFake.Main();
             
+            
             Assert.AreEqual("Main", result.ViewName);
             Assert.IsInstanceOfType(typeof(List<Article>), result.ViewData.Model);
             Isolate.Verify.WasCalledWithAnyArguments(() => controllerFake.Factory.GetHotArticles());
@@ -63,7 +62,7 @@ namespace RedditCloneTests.Controllers
         [Isolated]
         public void WhatNewTest()
         {
-            //Isolate.WhenCalled(() => httpRequestFake.HttpMethod).WillReturn(HttpMethod.Get);
+         
             Isolate.WhenCalled(() => controllerFake.Factory.GetNewestArticles()).WillReturn(new List<Article>());
             ViewResult result = (ViewResult)controllerFake.WhatNew();
             Assert.IsInstanceOfType(typeof(List<Article>), result.ViewData.Model);
@@ -137,8 +136,8 @@ namespace RedditCloneTests.Controllers
         [Isolated]
         public void SubmitViewTest()
         {
-            Isolate.WhenCalled(() => httpRequestFake.HttpMethod).WillReturn(HttpMethod.Get);
-            controllerFake.SubmitNew(null, null, null);
+   
+            controllerFake.SubmitNew();
             Assert.AreEqual("Submit New Item!", controllerFake.ViewData["Title"]);
         }
 
