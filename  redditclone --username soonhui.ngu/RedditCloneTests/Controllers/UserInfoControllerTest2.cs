@@ -16,6 +16,7 @@ using MbUnit.Framework;
 using TypeMock;
 using TypeMock.ArrangeActAssert;
 
+
 namespace RedditCloneTests.Controllers
 {
     [TestFixture]
@@ -26,17 +27,18 @@ namespace RedditCloneTests.Controllers
         {
 
         }
-        private UserInfoController controller;
+        private AccountController controller;
        
 
         [SetUp]
         public void Init()
         {
-            
-            controller = Isolate.Fake.Instance<UserInfoController>(Members.CallOriginal);
-            Isolate.WhenCalled(() => controller.Provider).WillReturn(Isolate.Fake.Instance<MembershipProvider>(Members.ReturnRecursiveFakes));
-            Isolate.WhenCalled(() => controller.FormsAuth).WillReturn(Isolate.Fake.Instance<IFormsAuthentication>(Members.ReturnRecursiveFakes));
 
+            controller = Isolate.Fake.Instance<AccountController>(Members.CallOriginal);
+            Isolate.WhenCalled(() => controller.Provider)
+                .ReturnRecursiveFake();
+            Isolate.WhenCalled(() => controller.FormsAuth)
+                .ReturnRecursiveFake();
         }
 
         [TearDown]
@@ -113,8 +115,8 @@ namespace RedditCloneTests.Controllers
 
         }
         [Isolated]
-        [RowTest, RollBack]
-        [Row()]
+        [Test, RollBack]
+   
         public void AddUserGetTest()
         {
             ViewResult result = (ViewResult)controller.Register();
@@ -131,7 +133,8 @@ namespace RedditCloneTests.Controllers
             MembershipCreateStatus mcs;
             Isolate.WhenCalled(() => controller.Provider.CreateUser(username, password, email, string.Empty, string.Empty, false, null, out mcs)).WillReturn(null);
 
-            RedirectToRouteResult result = (RedirectToRouteResult)controller.Register(username, password, email);
+            RedirectToRouteResult result = (RedirectToRouteResult)controller.Register(username, email,
+                password, password);
             Assert.AreEqual("Item", (result).RouteValues["controller"]);
             Assert.AreEqual("Main", (result).RouteValues["action"]);
 

@@ -5,8 +5,6 @@
 <input type="submit" value="Add New Article" />
 </form>
 
-<%=Html.ActionLink("Login","Login", "UserInfo") %>
-
 
 <ol>
     <% foreach (var item in ViewData.Model)  {  %>

@@ -8,7 +8,7 @@ namespace RedditClone
     {
         public void Page_Load(object sender, System.EventArgs e)
         {
-            Response.Redirect("~/Home");
+            Response.Redirect("~/Main");
         }
     }
 }
