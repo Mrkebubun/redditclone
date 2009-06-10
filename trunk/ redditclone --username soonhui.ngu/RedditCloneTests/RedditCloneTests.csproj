@@ -63,9 +63,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\AccountControllerTest2.cs" />
     <Compile Include="Controllers\ItemControllerTest2.cs" />
     <Compile Include="Model\RedditMembershipTest.cs" />
-    <Compile Include="Controllers\UserInfoControllerTest2.cs" />
     <Compile Include="Model\ItemFactoryTest.cs" />
     <Compile Include="Model\UserDataLayerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
