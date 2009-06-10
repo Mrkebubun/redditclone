@@ -21,9 +21,9 @@ namespace RedditCloneTests.Controllers
 {
     [TestFixture]
     [ClearMocks]
-    public class UserInfoControllerTest2
+    public class AccountControllerTest2
     {
-        public UserInfoControllerTest2()
+        public AccountControllerTest2()
         {
 
         }

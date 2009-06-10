@@ -3,8 +3,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-    <title>A Reddit Clone</title>
+    <title><asp:ContentPlaceHolder ID="TitleContent" runat="server" />A Reddit Clone</title>
     <link href="../../Content/Site.css" rel="stylesheet" type="text/css" />
    
 </head>
@@ -12,51 +11,32 @@
     <div class="page">
 
         <div id="header">
-            <div id="logo">
-                <a href="">A Reddit Clone</a>
+            <div id="title">
+           <h1> <%=Html.ActionLink("A Reddit Clone", "Main", "Item") %> </h1>
+            
                 </div>
                 
                    <div id="logindisplay">
                 <% Html.RenderPartial("LogOnUserControl"); %>
             </div> 
-            <ul id="mainMenu">
+               <div id="menucontainer">
+            <ul id="menu">
                   
                 <li> <%= Html.ActionLink("Home","Index", "Home")%></li>
                 <li><%= Html.ActionLink("About","About", "Home")%></li>
-                   <li><%= Html.ActionLink("Item","Main", "Item")%></li>
+                <li><%= Html.ActionLink("Articles","Main", "Item")%></li>
 
             </ul>
+            </div>
         </div>
 
-        <div id="mainContent">
+        <div id="main">
 
-            <div class="columnsContainer">
-
-                <div class="leftColumn">
-                    <h2>
-                        MVC Help Topics</h2>
-                    <ul>
-                        <li><a href="http://msdn2.microsoft.com/en-us/asp.net/default.aspx">ASP.NET Dev Center</a></li>
-                        <li><a href="http://www.asp.net/">ASP.NET Official Site</a></li>
-                        <li><a href="http://asp.net/downloads/">MVC Framework Download</a></li>
-                        <li><a href="http://forums.asp.net/1146.aspx">MVC Framework Forums</a></li>
-                        <li><a href="http://quickstarts.asp.net/3-5-extensions/mvc/default.aspx">MVC Framework Documentation</a></li>
-                    </ul>
-                </div><!--/leftColumn-->
-
-                <div class="rightColumn">
-                    <asp:ContentPlaceHolder ID="MainContent" runat="server">
-                    </asp:ContentPlaceHolder>
-                </div><!--/rightColumn-->
-
-                <div class="clear">
-                </div>
-
-            </div><!--/columnsContainer-->
+             <asp:ContentPlaceHolder ID="MainContent" runat="server" />
 
             <div id="footer">
                 <p>
-                    My Sample MVC Application &copy; Copyright 2008
+                    RedditClone &copy; Copyright 2009
                 </p>
             </div><!--/footer-->
 
