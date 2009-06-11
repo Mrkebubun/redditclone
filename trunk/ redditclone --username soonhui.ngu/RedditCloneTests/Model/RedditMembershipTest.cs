@@ -34,21 +34,21 @@ namespace RedditCloneTests.Model
 
         [RowTest, RollBack]
         [Row("Joseph", "rtyhdthdt")]
-        public void ValidationTestFailed(string username, string password)
+        public void ValidationTest_Failed_WrongPassword(string username, string password)
         {
             Assert.IsFalse(provider.ValidateUser(username, password));
         }
 
         [RowTest, RollBack]
         [Row("Joseph", "Joseph")]
-        public void ValidationTestPass(string username, string password)
+        public void ValidationTest_Pass(string username, string password)
         {
             Assert.IsTrue(provider.ValidateUser(username, password));
         }
 
         [RowTest, RollBack]
         [Row("Dennis2", "Dennis2", "myemail@gmail.com")]
-        public void RegisterTest(string username, string password, string email)
+        public void Register_Succeed(string username, string password, string email)
         {
             MembershipCreateStatus mcs;
             MembershipUser user = provider.CreateUser(username, password, email, string.Empty, string.Empty, false, null, out mcs);

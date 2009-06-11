@@ -77,7 +77,7 @@ namespace RedditCloneTests.Controllers
         }
 
         [Test, RollBack, Isolated]
-        public void LoginEmptyString()
+        public void Login_InvalidUser_EmptyString()
         {
             string username="";
             string password = "";
@@ -88,12 +88,11 @@ namespace RedditCloneTests.Controllers
 
         }        
         [Test, RollBack, Isolated]       
-        public void LoginTest()
+        public void Login_Succeed()
         {
             string username="hello";
             string password = "hello";
             Isolate.WhenCalled(() => controller.Provider.ValidateUser(username, password))
-                .WithExactArguments()
                 .WillReturn(true);
 
 
@@ -101,25 +100,20 @@ namespace RedditCloneTests.Controllers
             Assert.AreEqual("Item", (result).RouteValues["controller"]);
             Assert.AreEqual("Main", (result).RouteValues["action"]);
 
-            Isolate.Verify.WasCalledWithExactArguments(() => controller.Provider.ValidateUser(username, password));
             Isolate.Verify.WasCalledWithExactArguments(() => controller.FormsAuth.SetAuthCookie(username, false));
 
 
         }
         [Test, RollBack, Isolated]
-        public void LoginFailTest()
+        public void Login_InvalidUser_WrongPassword()
         {
             string username = "hello";
             string password = "hello";
             Isolate.WhenCalled(() => controller.Provider.ValidateUser(username, password))
-                .WithExactArguments()
                 .WillReturn(false);
             var result= (ViewResult)controller.Login(username, password, false);
             Assert.Greater(((List<string>)result.ViewData["errors"]).Count, 0);
             
-
-            Isolate.Verify.WasCalledWithExactArguments
-                (() => controller.Provider.ValidateUser(username, password));
 
         }
         [Isolated]
@@ -142,7 +136,6 @@ namespace RedditCloneTests.Controllers
             Isolate.WhenCalled
                 (() => controller.Provider.CreateUser(username, password, email,
                      string.Empty, string.Empty, true, null, out mcs))
-                .WithExactArguments()   
                 .ReturnRecursiveFake();
 
             RedirectToRouteResult result = (RedirectToRouteResult)controller.Register(username, email,
@@ -150,10 +143,7 @@ namespace RedditCloneTests.Controllers
             Assert.AreEqual("Item", (result).RouteValues["controller"]);
             Assert.AreEqual("Main", (result).RouteValues["action"]);
 
-            
-            Isolate.Verify.WasCalledWithExactArguments
-                (() => controller.Provider.CreateUser(username, password, email, 
-                    string.Empty, string.Empty, true, null, out mcs));
+          
 
         }
     }
