@@ -76,23 +76,24 @@ namespace RedditCloneTests.Controllers
             
         }
 
-        [RowTest, RollBack, Isolated]
-        [Row("gesghhrs", "rtyhdthdt")]
-        public void LoginFailNoUserTest(string username, string password)
+        [Test, RollBack, Isolated]
+        public void LoginEmptyString()
         {
-            Isolate.WhenCalled(() => controller.Provider.ValidateUser(username, password))
-                .WillReturn(false);  
+            string username="";
+            string password = "";
+  
             ViewResult result = (ViewResult)controller.Login(username, password, true);
-            Assert.Greater(((List<string>)controller.ViewData["errors"]).Count, 0);
+            Assert.Greater(((List<string>)result.ViewData["errors"]).Count, 0);
+            Isolate.Verify.WasNotCalled(() => controller.Provider.ValidateUser("", ""));
 
-        }
-        [Isolated]
-        [RowTest, RollBack]
-        [Row("Joseph", "Joseph")]
-        public void LoginTest(string username, string password)
+        }        
+        [Test, RollBack, Isolated]       
+        public void LoginTest()
         {
- 
-            Isolate.WhenCalled(() => controller.Provider.ValidateUser(null, password))
+            string username="hello";
+            string password = "hello";
+            Isolate.WhenCalled(() => controller.Provider.ValidateUser(username, password))
+                .WithExactArguments()
                 .WillReturn(true);
 
 
@@ -105,15 +106,20 @@ namespace RedditCloneTests.Controllers
 
 
         }
-        [RowTest, RollBack, Isolated]
-        [Row("Joseph", "rtyhdthdt")]
-        public void LoginFailTest(string username, string password)
+        [Test, RollBack, Isolated]
+        public void LoginFailTest()
         {
-            Isolate.WhenCalled(() => controller.Provider.ValidateUser(username, password)).WillReturn(false);
-            controller.Login(username, password, false);
-            Assert.Greater(((List<string>)controller.ViewData["errors"]).Count, 0);
+            string username = "hello";
+            string password = "hello";
+            Isolate.WhenCalled(() => controller.Provider.ValidateUser(username, password))
+                .WithExactArguments()
+                .WillReturn(false);
+            var result= (ViewResult)controller.Login(username, password, false);
+            Assert.Greater(((List<string>)result.ViewData["errors"]).Count, 0);
+            
 
-            Isolate.Verify.WasCalledWithExactArguments(() => controller.Provider.ValidateUser(username, password));
+            Isolate.Verify.WasCalledWithExactArguments
+                (() => controller.Provider.ValidateUser(username, password));
 
         }
         [Isolated]
